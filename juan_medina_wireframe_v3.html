@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juan Medina — Homepage Wireframe v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --wire: #E2DED8;
+    --wire-dark: #C8C2B8;
+    --text: #1A1A1A;
+    --label: #A09888;
+    --accent: #6B4C3B;
+    --img-bg: #E8E4DE;
+    --card-bg: #F0EDE8;
+    --anno: #B8A898;
+    --dark-section: #1A1A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── WIREFRAME CHROME ── */
+  .page-label {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--label);
+    z-index: 100;
+    letter-spacing: 0.5px;
+    background: rgba(250,250,248,0.9);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .page-label span { color: var(--accent); font-weight: 500; }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--anno);
+    margin-bottom: 12px;
+  }
+
+  .annotation {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--anno);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .annotation::before { content: '↳ '; color: var(--accent); }
+
+  .img-placeholder {
+    background: var(--img-bg);
+    border: 1.5px dashed var(--wire-dark);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder::after {
+    content: attr(data-label);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--label);
+    letter-spacing: 0.5px;
+    z-index: 1;
+    text-align: center;
+    padding: 0 12px;
+  }
+  .img-placeholder .x {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--wire) calc(50% - 0.5px), var(--wire) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to top right, transparent calc(50% - 0.5px), var(--wire) calc(50% - 0.5px), var(--wire) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  }
+
+  section { border-bottom: 1px solid var(--wire); position: relative; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  .section-num {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+    font-family: 'DM Mono', monospace;
+    font-size: 64px;
+    font-weight: 500;
+    color: var(--wire);
+    line-height: 1;
+    opacity: 0.4;
+  }
+
+  /* ── 01 HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 620px;
+    max-height: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero .img-placeholder {
+    position: absolute; inset: 0;
+    border-radius: 0; border: none;
+  }
+
+  .hero-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+  }
+  .hero-nav-logo {
+    width: 48px; height: 48px;
+    border: 1.5px dashed var(--wire-dark);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(250,250,248,0.85);
+  }
+  .hero-nav-logo span {
+    font-family: 'DM Mono', monospace; font-size: 8px;
+    color: var(--label); text-transform: uppercase;
+  }
+  .hero-nav-links {
+    display: flex; gap: 28px; align-items: center;
+    background: rgba(250,250,248,0.85);
+    padding: 8px 20px; border-radius: 2px;
+  }
+  .hero-nav-links a {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text); text-decoration: none; letter-spacing: 0.5px;
+  }
+  .hero-nav-links .lang {
+    color: var(--label); margin-left: 8px;
+    padding-left: 16px; border-left: 1px solid var(--wire);
+  }
+  .hero-nav-links .lang .active { color: var(--accent); font-weight: 500; }
+
+  .hero-content {
+    position: relative; z-index: 2; text-align: center;
+    max-width: 700px; padding: 0 40px;
+  }
+  .hero-logo {
+    width: 100px; height: 100px;
+    border: 2px dashed var(--wire-dark); border-radius: 50%;
+    margin: 0 auto 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(250,250,248,0.88);
+  }
+  .hero-logo span {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--label); text-transform: uppercase;
+  }
+  .hero-headline {
+    font-size: 32px; font-weight: 400; color: var(--text);
+    background: rgba(250,250,248,0.88); padding: 12px 28px;
+    display: inline-block; border-radius: 2px;
+    line-height: 1.35; margin-bottom: 24px;
+  }
+  .hero-ctas {
+    display: flex; gap: 16px; justify-content: center;
+  }
+  .hero-cta {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 28px; border-radius: 2px;
+    text-decoration: none;
+  }
+  .hero-cta.primary {
+    background: var(--text); color: var(--bg);
+  }
+  .hero-cta.secondary {
+    background: rgba(250,250,248,0.88); color: var(--text);
+    border: 1px solid var(--wire-dark);
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 28px; left: 50%;
+    transform: translateX(-50%); z-index: 2;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--label); text-align: center; letter-spacing: 1px;
+  }
+  .scroll-hint::after {
+    content: ''; display: block;
+    width: 1px; height: 28px;
+    background: var(--wire-dark); margin: 6px auto 0;
+  }
+
+  /* ── 02 IDENTITY ── */
+  .identity { padding: 100px 0; text-align: center; }
+  .identity-roles {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .identity h2 {
+    font-size: 26px; font-weight: 400;
+    max-width: 620px; margin: 0 auto 20px; line-height: 1.5;
+  }
+  .identity p {
+    font-size: 14px; color: var(--label);
+    max-width: 480px; margin: 0 auto;
+  }
+
+  /* ── 03 PROCESS ── */
+  .process { padding: 80px 0; }
+  .process-intro {
+    max-width: 600px; margin-bottom: 40px;
+  }
+  .process-intro h3 {
+    font-size: 22px; font-weight: 400; margin-bottom: 8px;
+  }
+  .process-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    border-radius: 6px; overflow: hidden;
+  }
+  .process-step {
+    background: var(--card-bg); padding: 0;
+    position: relative;
+  }
+  .process-step .img-placeholder {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 0; border: none;
+    border-bottom: 1.5px dashed var(--wire-dark);
+  }
+  .process-step-text {
+    padding: 20px 20px 24px;
+    text-align: center;
+  }
+  .process-step-text h4 {
+    font-size: 14px; font-weight: 700; margin-bottom: 4px;
+  }
+  .process-step-text p {
+    font-size: 12px; color: var(--label);
+  }
+  .process-arrow {
+    position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%); z-index: 2;
+    font-size: 18px; color: var(--wire-dark);
+  }
+
+  /* ── 04 GREEN COFFEE ── */
+  .green-coffee { padding: 80px 0; }
+  .section-header {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 32px;
+  }
+  .section-header h3 { font-size: 22px; font-weight: 400; }
+  .section-header .cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--accent); letter-spacing: 0.5px;
+  }
+
+  .lot-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .lot-card {
+    border: 1px solid var(--wire); border-radius: 6px;
+    overflow: hidden; background: var(--card-bg);
+  }
+  .lot-card .img-placeholder {
+    width: 100%; aspect-ratio: 4/3;
+    border-radius: 0; border: none;
+    border-bottom: 1.5px dashed var(--wire-dark);
+  }
+  .lot-card-body { padding: 20px; }
+  .lot-card-body h4 {
+    font-size: 15px; font-weight: 600; margin-bottom: 8px;
+  }
+  .lot-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--label); line-height: 1.8;
+  }
+  .lot-meta .tag {
+    display: inline-block; background: var(--wire);
+    padding: 2px 7px; border-radius: 2px;
+    font-size: 10px; margin-right: 4px; margin-bottom: 4px;
+  }
+  .lot-location {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    margin-top: 8px; padding: 3px 8px;
+    border-radius: 2px; font-weight: 500;
+  }
+  .loc-colombia { background: #E8F0E8; color: #4A7A4A; }
+  .loc-transit { background: #FFF3E0; color: #A07020; }
+  .loc-landed { background: #E3EAF2; color: #4A6A8A; }
+
+  /* ── 05 ROASTED COFFEE ── */
+  .roasted-coffee {
+    padding: 80px 0;
+    background: var(--dark-section);
+    color: var(--bg);
+    border-bottom-color: #333;
+  }
+  .roasted-coffee .section-tag { color: #555; }
+  .roasted-coffee .section-num { color: #2A2A2A; }
+  .roasted-coffee .section-header h3 { color: var(--bg); }
+  .roasted-coffee .section-header .cta { color: var(--wire-dark); }
+  .roasted-coffee .annotation { color: #555; }
+  .roasted-coffee .annotation::before { color: var(--wire-dark); }
+
+  .roasted-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .roasted-card {
+    border: 1px solid #333; border-radius: 6px;
+    overflow: hidden; background: #222;
+  }
+  .roasted-card .img-placeholder {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 0; border: none;
+    border-bottom: 1.5px dashed #444;
+    background: #2A2A2A;
+  }
+  .roasted-card .img-placeholder::after { color: #555; }
+  .roasted-card-body { padding: 20px; }
+  .roasted-card-body h4 {
+    font-size: 15px; font-weight: 600; margin-bottom: 6px;
+    color: var(--bg);
+  }
+  .roasted-card-body .notes {
+    font-size: 13px; color: var(--wire-dark); margin-bottom: 8px;
+    font-style: italic;
+  }
+  .roasted-card-body .price {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px; color: var(--bg); font-weight: 500;
+  }
+  .roasted-card-body .meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: #666; margin-top: 8px;
+  }
+  .roasted-card-body .meta .tag {
+    display: inline-block; background: #333;
+    padding: 2px 7px; border-radius: 2px;
+    margin-right: 4px; color: #888;
+  }
+
+  /* ── 06 CONSULTING ── */
+  .consulting { padding: 80px 0; }
+  .consulting-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; margin-top: 32px; align-items: start;
+  }
+  .consulting-text h3 {
+    font-size: 22px; font-weight: 400; margin-bottom: 16px; line-height: 1.4;
+  }
+  .consulting-text > p {
+    font-size: 14px; color: var(--label); margin-bottom: 32px; line-height: 1.7;
+  }
+  .service-item {
+    padding: 20px 0;
+    border-top: 1px solid var(--wire);
+  }
+  .service-item:last-child { border-bottom: 1px solid var(--wire); }
+  .service-item h4 {
+    font-size: 15px; font-weight: 700; margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .service-item h4 .arrow {
+    font-size: 14px; color: var(--accent);
+  }
+  .service-item p {
+    font-size: 13px; color: var(--label); line-height: 1.6;
+  }
+  .consulting-images {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .consulting-images .img-placeholder {
+    width: 100%; aspect-ratio: 1;
+  }
+  .consulting-images .img-placeholder.tall {
+    grid-column: 1 / -1; aspect-ratio: 2/1;
+  }
+
+  /* ── 07 JOURNAL ── */
+  .journal { padding: 80px 0; }
+  .journal-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px; margin-top: 32px;
+  }
+  .journal-card {
+    border: 1px solid var(--wire); border-radius: 6px;
+    overflow: hidden; background: var(--card-bg);
+  }
+  .journal-card .img-placeholder {
+    width: 100%; aspect-ratio: 3/2;
+    border-radius: 0; border: none;
+    border-bottom: 1.5px dashed var(--wire-dark);
+  }
+  .journal-card-body { padding: 20px; }
+  .journal-card-body .cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .journal-card-body h4 {
+    font-size: 15px; font-weight: 600; margin-bottom: 6px; line-height: 1.4;
+  }
+  .journal-card-body p {
+    font-size: 12px; color: var(--label); line-height: 1.6;
+  }
+
+  /* ── 08 FOOTER ── */
+  .footer {
+    padding: 60px 0 36px;
+    background: var(--dark-section);
+    color: var(--bg);
+    border-bottom: none;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 48px;
+  }
+  .footer h5 {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 14px;
+    color: #555; font-family: 'DM Mono', monospace;
+  }
+  .footer a, .footer p {
+    font-size: 13px; color: #888;
+    line-height: 2; text-decoration: none; display: block;
+  }
+  .footer-logo {
+    width: 52px; height: 52px;
+    border: 1.5px dashed #444; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .footer-logo span {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px; color: #555;
+  }
+  .newsletter {
+    display: flex; gap: 8px; margin-top: 10px;
+  }
+  .newsletter .input {
+    flex: 1; height: 34px;
+    border: 1px dashed #444; border-radius: 3px;
+    display: flex; align-items: center; padding: 0 12px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #555;
+  }
+  .newsletter .btn {
+    height: 34px; padding: 0 14px;
+    border: 1px solid #444; border-radius: 3px;
+    display: flex; align-items: center;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #555;
+  }
+  .footer-bottom {
+    border-top: 1px solid #2A2A2A;
+    padding-top: 20px;
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 10px; color: #444;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-label">WIREFRAME v3 — <span>Juan Medina Coffee</span> — Homepage</div>
+
+<!-- ══════════════════════════════════════════════
+     01 — HERO: Identity-first, not product-first
+     ══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="img-placeholder" data-label="" style="position:absolute;inset:0;border-radius:0;border:none;">
+    <div class="x"></div>
+    <span style="z-index:1;font-family:'DM Mono',monospace;font-size:12px;color:var(--label);">FULL-BLEED — finca landscape or processing moment</span>
+  </div>
+
+  <nav class="hero-nav">
+    <div class="hero-nav-logo"><span>Logo</span></div>
+    <div class="hero-nav-links">
+      <a>Café</a>
+      <a>Proceso</a>
+      <a>Servicios</a>
+      <a>Historia</a>
+      <a>Journal</a>
+      <a>Contacto</a>
+      <span class="lang"><span class="active">ES</span> / EN</span>
+    </div>
+  </nav>
+
+  <div class="hero-content">
+    <div class="hero-logo"><span>Logo</span></div>
+    <div class="hero-headline">Café de especialidad,<br>desde la semilla hasta la taza.</div>
+    <div class="hero-ctas">
+      <a class="hero-cta primary">Nuestro Café</a>
+      <a class="hero-cta secondary">Servicios</a>
+    </div>
+    <p class="annotation" style="margin-top:20px; background:rgba(250,250,248,0.85); padding:4px 12px; border-radius:2px;">Lead with identity, not product. Two doors: coffee + consulting.</p>
+  </div>
+
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     02 — IDENTITY: Who Juan is in 10 seconds
+     ══════════════════════════════════════════════ -->
+<section class="identity" style="position:relative;">
+  <span class="section-num">02</span>
+  <div class="container">
+    <div class="section-tag">02 — Quién es Juan</div>
+    <div class="identity-roles">Agrónomo · Catador · Tostador</div>
+    <h2>Genetics and seed selection. Finca management. Fermentation and drying. Lab analysis. Roasting and cupping. One person, every stage of the chain.</h2>
+    <p>Not a roaster who sources. Not an importer who cups. The full picture — desde la semilla hasta la taza.</p>
+    <p class="annotation" style="margin-top:24px;">This is what neither Onyx nor Osito can claim. Juan's differentiator is the span.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     03 — PROCESS: Credibility before product
+     ══════════════════════════════════════════════ -->
+<section class="process" style="position:relative;">
+  <span class="section-num">03</span>
+  <div class="container">
+    <div class="section-tag">03 — El Proceso</div>
+    <div class="process-intro">
+      <h3>Quality is intentional work at every stage.</h3>
+      <p class="annotation">Show the chain before showing the product. Build trust first.</p>
+    </div>
+    <div class="process-strip">
+      <div class="process-step">
+        <div class="img-placeholder" data-label="Cultivo"><div class="x"></div></div>
+        <div class="process-step-text">
+          <h4>Cultivo</h4>
+          <p>Suelo, nutrición, variedad</p>
+        </div>
+        <span class="process-arrow">→</span>
+      </div>
+      <div class="process-step">
+        <div class="img-placeholder" data-label="Fermentación"><div class="x"></div></div>
+        <div class="process-step-text">
+          <h4>Fermentación</h4>
+          <p>Honey, natural, lavado</p>
+        </div>
+        <span class="process-arrow">→</span>
+      </div>
+      <div class="process-step">
+        <div class="img-placeholder" data-label="Secado"><div class="x"></div></div>
+        <div class="process-step-text">
+          <h4>Secado</h4>
+          <p>Control, tiempo, consistencia</p>
+        </div>
+        <span class="process-arrow">→</span>
+      </div>
+      <div class="process-step">
+        <div class="img-placeholder" data-label="Catación"><div class="x"></div></div>
+        <div class="process-step-text">
+          <h4>Catación</h4>
+          <p>Evaluación, selección, QC</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     04 — GREEN COFFEE: B2B, sourcing depth
+     ══════════════════════════════════════════════ -->
+<section class="green-coffee" style="position:relative;">
+  <span class="section-num">04</span>
+  <div class="container">
+    <div class="section-tag">04 — Café Verde</div>
+    <div class="section-header">
+      <h3>Green coffee — current offerings</h3>
+      <span class="cta">Ver todos los lotes →</span>
+    </div>
+    <div style="display:flex;gap:24px;margin-bottom:32px;">
+      <div style="flex:1;background:var(--card-bg);border:1px solid var(--wire);border-radius:6px;padding:20px;display:flex;align-items:flex-start;gap:14px;">
+        <span style="font-size:20px;">🇺🇸</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Bodega en EE.UU.</div>
+          <div style="font-size:12px;color:var(--label);line-height:1.6;">Café verde fresco, sin intermediarios. Listo para tostadores que no quieren lidiar con importación.</div>
+        </div>
+      </div>
+      <div style="flex:1;background:var(--card-bg);border:1px solid var(--wire);border-radius:6px;padding:20px;display:flex;align-items:flex-start;gap:14px;">
+        <span style="font-size:20px;">💧</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Frescura verificada</div>
+          <div style="font-size:12px;color:var(--label);line-height:1.6;">Humedad controlada (ej. 11.7%), vida útil clara. Café que responde bien en tueste, no solo bonito en foto.</div>
+        </div>
+      </div>
+    </div>
+    <div class="lot-grid">
+      <div class="lot-card">
+        <div class="img-placeholder" data-label="Lot photo"><div class="x"></div></div>
+        <div class="lot-card-body">
+          <h4>Finca Bellavista — Lot 04</h4>
+          <div class="lot-meta">
+            <span class="tag">Caturra</span>
+            <span class="tag">Honey</span>
+            <span class="tag">1,850m</span>
+            <br>Charalá, Santander · 85 pts
+          </div>
+          <div class="lot-location loc-colombia">📍 En Colombia</div>
+        </div>
+      </div>
+      <div class="lot-card">
+        <div class="img-placeholder" data-label="Lot photo"><div class="x"></div></div>
+        <div class="lot-card-body">
+          <h4>Finca El Paraíso — Lot 12</h4>
+          <div class="lot-meta">
+            <span class="tag">Gesha</span>
+            <span class="tag">Natural</span>
+            <span class="tag">2,100m</span>
+            <br>Piendamó, Cauca · 88 pts
+          </div>
+          <div class="lot-location loc-transit">📍 En tránsito → Miami</div>
+        </div>
+      </div>
+      <div class="lot-card">
+        <div class="img-placeholder" data-label="Lot photo"><div class="x"></div></div>
+        <div class="lot-card-body">
+          <h4>Finca La Esperanza — Lot 07</h4>
+          <div class="lot-meta">
+            <span class="tag">Castillo</span>
+            <span class="tag">Lavado</span>
+            <span class="tag">1,700m</span>
+            <br>Planadas, Tolima · 84 pts
+          </div>
+          <div class="lot-location loc-landed">📍 Landed — Miami</div>
+        </div>
+      </div>
+    </div>
+    <p class="annotation" style="margin-top:24px;">B2B energy. Transparent data. Location badges solve the "where is it?" question. Full filters on store subpage.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     05 — ROASTED COFFEE: Consumer, lifestyle
+     ══════════════════════════════════════════════ -->
+<section class="roasted-coffee" style="position:relative;">
+  <span class="section-num">05</span>
+  <div class="container">
+    <div class="section-tag" style="color:#444;">05 — Café Tostado</div>
+    <div class="section-header">
+      <h3>Roasted coffee</h3>
+      <span class="cta" style="color:#666;">Ver colección →</span>
+    </div>
+    <div class="roasted-grid">
+      <div class="roasted-card">
+        <div class="img-placeholder" data-label="Bag photo"><div class="x"></div></div>
+        <div class="roasted-card-body">
+          <h4>Bellavista Honey</h4>
+          <div class="notes">Panela, durazno, cacao</div>
+          <div class="price">$18 · 250g</div>
+          <div class="meta">
+            <span class="tag">Caturra</span>
+            <span class="tag">Honey</span>
+            <span class="tag">Medio</span>
+          </div>
+        </div>
+      </div>
+      <div class="roasted-card">
+        <div class="img-placeholder" data-label="Bag photo"><div class="x"></div></div>
+        <div class="roasted-card-body">
+          <h4>El Paraíso Natural</h4>
+          <div class="notes">Frutos rojos, jazmín, miel</div>
+          <div class="price">$24 · 250g</div>
+          <div class="meta">
+            <span class="tag">Gesha</span>
+            <span class="tag">Natural</span>
+            <span class="tag">Claro</span>
+          </div>
+        </div>
+      </div>
+      <div class="roasted-card">
+        <div class="img-placeholder" data-label="Bag photo"><div class="x"></div></div>
+        <div class="roasted-card-body">
+          <h4>La Esperanza Lavado</h4>
+          <div class="notes">Chocolate, naranja, nuez</div>
+          <div class="price">$16 · 250g</div>
+          <div class="meta">
+            <span class="tag">Castillo</span>
+            <span class="tag">Lavado</span>
+            <span class="tag">Medio-oscuro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="annotation" style="margin-top:24px;">Different audience, different tone. Dark section creates visual break. Can launch as "próximamente" if needed.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     06 — CONSULTING: Juan's differentiator
+     ══════════════════════════════════════════════ -->
+<section class="consulting" style="position:relative;">
+  <span class="section-num">06</span>
+  <div class="container">
+    <div class="section-tag">06 — Consultoría y Servicios</div>
+    <div class="consulting-layout">
+      <div class="consulting-text">
+        <h3>Helping producers improve quality — with measurable results.</h3>
+        <p>Typically 1–2 points of improvement in cup score through process optimization, without major capital investment. Real bonificaciones for the producer: better payment per carga, stronger factor at the cooperativa.</p>
+        <div class="service-item">
+          <h4>Asesoría a Fincas <span class="arrow">→</span></h4>
+          <p>Nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.</p>
+        </div>
+        <div class="service-item">
+          <h4>Laboratorio — Medellín <span class="arrow">→</span></h4>
+          <p>Lab propio con tostadora, trilladora, espresso, medición de humedad, color, granulometría, mesa de catación. Control de calidad completo.</p>
+        </div>
+        <div class="service-item">
+          <h4>Formación <span class="arrow">→</span></h4>
+          <p>Curso "semilla a taza" — catación, tueste, compra de verde. Herramientas para que productores, tostadores y compradores tomen mejores decisiones.</p>
+        </div>
+      </div>
+      <div class="consulting-images">
+        <div class="img-placeholder" data-label="Lab — Medellín"><div class="x"></div></div>
+        <div class="img-placeholder" data-label="Cupping table"><div class="x"></div></div>
+        <div class="img-placeholder tall" data-label="Field work — finca consulting"><div class="x"></div></div>
+      </div>
+    </div>
+    <p class="annotation" style="margin-top:24px;">Specific results (1–2 pts), real infrastructure (lab), tangible outcomes (bonificaciones). Not vague.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     07 — JOURNAL: Proof of depth
+     ══════════════════════════════════════════════ -->
+<section class="journal" style="position:relative;">
+  <span class="section-num">07</span>
+  <div class="container">
+    <div class="section-tag">07 — Journal</div>
+    <div class="section-header">
+      <h3>From the journal</h3>
+      <span class="cta">Ver todo →</span>
+    </div>
+    <div class="journal-grid">
+      <div class="journal-card">
+        <div class="img-placeholder" data-label="Article image"><div class="x"></div></div>
+        <div class="journal-card-body">
+          <div class="cat">Procesos</div>
+          <h4>¿Qué es un café honey y por qué importa?</h4>
+          <p>Educational — explains process to buyers and consumers.</p>
+        </div>
+      </div>
+      <div class="journal-card">
+        <div class="img-placeholder" data-label="Article image"><div class="x"></div></div>
+        <div class="journal-card-body">
+          <div class="cat">Caso de estudio</div>
+          <h4>Cómo el análisis de suelos transformó Finca Bellavista</h4>
+          <p>Case study — consulting credibility. Shows results.</p>
+        </div>
+      </div>
+      <div class="journal-card">
+        <div class="img-placeholder" data-label="Article image"><div class="x"></div></div>
+        <div class="journal-card-body">
+          <div class="cat">Origen</div>
+          <h4>Santander: el terroir que nadie está mirando</h4>
+          <p>Positioning piece — builds authority and surfaces lesser-known regions.</p>
+        </div>
+      </div>
+    </div>
+    <p class="annotation" style="margin-top:24px;">Not generic content. Proof of depth. Each article type serves a strategic purpose.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     08 — FOOTER
+     ══════════════════════════════════════════════ -->
+<section class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo"><span>Logo</span></div>
+        <p style="font-size:12px;color:#666;margin-bottom:16px;">Café de especialidad desde Colombia.<br>Desde la semilla hasta la taza.</p>
+        <h5>Newsletter</h5>
+        <div class="newsletter">
+          <div class="input"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046169656d6844616e616974686b2a676b69">[email&#160;protected]</a></div>
+          <div class="btn">Suscribir</div>
+        </div>
+      </div>
+      <div>
+        <h5>Café</h5>
+        <a>Café Verde</a>
+        <a>Café Tostado</a>
+        <a>Todos los lotes</a>
+      </div>
+      <div>
+        <h5>Servicios</h5>
+        <a>Asesoría a fincas</a>
+        <a>Laboratorio</a>
+        <a>Formación</a>
+      </div>
+      <div>
+        <h5>Más</h5>
+        <a>Sobre Juan</a>
+        <a>Journal</a>
+        <a>Contacto</a>
+        <a>Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+ 
