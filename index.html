@@ -131,11 +131,7 @@
     padding: 20px 40px;
   }
   .hero-nav-logo {
-    width: 48px; height: 48px;
-    border: 1.5px dashed var(--wire-dark);
-    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(250,250,248,0.85);
   }
   .hero-nav-logo span {
     font-family: 'DM Mono', monospace; font-size: 8px;
@@ -161,11 +157,8 @@
     max-width: 700px; padding: 0 40px;
   }
   .hero-logo {
-    width: 100px; height: 100px;
-    border: 2px dashed var(--wire-dark); border-radius: 50%;
     margin: 0 auto 32px;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(250,250,248,0.88);
   }
   .hero-logo span {
     font-family: 'DM Mono', monospace; font-size: 10px;
@@ -222,6 +215,26 @@
     font-size: 14px; color: var(--label);
     max-width: 480px; margin: 0 auto;
   }
+
+  /* ── CAROUSEL ── */
+  .carousel { position: relative; }
+  .carousel-track { position: relative; overflow: hidden; }
+  .carousel-slide {
+    display: none; text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .carousel-slide.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .carousel-controls {
+    position: absolute; bottom: -80px; right: 40px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .carousel-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 1.5px solid var(--wire-dark); background: none;
+    cursor: pointer; padding: 0;
+  }
+  .carousel-dot.active { background: var(--accent); border-color: var(--accent); }
 
   /* ── 03 PROCESS ── */
   .process { padding: 80px 0; }
@@ -446,8 +459,6 @@
     line-height: 2; text-decoration: none; display: block;
   }
   .footer-logo {
-    width: 52px; height: 52px;
-    border: 1.5px dashed #444; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 14px;
   }
@@ -480,7 +491,6 @@
 </head>
 <body>
 
-<div class="page-label">WIREFRAME v3 — <span>Juan Medina Coffee</span> — Homepage</div>
 
 <!-- ══════════════════════════════════════════════
      01 — HERO: Identity-first, not product-first
@@ -492,26 +502,26 @@
   </div>
 
   <nav class="hero-nav">
-    <div class="hero-nav-logo"><span>Logo</span></div>
+    <div class="hero-nav-logo"><img src="assets/logo.svg" alt="Juan Medina Coffee" style="width:32px;height:auto;"></div>
     <div class="hero-nav-links">
       <a>Café</a>
-      <a>Proceso</a>
+      <a>Proyecto</a>
       <a>Servicios</a>
       <a>Historia</a>
-      <a>Journal</a>
+      <a>Blog</a>
       <a>Contacto</a>
       <span class="lang"><span class="active">ES</span> / EN</span>
     </div>
   </nav>
 
   <div class="hero-content">
-    <div class="hero-logo"><span>Logo</span></div>
-    <div class="hero-headline">Café de especialidad,<br>desde la semilla hasta la taza.</div>
+    <div class="hero-logo"><img src="assets/logo.svg" alt="Juan Medina Coffee" style="width:60px;height:auto;"></div>
+    <div class="hero-headline">Somos expertos, pero<br>no dejamos de aprender.</div>
     <div class="hero-ctas">
       <a class="hero-cta primary">Nuestro Café</a>
-      <a class="hero-cta secondary">Servicios</a>
+      <a class="hero-cta secondary">Nuestros Servicios</a>
     </div>
-    <p class="annotation" style="margin-top:20px; background:rgba(250,250,248,0.85); padding:4px 12px; border-radius:2px;">Lead with identity, not product. Two doors: coffee + consulting.</p>
+
   </div>
 
   <div class="scroll-hint">SCROLL</div>
@@ -523,11 +533,31 @@
 <section class="identity" style="position:relative;">
   <span class="section-num">02</span>
   <div class="container">
-    <div class="section-tag">02 — Quién es Juan</div>
-    <div class="identity-roles">Agrónomo · Catador · Tostador</div>
-    <h2>Genetics and seed selection. Finca management. Fermentation and drying. Lab analysis. Roasting and cupping. One person, every stage of the chain.</h2>
-    <p>Not a roaster who sources. Not an importer who cups. The full picture — desde la semilla hasta la taza.</p>
-    <p class="annotation" style="margin-top:24px;">This is what neither Onyx nor Osito can claim. Juan's differentiator is the span.</p>
+    <div class="carousel">
+      <div class="carousel-track">
+        <!-- Slide 1 -->
+        <div class="carousel-slide active">
+          <div class="section-tag">02 — Quién es Juan</div>
+          <div class="identity-roles">Productor · Catador · Tostador · Barista · Exportador</div>
+          <h2>Sembramos, Cultivamos, Cosechamos, Procesamos, Catamos, Exportamos.</h2>
+          <p>No somos un tostador que compra. Ni un importador que cata. La imagen completa — desde la semilla hasta la taza.</p>
+        </div>
+        <!-- Slide 2 -->
+        <div class="carousel-slide" style="text-align:left;">
+          <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start;margin-top:24px;">
+            <h2 style="font-size:36px;line-height:1.3;">Café que entendemos desde la raíz. Calidad que garantizamos hasta la taza.</h2>
+            <div>
+              <div class="identity-roles" style="text-align:left;margin-bottom:12px;">Productor · Catador · Tostador · Barista · Exportador</div>
+              <p style="font-size:14px;color:var(--label);line-height:1.7;">Sembramos, Cultivamos, Cosechamos, Procesamos, Catamos, Exportamos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-dot active" data-slide="0"></button>
+        <button class="carousel-dot" data-slide="1"></button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -544,34 +574,34 @@
     </div>
     <div class="process-strip">
       <div class="process-step">
-        <div class="img-placeholder" data-label="Origin"><div class="x"></div></div>
+        <div class="img-placeholder" data-label="Grow"><div class="x"></div></div>
         <div class="process-step-text">
-          <h4>Origin</h4>
-          <p>Coffee trees are cultivated and ripe cherries are selectively harvested.</p>
+          <h4>Grow</h4>
+          <p>Seed, nursery, cultivation, nutrition and disease, plague and control, processing, quality control.</p>
         </div>
         <span class="process-arrow">→</span>
       </div>
       <div class="process-step">
-        <div class="img-placeholder" data-label="Craft"><div class="x"></div></div>
+        <div class="img-placeholder" data-label="Source"><div class="x"></div></div>
         <div class="process-step-text">
-          <h4>Craft</h4>
-          <p>The fruit is removed via washed, natural, or honey methods and dried to ~11% moisture, shaping the bean's flavor identity.</p>
+          <h4>Source</h4>
+          <p>Farmers networking, consulting, best practices, ethical sourcing.</p>
         </div>
         <span class="process-arrow">→</span>
       </div>
       <div class="process-step">
-        <div class="img-placeholder" data-label="Selection"><div class="x"></div></div>
+        <div class="img-placeholder" data-label="Lab"><div class="x"></div></div>
         <div class="process-step-text">
-          <h4>Selection</h4>
-          <p>Parchment is removed, beans are sorted and graded, and the best lots are chosen for export.</p>
+          <h4>Lab</h4>
+          <p>Sensory analysis, quality control, feedback and adjustments, continuously improving practices.</p>
         </div>
         <span class="process-arrow">→</span>
       </div>
       <div class="process-step">
-        <div class="img-placeholder" data-label="Roast"><div class="x"></div></div>
+        <div class="img-placeholder" data-label="Logistics"><div class="x"></div></div>
         <div class="process-step-text">
-          <h4>Roast</h4>
-          <p>Green beans are transformed through heat, unlocking the flavors set in motion at origin.</p>
+          <h4>Logistics</h4>
+          <p>Exportation services, importation in USA, land transportation. We don't sell coffee, we sell freshness.</p>
         </div>
       </div>
     </div>
@@ -788,7 +818,7 @@
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-logo"><span>Logo</span></div>
+        <div class="footer-logo"><img src="assets/logo.svg" alt="Juan Medina Coffee" style="width:36px;height:auto;"></div>
         <p style="font-size:12px;color:#666;margin-bottom:16px;">Café de especialidad desde Colombia.<br>Desde la semilla hasta la taza.</p>
         <h5>Newsletter</h5>
         <div class="newsletter">
@@ -817,4 +847,28 @@
       </div>
     </div>
     <div class="footer-bottom">
- 
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  let current = 0;
+
+  function show(i) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (i + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => show(Number(dot.dataset.slide)));
+  });
+})();
+</script>
+</body>
+</html>
