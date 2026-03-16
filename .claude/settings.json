@@ -1,0 +1,32 @@
+{
+  "project": {
+    "name": "coffee-five",
+    "description": "Coffee Five — Juan Medina Specialty Coffee website. Next.js 14 + Shopify Storefront API + Tailwind CSS."
+  },
+  "rules": [
+    "Always read CLAUDE.md before starting any task — it contains the full project context, brand guidelines, and architecture decisions.",
+    "Read docs/MIGRATION.md before building homepage components — it maps the approved wireframe to the Next.js architecture.",
+    "Read docs/SHOPIFY.md before any Shopify API work — it has the exact queries, metafield structure, and cart patterns.",
+    "Read docs/DESIGN.md before any styling work — it has the color system, typography rules, and component specs.",
+    "Read docs/I18N.md before adding any hardcoded strings — all UI text must go through the i18n system.",
+    "The approved wireframe is at docs/wireframe-reference.html. Match its design, layout, and section flow.",
+    "This site is Spanish-first. Default language is 'es'. English is a toggle.",
+    "Light cream palette from wireframe: bg #FAFAF8, text #1A1A1A, accent #6B4C3B. Dark sections for roasted coffee + footer.",
+    "Fonts: DM Sans (body) + DM Mono (monospace/labels). Load via next/font/google.",
+    "Use Tailwind CSS for all styling. No CSS modules, no styled-components.",
+    "Mobile-first responsive design. Base styles first, then sm:, md:, lg: breakpoints.",
+    "Server Components by default. Only use 'use client' when necessary (interactivity, hooks, animations).",
+    "GSAP for scroll-driven animations: use hooks from src/lib/gsap.ts (useScrollReveal, useStaggerReveal, useHoverLift, useFloatingLogo).",
+    "Framer Motion for component transitions: use variants from src/lib/framer.ts (fadeVariants, slideRightVariants, carouselVariants, mobileNavVariants).",
+    "Rule: scroll position → GSAP. React state change → Framer Motion. Never mix them on the same interaction.",
+    "All Shopify API calls go through src/lib/shopify.ts. Never call the API directly from components.",
+    "Product metafields use the 'coffee' namespace. See docs/SHOPIFY.md for the full list.",
+    "Cart state is client-side. Store cart ID in a cookie. Checkout redirects to Shopify's hosted checkout.",
+    "Images use Next.js <Image> component. All images need explicit width/height.",
+    "Photography placeholders should be intentional design elements (dashed border, X pattern, label), not broken images.",
+    "Location badges on green coffee lots are critical: En Colombia (gold), En tránsito (blue), Landed in US (green).",
+    "The four business pillars are: Grow · Source · Lab · Logistics.",
+    "Green coffee section = B2B tone (data-forward, sourcing depth). Roasted coffee section = consumer tone (lifestyle, approachable).",
+    "Consulting services are Juan's differentiator: Asesoría a Fincas, Laboratorio, Formación."
+  ]
+}

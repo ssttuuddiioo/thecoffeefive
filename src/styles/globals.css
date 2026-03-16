@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-black: #0A0A0A;
+    --color-white: #FAFAF9;
+    --color-cream: #EDE7D6;
+    --color-gray-900: #141414;
+    --color-gray-800: #1E1E1E;
+    --color-gray-700: #2A2A2A;
+    --color-gray-400: #8A8A8A;
+    --color-gray-200: #D4D4D4;
+
+    /* Process colors — lot cards only */
+    --proceso-lavado: #4592DB;
+    --proceso-natural: #0D7C47;
+    --proceso-honey: #ECCD3E;
+    --proceso-anaerobico: #91171F;
+    --proceso-fermentado: #F63F34;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-coffee-black text-coffee-white font-sans;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  ::selection {
+    background-color: var(--color-cream);
+    color: var(--color-black);
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-coffee-white;
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply max-w-content mx-auto px-5 md:px-8 lg:px-20;
+  }
+
+  .section-tag {
+    @apply text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4;
+  }
+
+  .img-placeholder {
+    @apply bg-coffee-900 flex items-center justify-center;
+  }
+
+  .lot-card-lavado { background-color: var(--proceso-lavado); }
+  .lot-card-natural { background-color: var(--proceso-natural); }
+  .lot-card-honey { background-color: var(--proceso-honey); }
+  .lot-card-anaerobico { background-color: var(--proceso-anaerobico); }
+  .lot-card-fermentado { background-color: var(--proceso-fermentado); }
+
+  .tag-pill {
+    @apply inline-block text-[10px] px-2.5 py-0.5 rounded-full border border-coffee-700 text-coffee-400;
+  }
+
+  .tab-pill {
+    @apply text-[11px] tracking-wide px-4 py-2.5 rounded-full text-coffee-400 transition-colors min-h-[44px] inline-flex items-center;
+  }
+  .tab-pill-active {
+    @apply bg-coffee-white text-coffee-black;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-22 lg:py-30;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
