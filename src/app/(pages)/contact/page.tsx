@@ -32,7 +32,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-2">Instagram</h3>
-                <a href="https://instagram.com/coffeefive" target="_blank" rel="noopener noreferrer" className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]">
+                <a href="https://www.instagram.com/thecoffeefive/" target="_blank" rel="noopener noreferrer" className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]">
                   @coffeefive
                 </a>
               </div>

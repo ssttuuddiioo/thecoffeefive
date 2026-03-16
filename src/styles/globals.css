@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Google Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/google-sans@latest/latin-700-normal.woff2') format('woff2');
+}
+
 @layer base {
   :root {
     --color-black: #0A0A0A;

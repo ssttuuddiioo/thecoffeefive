@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import { siteConfig } from '@/config/site';
 import { Header } from './_components/Header';
 import { Footer } from './_components/Footer';
 import '@/styles/globals.css';
 
-const googleSansFlex = localFont({
-  src: '../../public/fonts/GoogleSansFlex.woff2',
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
   display: 'swap',
 });
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={googleSansFlex.variable}>
+    <html lang="es" className={plusJakarta.variable}>
       <body>
         <Header />
         {children}

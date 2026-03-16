@@ -6,11 +6,11 @@ export const siteConfig = {
   author: 'Juan Medina',
   email: 'info@coffeefive.com',
   whatsapp: {
-    number: '57XXXXXXXXXX', // TODO: Juan's WhatsApp Business number (country code + number, no spaces)
+    number: '15167578800',
     email: 'info@coffeefive.com', // Fallback email for enquiries
   },
   social: {
-    instagram: 'https://instagram.com/coffeefive', // TBD
+    instagram: 'https://www.instagram.com/thecoffeefive/',
   },
   nav: {
     main: [
