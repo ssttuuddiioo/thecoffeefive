@@ -36,7 +36,7 @@ export function Header() {
             <span className="text-coffee-400 text-[11px] tracking-[0.1em] uppercase ml-2 pl-4 border-l border-coffee-700">
               <span className="text-coffee-white font-medium">ES</span> / EN
             </span>
-            <Link href="/tienda" className="text-coffee-white ml-2">
+            <Link href="/tostado" className="text-coffee-white ml-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />

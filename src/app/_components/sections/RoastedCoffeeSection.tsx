@@ -21,7 +21,7 @@ export function RoastedCoffeeSection() {
             Roasted coffee
           </h3>
           <Link
-            href="/tienda"
+            href="/tostado"
             className="hidden md:inline text-[11px] tracking-wide text-coffee-400 hover:text-coffee-black transition-colors"
           >
             Ver colección →
@@ -40,7 +40,7 @@ export function RoastedCoffeeSection() {
         </div>
 
         <Link
-          href="/tienda"
+          href="/tostado"
           className="md:hidden block text-center text-[11px] tracking-wide text-coffee-400 mt-6 hover:text-coffee-black transition-colors"
         >
           Ver colección →

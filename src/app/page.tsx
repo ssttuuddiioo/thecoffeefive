@@ -12,8 +12,8 @@ export default function HomePage() {
       <HeroSection />
       <IdentitySection />
       <GreenCoffeeSection />
-      <ProcessSection />
       <RoastedCoffeeSection />
+      <ProcessSection />
       <ConsultingSection />
       <JournalSection />
     </main>

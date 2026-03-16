@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
 
 export default function AboutPage() {
   return (
@@ -16,7 +15,9 @@ export default function AboutPage() {
       </section>
 
       <section className="container-site pb-16 md:pb-24">
-        <ImagePlaceholder aspectRatio="16/9" label="Juan en la finca — retrato" className="rounded-md" />
+        <div className="relative aspect-[16/9] rounded-md overflow-hidden">
+          <Image src="/about-hero.png" alt="Juan Medina" fill className="object-cover" sizes="(max-width: 768px) 100vw, 1200px" />
+        </div>
       </section>
 
       {/* Story */}
@@ -41,10 +42,16 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="space-y-3">
-              <ImagePlaceholder aspectRatio="4/3" label="Juan catando" className="rounded-sm" />
+              <div className="relative aspect-[4/3] rounded-sm overflow-hidden">
+                <Image src="/about1.png" alt="Cucharas de catación" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              </div>
               <div className="grid grid-cols-2 gap-3">
-                <ImagePlaceholder aspectRatio="1/1" label="Lab Medellín" className="rounded-sm" />
-                <ImagePlaceholder aspectRatio="1/1" label="Finca" className="rounded-sm" />
+                <div className="relative aspect-square rounded-sm overflow-hidden">
+                  <Image src="/about3.png" alt="Tostadora Roest en el laboratorio" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+                </div>
+                <div className="relative aspect-square rounded-sm overflow-hidden">
+                  <Image src="/about2.png" alt="Recolección en finca" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+                </div>
               </div>
             </div>
           </div>

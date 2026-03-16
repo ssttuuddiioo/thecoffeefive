@@ -49,37 +49,37 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16 pt-16 pb-10">
           {/* Café */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-5">Café</h5>
-            <ul className="space-y-1">
-              <li><Link href="/cafe-verde" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Café Verde</Link></li>
-              <li><Link href="/tienda" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Café Tostado</Link></li>
-              <li><Link href="/tienda" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Merch</Link></li>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Café</h5>
+            <ul className="space-y-0">
+              <li><Link href="/cafe-verde" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Café Verde</Link></li>
+              <li><Link href="/tostado" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Café Tostado</Link></li>
+              <li><Link href="/tostado" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Merch</Link></li>
             </ul>
           </div>
 
           {/* Servicios */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-5">Servicios</h5>
-            <ul className="space-y-1">
-              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Asesoría a Fincas</Link></li>
-              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Laboratorio</Link></li>
-              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Formación</Link></li>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Servicios</h5>
+            <ul className="space-y-0">
+              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Asesoría a Fincas</Link></li>
+              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Laboratorio</Link></li>
+              <li><Link href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Formación</Link></li>
             </ul>
           </div>
 
           {/* Compañía */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-5">Compañía</h5>
-            <ul className="space-y-1">
-              <li><Link href="/about" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Sobre Juan</Link></li>
-              <li><Link href="/blog" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Journal</Link></li>
-              <li><Link href="/contact" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[40px]">Contacto</Link></li>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Compañía</h5>
+            <ul className="space-y-0">
+              <li><Link href="/about" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Sobre Juan</Link></li>
+              <li><Link href="/blog" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Journal</Link></li>
+              <li><Link href="/contact" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Contacto</Link></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-5">Newsletter</h5>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Newsletter</h5>
             <p className="text-sm text-coffee-400 mb-4">Lotes nuevos, historias de finca, y novedades.</p>
             <div className="flex">
               <input

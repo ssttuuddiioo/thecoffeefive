@@ -47,10 +47,10 @@ export function IdentitySection() {
         <div className="flex flex-col justify-center px-8 md:px-16 lg:px-20 py-20 md:py-28">
           <p className="text-[10px] tracking-[0.2em] uppercase text-black/60 mb-6">02 — Quién es Juan</p>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black mb-6 max-w-lg" style={{ fontWeight: 900 }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black mb-6 max-w-[70%]" style={{ fontWeight: 900 }}>
             Café que entendemos desde la raíz.
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl leading-snug text-black/80 mb-10 max-w-md" style={{ fontWeight: 500 }}>
+          <p className="text-lg md:text-xl lg:text-2xl leading-snug text-black/80 mb-10 max-w-[70%]" style={{ fontWeight: 500 }}>
             Calidad que garantizamos hasta la taza.
           </p>
 
@@ -60,7 +60,7 @@ export function IdentitySection() {
             Productor · Catador · Tostador · Barista · Exportador
           </p>
 
-          <p className="text-sm md:text-base text-black/80 leading-relaxed max-w-sm mb-10">
+          <p className="text-sm md:text-base text-black/80 leading-relaxed max-w-[70%] mb-10">
             Juan Medina opera en toda la cadena del café de especialidad — desde el cultivo en finca hasta la taza final. Agrónomo, catador Q, tostador y exportador.
           </p>
 

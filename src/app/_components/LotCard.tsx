@@ -8,11 +8,13 @@ type LotCardProps = {
   price: string;
   color: string;
   proceso?: string;
+  productor?: string;
   className?: string;
   onClick?: () => void;
+  onAddToList?: () => void;
 };
 
-export function LotCard({ name, weight, price, color, proceso, className = '', onClick }: LotCardProps) {
+export function LotCard({ name, weight, price, color, proceso, productor, className = '', onClick, onAddToList }: LotCardProps) {
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
     childSelector: '.learn-more',
   });
@@ -26,8 +28,12 @@ export function LotCard({ name, weight, price, color, proceso, className = '', o
       className={`rounded-xl overflow-hidden relative cursor-pointer snap-start will-change-transform aspect-[4/5] md:aspect-[3/4] ${className}`}
       style={{ backgroundColor: color }}
     >
-      {/* Logo watermark */}
-      <img src="/logo.svg" alt="" className="absolute top-5 left-5 w-6 h-auto brightness-0 invert opacity-40" />
+      {/* Productor at top */}
+      {productor && (
+        <div className="absolute top-5 left-5 right-5">
+          <p className="text-[10px] tracking-[0.1em] uppercase text-white/70">{productor}</p>
+        </div>
+      )}
 
       {/* Content at bottom */}
       <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -38,10 +44,18 @@ export function LotCard({ name, weight, price, color, proceso, className = '', o
           <span>{price}</span>
         </div>
 
-        {/* Hover button */}
+        {/* Hover buttons */}
         <button className="learn-more mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5">
           Learn More
         </button>
+        {onAddToList && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddToList(); }}
+            className="learn-more mt-2 w-full py-2 bg-white/20 border border-white/40 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5 hover:bg-white/30 transition-colors"
+          >
+            + Agregar a Lista
+          </button>
+        )}
       </div>
     </div>
   );

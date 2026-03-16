@@ -135,9 +135,9 @@ export function useHoverLift<T extends HTMLElement = HTMLDivElement>(
     if (!el) return;
     gsap.to(el, { y, duration, ease: 'power2.out' });
     if (childSelector) {
-      const child = el.querySelector(childSelector);
-      if (child) {
-        gsap.to(child, { opacity: 1, y: 0, duration: 0.3, delay: 0.1, ease: 'power2.out' });
+      const children = el.querySelectorAll(childSelector);
+      if (children.length) {
+        gsap.to(children, { opacity: 1, y: 0, duration: 0.3, delay: 0.1, stagger: 0.05, ease: 'power2.out' });
       }
     }
   };
@@ -147,9 +147,9 @@ export function useHoverLift<T extends HTMLElement = HTMLDivElement>(
     if (!el) return;
     gsap.to(el, { y: 0, duration, ease: 'power2.out' });
     if (childSelector) {
-      const child = el.querySelector(childSelector);
-      if (child) {
-        gsap.to(child, { opacity: 0, y: 10, duration: 0.2, ease: 'power2.in' });
+      const children = el.querySelectorAll(childSelector);
+      if (children.length) {
+        gsap.to(children, { opacity: 0, y: 10, duration: 0.2, ease: 'power2.in' });
       }
     }
   };

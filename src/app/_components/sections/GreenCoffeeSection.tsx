@@ -18,19 +18,21 @@ export function GreenCoffeeSection() {
       </span>
       <div className="container-site">
         <SectionTag number="04" label="Café Verde" />
-        <div className="flex justify-between items-baseline mb-8">
-          <h3 className="text-xl md:text-2xl font-normal text-coffee-white">
-            Green coffee — current offerings
-          </h3>
-          <Link
-            href="/cafe-verde"
-            className="hidden md:inline text-[11px] tracking-wide text-coffee-400 hover:text-coffee-white transition-colors"
-          >
-            Ver todos los lotes →
-          </Link>
-        </div>
+        <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-coffee-white mb-4">
+          Offer List
+        </h3>
+        <p className="text-sm md:text-base text-coffee-400 max-w-xl mb-8 leading-relaxed">
+          Lotes de café verde de especialidad, trazables desde la finca hasta tu tostadora. Origen único, perfiles verificados en laboratorio, listos para exportar o disponibles en EE.UU.
+        </p>
 
-        <div className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0">
+        <Link
+          href="/cafe-verde"
+          className="inline-block mb-10 px-8 py-3 bg-coffee-white text-coffee-black text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm hover:bg-coffee-cream transition-colors"
+        >
+          Ver todos los lotes →
+        </Link>
+
+        <div className="flex gap-6 overflow-x-auto pt-4 pb-2 -mt-4 snap-x snap-mandatory scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0">
           {mockGreenLots.map((lot, i) => (
             <LotCard
               key={`${lot.name}-${i}`}
@@ -39,18 +41,12 @@ export function GreenCoffeeSection() {
               price={lot.price}
               color={lot.color}
               proceso={lot.proceso}
+              productor={lot.finca}
               className="flex-none w-[65vw] md:w-[calc(33.333%-16px)]"
               onClick={() => router.push(`/cafe-verde/${lot.name.toLowerCase().replace(/\s+/g, '-')}`)}
             />
           ))}
         </div>
-
-        <Link
-          href="/cafe-verde"
-          className="md:hidden block text-center text-[11px] tracking-wide text-coffee-400 mt-6 hover:text-coffee-white transition-colors"
-        >
-          Ver todos los lotes →
-        </Link>
       </div>
     </section>
   );
