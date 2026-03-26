@@ -5,8 +5,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LotCard } from '@/app/_components/LotCard';
 import { LotDrawer } from '@/app/_components/LotDrawer';
 import { FilterSidebar } from '@/app/_components/FilterSidebar';
-import { mockGreenLots } from '@/lib/mock-data';
-import { buildMultiLotWhatsAppUrl, buildMultiLotEmailUrl } from '@/lib/whatsapp';
+import { greenLotDetailSlug, mockGreenLots } from '@/lib/mock-data';
+
+
 
 type GreenLot = typeof mockGreenLots[number];
 
@@ -20,7 +21,7 @@ const PUNTAJE_RANGES = ['83–85', '86–88', '89–91', '92+'];
 const ALTURA_RANGES = ['< 1,700', '1,700–1,899', '1,900–2,099', '2,100+'];
 
 function getPuntajeRange(score: string): string {
-  const n = parseInt(score, 10);
+  const n = parseInt(score.replace(/[^0-9]/g, ''), 10);
   if (n >= 92) return '92+';
   if (n >= 89) return '89–91';
   if (n >= 86) return '86–88';
@@ -45,7 +46,8 @@ export default function CafeVerdePage() {
   const [selAltura, setSelAltura] = useState<string[]>([]);
   const [selFinca, setSelFinca] = useState<string[]>([]);
   const [drawerLot, setDrawerLot] = useState<GreenLot | null>(null);
-  const [enquiryList, setEnquiryList] = useState<GreenLot[]>([]);
+
+
   const [weightRange, setWeightRange] = useState<[number, number]>([200, 1000]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -105,18 +107,12 @@ export default function CafeVerdePage() {
     setWeightRange([200, 1000]);
   };
 
-  const addToList = (lot: GreenLot) => {
-    if (!enquiryList.find(l => l.name === lot.name)) {
-      setEnquiryList(prev => [...prev, lot]);
-    }
-  };
-
   const filterSections = [
     { key: 'proceso', label: 'Proceso', options: availableFor.proceso, selected: selProceso, onChange: setSelProceso },
     { key: 'variedad', label: 'Variedad', options: availableFor.variedad, selected: selVariedad, onChange: setSelVariedad },
-    { key: 'region', label: 'Departamento', options: availableFor.region, selected: selRegion, onChange: setSelRegion },
+    { key: 'region', label: 'Origen', options: availableFor.region, selected: selRegion, onChange: setSelRegion },
     { key: 'ubicacion', label: 'Ubicación', options: availableFor.ubicacion, selected: selUbicacion, onChange: setSelUbicacion },
-    { key: 'puntaje', label: 'Puntaje', options: availableFor.puntaje, selected: selPuntaje, onChange: setSelPuntaje },
+
     { key: 'altura', label: 'Altitude (masl)', options: availableFor.altura, selected: selAltura, onChange: setSelAltura },
     { key: 'finca', label: 'Productor / Finca', options: availableFor.finca, selected: selFinca, onChange: setSelFinca },
   ];
@@ -127,7 +123,7 @@ export default function CafeVerdePage() {
       onKeywordChange={setKeyword}
       sections={filterSections}
       sliders={[
-        { label: 'Peso', min: 200, max: 1000, value: weightRange, onChange: setWeightRange, unit: ' lbs' },
+        { label: 'Cantidad', min: 200, max: 1000, value: weightRange, onChange: setWeightRange, unit: ' lbs' },
       ]}
       onClear={clearAll}
     />
@@ -169,8 +165,10 @@ export default function CafeVerdePage() {
                   price={lot.price}
                   color={lot.color}
                   proceso={lot.proceso}
-                  onClick={() => setDrawerLot(lot)}
-                  onAddToList={() => addToList(lot)}
+                  productor={lot.finca}
+                  img={lot.img}
+                  detailHref={`/cafe-verde/${greenLotDetailSlug(lot.name)}`}
+                  onOverview={() => setDrawerLot(lot)}
                 />
               ))}
             </div>
@@ -214,49 +212,12 @@ export default function CafeVerdePage() {
         )}
       </AnimatePresence>
 
-      {/* Enquiry list bar */}
-      {enquiryList.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-coffee-900 border-t border-coffee-700 z-30 p-4">
-          <div className="container-site flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-sm text-coffee-white">
-              {enquiryList.length} lote{enquiryList.length > 1 ? 's' : ''} en tu lista
-            </span>
-            <div className="flex gap-3">
-              <a
-                href={buildMultiLotWhatsAppUrl(enquiryList)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 bg-[#25D366] text-white text-[11px] tracking-[0.1em] uppercase rounded-sm min-h-[44px] flex items-center"
-              >
-                WhatsApp
-              </a>
-              <a
-                href={buildMultiLotEmailUrl(enquiryList)}
-                className="px-5 py-2 border border-coffee-700 text-coffee-white text-[11px] tracking-[0.1em] uppercase rounded-sm min-h-[44px] flex items-center"
-              >
-                Email
-              </a>
-              <button
-                onClick={() => setEnquiryList([])}
-                className="px-3 py-2 text-coffee-400 text-[11px] uppercase min-h-[44px]"
-              >
-                Limpiar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Drawer */}
       <AnimatePresence>
         {drawerLot && (
           <LotDrawer
             lot={drawerLot}
             onClose={() => setDrawerLot(null)}
-            onAddToList={() => {
-              addToList(drawerLot);
-              setDrawerLot(null);
-            }}
           />
         )}
       </AnimatePresence>

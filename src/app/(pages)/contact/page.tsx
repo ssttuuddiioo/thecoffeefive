@@ -1,3 +1,5 @@
+import { siteConfig } from '@/config/site';
+
 export default function ContactPage() {
   return (
     <main className="pt-20 md:pt-24">
@@ -22,8 +24,13 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-2">WhatsApp</h3>
-                <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]">
-                  +57 300 123 4567
+                <a
+                  href={`https://wa.me/${siteConfig.whatsapp.number}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]"
+                >
+                  {siteConfig.whatsapp.display}
                 </a>
               </div>
               <div>

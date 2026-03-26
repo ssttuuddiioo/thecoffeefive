@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
 import { useHoverLift } from '@/lib/gsap';
 
 type LotCardProps = {
@@ -9,34 +11,57 @@ type LotCardProps = {
   color: string;
   proceso?: string;
   productor?: string;
+  img?: string;
+  detailHref: string;
   className?: string;
-  onClick?: () => void;
-  onAddToList?: () => void;
+  onOverview?: () => void;
 };
 
-export function LotCard({ name, weight, price, color, proceso, productor, className = '', onClick, onAddToList }: LotCardProps) {
+export function LotCard({
+  name,
+  weight,
+  price,
+  color,
+  proceso,
+  productor,
+  img,
+  detailHref,
+  className = '',
+  onOverview,
+}: LotCardProps) {
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
-    childSelector: '.learn-more',
+    childSelector: '.lot-card-hover-reveal',
   });
 
   return (
-    <div
-      ref={ref}
+    <Link
+      href={detailHref}
+      ref={ref as React.Ref<HTMLAnchorElement>}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      onClick={onClick}
-      className={`rounded-xl overflow-hidden relative cursor-pointer snap-start will-change-transform aspect-[4/5] md:aspect-[3/4] ${className}`}
+      className={`rounded-xl overflow-hidden snap-start will-change-transform flex flex-col cursor-pointer ${className}`}
       style={{ backgroundColor: color }}
     >
       {/* Productor at top */}
       {productor && (
-        <div className="absolute top-5 left-5 right-5">
+        <div className="px-5 pt-5">
           <p className="text-[10px] tracking-[0.1em] uppercase text-white/70">{productor}</p>
         </div>
       )}
 
+      {/* Lot photo */}
+      <div className="mx-5 mt-3 aspect-[3/2] bg-black/20 rounded-md overflow-hidden relative">
+        {img ? (
+          <Image src={img} alt={name} fill className="object-cover" sizes="(max-width: 768px) 65vw, 33vw" />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center text-[10px] tracking-[0.15em] uppercase text-white/40">
+            Foto del lote
+          </span>
+        )}
+      </div>
+
       {/* Content at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
+      <div className="mt-auto p-5">
         <h4 className="text-[17px] font-medium text-white mb-3">{name}</h4>
         <div className="w-8 h-px bg-white/40 mb-3" />
         <div className="flex justify-between text-[11px] tracking-[0.05em] text-white/80">
@@ -44,19 +69,25 @@ export function LotCard({ name, weight, price, color, proceso, productor, classN
           <span>{price}</span>
         </div>
 
-        {/* Hover buttons */}
-        <button className="learn-more mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5">
-          Learn More
-        </button>
-        {onAddToList && (
+        {onOverview && (
           <button
-            onClick={(e) => { e.stopPropagation(); onAddToList(); }}
-            className="learn-more mt-2 w-full py-2 bg-white/20 border border-white/40 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5 hover:bg-white/30 transition-colors"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onOverview();
+            }}
+            className="lot-card-hover-reveal mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors"
           >
-            + Agregar a Lista
+            Resumen
           </button>
         )}
+        <span
+          className={`lot-card-hover-reveal w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm text-center opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors block ${onOverview ? 'mt-2' : 'mt-4'}`}
+        >
+          Ver más
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }

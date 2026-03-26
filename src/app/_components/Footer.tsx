@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { siteConfig } from '@/config/site';
 
 function InstagramIcon({ className = '' }: { className?: string }) {
   return (
@@ -30,17 +31,17 @@ export function Footer() {
             alt="Coffee Five"
             width={180}
             height={280}
-            className="brightness-0 invert mb-10"
+            className="mb-10 [filter:brightness(0)_saturate(100%)_invert(36%)_sepia(92%)_saturate(600%)_hue-rotate(110deg)_brightness(92%)]"
           />
           <div style={{ marginLeft: 45 }}>
             <p
-              className="text-3xl md:text-4xl text-coffee-white tracking-tight"
-              style={{ fontFamily: "'Google Sans', sans-serif", fontWeight: 700 }}
+              className="text-3xl md:text-4xl tracking-tight"
+              style={{ fontFamily: "'salted', cursive", fontWeight: 400, color: '#0D7C47' }}
             >
               The Coffee Five
             </p>
             <p className="text-[11px] tracking-[0.2em] uppercase text-coffee-400 mt-3">
-              Desde la semilla hasta la taza
+              We give you a piece of mind
             </p>
           </div>
         </div>
@@ -114,7 +115,7 @@ export function Footer() {
               <InstagramIcon />
             </a>
             <a
-              href="https://wa.me/15167578800"
+              href={`https://wa.me/${siteConfig.whatsapp.number}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-coffee-400 hover:text-coffee-white transition-colors"

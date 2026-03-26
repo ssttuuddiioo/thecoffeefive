@@ -50,9 +50,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={plusJakarta.variable}>
+      <head>
+        {/* Adobe Fonts — Salted. Replace PROJECT_ID with your Typekit web project ID */}
+        <link rel="stylesheet" href="https://use.typekit.net/vhe5lxj.css" />
+      </head>
       <body>
         <Header />
         {children}
+        <div className="flex h-3">
+          <div className="flex-1" style={{ backgroundColor: '#ECCD3E' }} />
+          <div className="flex-1" style={{ backgroundColor: '#0D7C47' }} />
+          <div className="flex-1" style={{ backgroundColor: '#4592DB' }} />
+          <div className="flex-1" style={{ backgroundColor: '#91171F' }} />
+          <div className="flex-1" style={{ backgroundColor: '#ED4035' }} />
+        </div>
         <Footer />
       </body>
     </html>

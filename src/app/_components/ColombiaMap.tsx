@@ -80,14 +80,14 @@ export function ColombiaMap({ region, highlightColor = '#D4A054', className = ''
   const activeId = regionNameToId[region];
 
   return (
-    <svg viewBox="100 50 420 600" className={className} aria-label={`Map of Colombia — ${region}`}>
+    <svg viewBox="-10 -10 620 820" className={className} aria-label={`Map of Colombia — ${region}`}>
       {Object.entries(paths).map(([id, d]) => (
         <path
           key={id}
           d={d}
           fill={id === activeId ? highlightColor : '#E5E7EB'}
-          stroke="#fff"
-          strokeWidth="1"
+          stroke="#9CA3AF"
+          strokeWidth="0.75"
           className={id === activeId ? '' : 'opacity-60'}
         />
       ))}

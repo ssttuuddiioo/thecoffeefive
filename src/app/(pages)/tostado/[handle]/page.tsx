@@ -6,24 +6,29 @@ import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
 import { CartDrawer } from '@/app/_components/CartDrawer';
 import { mockRoastedCoffee } from '@/lib/mock-data';
 
-const weights = ['250g', '340g', '1 lb'];
+const weightOptions = [
+  { label: '340 g', available: true },
+  { label: '1 lb', available: true },
+  { label: '1 kg', available: true },
+  { label: '2.5 kg', available: true },
+];
 
 type CartItem = { id: string; name: string; price: string; weight: string; quantity: number };
 
 export default function TiendaProductPage() {
   const product = mockRoastedCoffee[0];
-  const [selectedWeight, setSelectedWeight] = useState(weights[0]);
+  const [selectedWeight, setSelectedWeight] = useState(weightOptions[0].label);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = () => {
-    const id = `${product.name}-${selectedWeight}`;
+    const id = `${product.variedad}-${selectedWeight}`;
     setCartItems(prev => {
       const existing = prev.find(item => item.id === id);
       if (existing) {
         return prev.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item);
       }
-      return [...prev, { id, name: product.name, price: product.price, weight: selectedWeight, quantity: 1 }];
+      return [...prev, { id, name: product.variedad, price: product.price, weight: selectedWeight, quantity: 1 }];
     });
     setCartOpen(true);
   };
@@ -53,27 +58,30 @@ export default function TiendaProductPage() {
           {/* Product info */}
           <div>
             <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-3">Café Tostado</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-coffee-white mb-2">{product.name}</h1>
-            <p className="text-base text-coffee-400 italic mb-4">{product.notes}</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-coffee-white mb-2">{product.variedad}</h1>
+            <p className="text-base text-coffee-400 italic mb-1">{product.fermentacion}</p>
+            <p className="text-base text-coffee-400 italic mb-4">{product.perfil}</p>
             <p className="text-xl font-medium text-coffee-white mb-6">{product.price}</p>
 
             <div className="flex flex-wrap gap-1.5 mb-6">
-              {product.tags.map(tag => (
-                <span key={tag} className="tag-pill">{tag}</span>
-              ))}
+              <span className="tag-pill">{product.origin}</span>
+              <span className="tag-pill">{product.proceso}</span>
+              <span className="tag-pill">{product.tueste}</span>
             </div>
 
             {/* Weight selector */}
             <div className="mb-6">
-              <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-3">Peso</p>
-              <div className="flex gap-2">
-                {weights.map(w => (
+              <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-3">Presentación</p>
+              <div className="flex flex-wrap gap-2">
+                {weightOptions.map(w => (
                   <button
-                    key={w}
-                    onClick={() => setSelectedWeight(w)}
-                    className={`tab-pill ${selectedWeight === w ? 'tab-pill-active' : ''}`}
+                    key={w.label}
+                    onClick={() => w.available && setSelectedWeight(w.label)}
+                    disabled={!w.available}
+                    className={`tab-pill ${selectedWeight === w.label ? 'tab-pill-active' : ''} ${!w.available ? 'opacity-40 cursor-not-allowed' : ''}`}
                   >
-                    {w}
+                    {w.label}
+                    {!w.available && <span className="ml-1 text-[9px] no-underline">· pronto</span>}
                   </button>
                 ))}
               </div>
@@ -92,6 +100,35 @@ export default function TiendaProductPage() {
                 Tostado por Juan Medina en Medellín. Tostamos sobre pedido para garantizar máxima frescura. Perfil de tueste diseñado para resaltar las mejores cualidades de este lote.
               </p>
             </div>
+
+            {/* Brew / Preparación */}
+            {product.brew && (
+              <div className="border-t border-coffee-800 pt-6 mt-6">
+                <h3 className="text-sm font-medium text-coffee-white mb-4">Preparación</h3>
+
+                <div className="grid grid-cols-3 gap-4 mb-5">
+                  <div>
+                    <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-1">Ratio</p>
+                    <p className="text-sm text-coffee-white font-medium">{product.brew.ratio}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-1">Temperatura</p>
+                    <p className="text-sm text-coffee-white font-medium">{product.brew.temperatura}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-1">Métodos</p>
+                    <p className="text-sm text-coffee-white font-medium">{product.brew.metodos.join(' · ')}</p>
+                  </div>
+                </div>
+
+                <div className="bg-coffee-800/40 rounded-md p-4">
+                  <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-2">Tip de barista</p>
+                  <p className="text-sm text-coffee-300 leading-relaxed italic">
+                    {product.brew.tip}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

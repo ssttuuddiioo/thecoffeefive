@@ -10,24 +10,32 @@ export function JournalSection() {
   const gridRef = useStaggerReveal();
 
   return (
-    <section className="section-padding relative bg-coffee-cream text-coffee-black">
-      <span className="absolute top-8 right-5 md:right-10 lg:right-20 text-6xl font-medium text-coffee-black/10 leading-none">
-        07
-      </span>
-      <div className="container-site">
-        <SectionTag number="07" label="Journal" />
-        <div className="flex justify-between items-baseline mb-8">
-          <h3 className="text-xl md:text-2xl font-normal text-coffee-black">
-            From the journal
-          </h3>
+    <section className="relative bg-coffee-black">
+      {/* Accent top bar */}
+      <div className="h-3" style={{ backgroundColor: '#0D7C47' }} />
+
+      <div className="container-site py-16 md:py-24">
+        {/* Header row */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-12 md:mb-16">
+          <div>
+            <SectionTag number="07" label="Blog" />
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+              Blog
+            </h3>
+            <p className="text-sm md:text-base text-white/50 max-w-xl leading-relaxed">
+              Notas de campo, guías prácticas y reflexiones sobre café de especialidad — desde la finca hasta la taza.
+            </p>
+          </div>
           <Link
             href="/blog"
-            className="hidden md:inline text-[11px] tracking-wide text-coffee-400 hover:text-coffee-black transition-colors"
+            className="inline-block px-8 py-3 text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm transition-colors self-start lg:self-end hover:opacity-90"
+            style={{ backgroundColor: '#0D7C47', color: '#fff' }}
           >
             Ver todo →
           </Link>
         </div>
 
+        {/* Cards */}
         <div
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -38,13 +46,6 @@ export function JournalSection() {
             </div>
           ))}
         </div>
-
-        <Link
-          href="/blog"
-          className="md:hidden block text-center text-[11px] tracking-wide text-coffee-400 mt-6 hover:text-coffee-black transition-colors"
-        >
-          Ver todo →
-        </Link>
       </div>
     </section>
   );

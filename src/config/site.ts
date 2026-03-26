@@ -6,7 +6,10 @@ export const siteConfig = {
   author: 'Juan Medina',
   email: 'info@coffeefive.com',
   whatsapp: {
+    /** E.164 without + — used for wa.me links */
     number: '15167578800',
+    /** Human-readable (US) */
+    display: '+1 (516) 757-8800',
     email: 'info@coffeefive.com', // Fallback email for enquiries
   },
   social: {
@@ -14,9 +17,9 @@ export const siteConfig = {
   },
   nav: {
     main: [
-      { key: 'nav.green', label: 'Café', href: '/cafe-verde' },
+      { key: 'nav.green', label: 'Verde', href: '/cafe-verde' },
       { key: 'nav.roasted', label: 'Tostado', href: '/tostado' },
-      { key: 'nav.services', label: 'Servicios', href: '/services' },
+      { key: 'nav.services', label: 'Consultorio', href: '/services' },
       { key: 'nav.about', label: 'Nosotros', href: '/about' },
       { key: 'nav.contact', label: 'Contacto', href: '/contact' },
       { key: 'nav.journal', label: 'Blog', href: '/blog' },

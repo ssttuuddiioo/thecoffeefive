@@ -1,39 +1,49 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '@/lib/gsap';
 import { SectionTag } from '../SectionTag';
 import { LotCard } from '../LotCard';
-import { mockGreenLots } from '@/lib/mock-data';
+import { LotDrawer } from '../LotDrawer';
+import { greenLotDetailSlug, mockGreenLots } from '@/lib/mock-data';
+
+type GreenLot = typeof mockGreenLots[number];
 
 export function GreenCoffeeSection() {
   const sectionRef = useScrollReveal();
-  const router = useRouter();
+  const [drawerLot, setDrawerLot] = useState<GreenLot | null>(null);
 
   return (
-    <section ref={sectionRef} className="section-padding border-b border-coffee-800 relative">
-      <span className="absolute top-8 right-5 md:right-10 lg:right-20 text-6xl font-medium text-coffee-800/40 leading-none">
-        04
-      </span>
-      <div className="container-site">
-        <SectionTag number="04" label="Café Verde" />
-        <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-coffee-white mb-4">
-          Offer List
-        </h3>
-        <p className="text-sm md:text-base text-coffee-400 max-w-xl mb-8 leading-relaxed">
-          Lotes de café verde de especialidad, trazables desde la finca hasta tu tostadora. Origen único, perfiles verificados en laboratorio, listos para exportar o disponibles en EE.UU.
-        </p>
+    <section ref={sectionRef} className="relative bg-coffee-black">
+      {/* Accent top bar */}
+      <div className="h-3" style={{ backgroundColor: '#0D7C47' }} />
 
-        <Link
-          href="/cafe-verde"
-          className="inline-block mb-10 px-8 py-3 bg-coffee-white text-coffee-black text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm hover:bg-coffee-cream transition-colors"
-        >
-          Ver todos los lotes →
-        </Link>
+      <div className="container-site py-16 md:py-24">
+        {/* Header row */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-12 md:mb-16">
+          <div>
+            <SectionTag number="04" label="Café Verde" />
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-coffee-white mb-4">
+              Café Verde
+            </h3>
+            <p className="text-sm md:text-base text-white/50 max-w-xl leading-relaxed">
+              Lotes de café verde de especialidad, trazables desde la finca hasta tu tostadora. Origen único, perfiles verificados en laboratorio, listos para exportar o disponibles en EE.UU.
+            </p>
+          </div>
+          <Link
+            href="/cafe-verde"
+            className="inline-block px-8 py-3 text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm transition-colors self-start lg:self-end hover:opacity-90"
+            style={{ backgroundColor: '#0D7C47', color: '#fff' }}
+          >
+            Ver todos los lotes →
+          </Link>
+        </div>
 
-        <div className="flex gap-6 overflow-x-auto pt-4 pb-2 -mt-4 snap-x snap-mandatory scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0">
-          {mockGreenLots.map((lot, i) => (
+        {/* Cards — featured lots on homepage */}
+        <div className="flex gap-6 overflow-x-auto pt-4 pb-2 snap-x snap-mandatory scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0">
+          {mockGreenLots.filter((lot) => ['HS-001', 'HS-002', 'HS-007'].includes(lot.ref)).map((lot, i) => (
             <LotCard
               key={`${lot.name}-${i}`}
               name={lot.name}
@@ -42,12 +52,23 @@ export function GreenCoffeeSection() {
               color={lot.color}
               proceso={lot.proceso}
               productor={lot.finca}
+              img={lot.img}
+              detailHref={`/cafe-verde/${greenLotDetailSlug(lot.name)}`}
               className="flex-none w-[65vw] md:w-[calc(33.333%-16px)]"
-              onClick={() => router.push(`/cafe-verde/${lot.name.toLowerCase().replace(/\s+/g, '-')}`)}
+              onOverview={() => setDrawerLot(lot)}
             />
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {drawerLot && (
+          <LotDrawer
+            lot={drawerLot}
+            onClose={() => setDrawerLot(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

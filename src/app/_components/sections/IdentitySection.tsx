@@ -3,8 +3,6 @@
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
-import { SectionTag } from '../SectionTag';
-
 export function IdentitySection() {
   const sectionRef = useScrollReveal();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,7 +32,7 @@ export function IdentitySection() {
             style={{ transform: `translateY(${offset}px) scale(1.08)` }}
           >
             <Image
-              src="/helping1.png"
+              src="/identity-juan.jpg"
               alt="Juan Medina"
               fill
               className="object-cover object-center"
@@ -47,41 +45,64 @@ export function IdentitySection() {
         <div className="flex flex-col justify-center px-8 md:px-16 lg:px-20 py-20 md:py-28">
           <p className="text-[10px] tracking-[0.2em] uppercase text-black/60 mb-6">02 — Quién es Juan</p>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black mb-6 max-w-[70%]" style={{ fontWeight: 900 }}>
-            Café que entendemos desde la raíz.
+          <h2 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black mb-4" style={{ fontWeight: 900 }}>
+            Entendemos el café desde su raíz.
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl leading-snug text-black/80 mb-10 max-w-[70%]" style={{ fontWeight: 500 }}>
-            Calidad que garantizamos hasta la taza.
+          <p className="text-xl md:text-2xl lg:text-3xl leading-snug text-black/80 mb-8" style={{ fontWeight: 600 }}>
+            Garantizamos la calidad en cada taza.
           </p>
 
-          <div className="w-12 h-[2px] bg-black/20 mb-10" />
-
-          <p className="text-[11px] tracking-[0.2em] uppercase text-black/70 mb-6">
-            Productor · Catador · Tostador · Barista · Exportador
+          <p className="text-base md:text-lg text-black/80 leading-relaxed max-w-[85%] mb-10">
+            Cuarta generación de caficultores — con presencia en cada paso de la cadena del café.
           </p>
 
-          <p className="text-sm md:text-base text-black/80 leading-relaxed max-w-[70%] mb-10">
-            Juan Medina opera en toda la cadena del café de especialidad — desde el cultivo en finca hasta la taza final. Agrónomo, catador Q, tostador y exportador.
-          </p>
+          {/* Roles */}
+          <div className="flex flex-wrap gap-2 mb-10">
+            {['Productor', 'Catador', 'Tostador', 'Barista', 'Exportador'].map(role => (
+              <span
+                key={role}
+                className="px-4 py-2 bg-black text-white text-[11px] tracking-[0.1em] uppercase font-semibold rounded-sm"
+              >
+                {role}
+              </span>
+            ))}
+          </div>
 
           {/* Achievements */}
-          <div className="flex flex-col gap-2 mb-10">
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🥇</span>
-              <span className="text-sm text-black/80">Roasted Regional 2025 — Colombia</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🥈</span>
-              <span className="text-sm text-black/80">V60 Regional 2024 — Colombia</span>
+          <div className="bg-black/10 backdrop-blur-sm rounded-md p-6 mb-10">
+            <p className="text-[10px] tracking-[0.15em] uppercase text-black/50 mb-5">Competencias</p>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-black flex-shrink-0">
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                  <path d="M12 5v2M10 7.5h4" />
+                </svg>
+                <div>
+                  <p className="text-sm font-bold text-black">Roasted Regional 2025</p>
+                  <p className="text-xs text-black/50">1er lugar — Colombia</p>
+                </div>
+              </div>
+              <div className="w-full h-px bg-black/10" />
+              <div className="flex items-center gap-4">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-black flex-shrink-0">
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                  <path d="M10.5 7h3" />
+                </svg>
+                <div>
+                  <p className="text-sm font-bold text-black">V60 Regional 2024</p>
+                  <p className="text-xs text-black/50">2do lugar — Colombia</p>
+                </div>
+              </div>
             </div>
           </div>
 
           <a
             href="/about"
-            className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-black border-b border-black/40 pb-1 hover:border-black transition-colors w-fit"
+            className="inline-block px-8 py-3 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm hover:bg-black/85 transition-colors w-fit"
           >
-            Conocer más
-            <span aria-hidden="true">→</span>
+            Conocer más →
           </a>
         </div>
       </div>

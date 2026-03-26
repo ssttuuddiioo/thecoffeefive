@@ -1,31 +1,51 @@
+'use client';
+
 import Image from 'next/image';
+import { useHoverLift } from '@/lib/gsap';
 
 type RoastedCardProps = {
-  name: string;
+  variedad: string;
   img: string;
-  notes: string;
+  origin: string;
+  proceso: string;
+  tueste: string;
+  fermentacion: string;
+  perfil: string;
   price: string;
   weight: string;
-  tags: string[];
 };
 
-export function RoastedCard({ name, img, notes, price, weight, tags }: RoastedCardProps) {
+export function RoastedCard({ variedad, img, origin, proceso, tueste, fermentacion, perfil, price, weight }: RoastedCardProps) {
+  const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
+    childSelector: '.roasted-card-hover-reveal',
+  });
+
   return (
-    <div className="border border-coffee-700 rounded-md overflow-hidden bg-coffee-900">
-      <div className="relative aspect-square">
-        <Image src={img} alt={name} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+    <div
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="rounded-xl overflow-hidden border border-transparent p-5 will-change-transform cursor-pointer"
+      style={{ backgroundColor: '#000000' }}
+    >
+      <div className="relative aspect-square rounded-md overflow-hidden">
+        <Image src={img} alt={variedad} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
       </div>
-      <div className="p-5">
-        <h4 className="text-[15px] font-medium mb-1.5 text-coffee-white">{name}</h4>
-        <p className="text-[13px] text-coffee-400 mb-2 italic">{notes}</p>
-        <p className="text-sm text-coffee-white font-medium tracking-wide">
+      <div className="pt-4">
+        <h4 className="text-lg font-medium mb-2 text-white">{variedad}</h4>
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="tag-pill">{origin}</span>
+          <span className="tag-pill">{proceso}</span>
+          <span className="tag-pill">{tueste}</span>
+        </div>
+        <p className="text-[13px] text-white/60 mb-1">{fermentacion}</p>
+        <p className="text-[13px] text-white/60 mb-3 italic">{perfil}</p>
+        <p className="text-sm text-white font-medium tracking-wide">
           {price} · {weight}
         </p>
-        <div className="mt-2 flex flex-wrap gap-1">
-          {tags.map((tag) => (
-            <span key={tag} className="tag-pill">{tag}</span>
-          ))}
-        </div>
+        <span className="roasted-card-hover-reveal mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm text-center opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors block">
+          Ver más
+        </span>
       </div>
     </div>
   );
