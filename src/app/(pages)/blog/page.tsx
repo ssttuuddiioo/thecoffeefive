@@ -1,6 +1,8 @@
 import { JournalCard } from '@/app/_components/JournalCard';
 import { mockArticles } from '@/lib/mock-data';
 
+const blogImages = ['/blog1.png', '/blog3.png', '/blog5.png', '/blog2.png', '/blog1.png', '/blog3.png'];
+
 export default function BlogPage() {
   return (
     <main className="pt-20 md:pt-24">
@@ -12,8 +14,8 @@ export default function BlogPage() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockArticles.map((article) => (
-            <JournalCard key={article.slug} {...article} />
+          {mockArticles.map((article, i) => (
+            <JournalCard key={article.slug} {...article} image={blogImages[i % blogImages.length]} />
           ))}
         </div>
       </div>

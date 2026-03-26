@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { AnimatePresence } from 'framer-motion';
-import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
 import { CartDrawer } from '@/app/_components/CartDrawer';
 import { mockRoastedCoffee } from '@/lib/mock-data';
 
@@ -47,11 +47,19 @@ export default function TiendaProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Images */}
           <div className="space-y-3">
-            <ImagePlaceholder aspectRatio="1/1" label="Product photo" className="rounded-md" />
+            <div className="relative aspect-square rounded-md overflow-hidden">
+              <Image src="/bag-front.jpg" alt={product.variedad} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+            </div>
             <div className="grid grid-cols-3 gap-3">
-              <ImagePlaceholder aspectRatio="1/1" label="Detail" className="rounded-sm" />
-              <ImagePlaceholder aspectRatio="1/1" label="Package" className="rounded-sm" />
-              <ImagePlaceholder aspectRatio="1/1" label="Brew" className="rounded-sm" />
+              <div className="relative aspect-square rounded-sm overflow-hidden">
+                <Image src="/bag-back.jpg" alt={`${product.variedad} — back`} fill className="object-cover" sizes="(max-width: 1024px) 33vw, 16vw" />
+              </div>
+              <div className="relative aspect-square rounded-sm overflow-hidden">
+                <Image src="/bag-front.jpg" alt={`${product.variedad} — detail`} fill className="object-cover" sizes="(max-width: 1024px) 33vw, 16vw" />
+              </div>
+              <div className="relative aspect-square rounded-sm overflow-hidden">
+                <Image src="/bag-back.jpg" alt={`${product.variedad} — package`} fill className="object-cover" sizes="(max-width: 1024px) 33vw, 16vw" />
+              </div>
             </div>
           </div>
 

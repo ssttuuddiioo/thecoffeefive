@@ -29,14 +29,14 @@ export function LotCard({
   className = '',
   onOverview,
 }: LotCardProps) {
-  const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
+  const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLAnchorElement>({
     childSelector: '.lot-card-hover-reveal',
   });
 
   return (
     <Link
       href={detailHref}
-      ref={ref as React.Ref<HTMLAnchorElement>}
+      ref={ref}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={`rounded-xl overflow-hidden snap-start will-change-transform flex flex-col cursor-pointer ${className}`}

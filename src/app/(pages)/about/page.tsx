@@ -1,4 +1,33 @@
 import Image from 'next/image';
+import { ProcessSection } from '@/app/_components/sections/ProcessSection';
+import { FaqAccordion } from '@/app/_components/FaqAccordion';
+
+const aboutFaqs = [
+  {
+    question: '¿Qué significa "desde la semilla hasta la taza"?',
+    answer: 'Significa que participamos en cada etapa del proceso: desde la selección de semillas y el manejo agronómico en finca, pasando por la fermentación, secado, catación, tueste, hasta la preparación final. No somos intermediarios — somos operadores en toda la cadena.',
+  },
+  {
+    question: '¿En qué regiones de Colombia trabajan?',
+    answer: 'Trabajamos con productores en Nariño, Huila, Cauca, Santander y Tolima. Cada región tiene perfiles de taza distintos que seleccionamos según las necesidades de nuestros clientes.',
+  },
+  {
+    question: '¿Coffee Five es un exportador o un tostador?',
+    answer: 'Ambos. Exportamos café verde para compradores B2B internacionales y también tostamos lotes seleccionados para venta directa al consumidor. El modelo nos permite controlar la calidad de principio a fin.',
+  },
+  {
+    question: '¿Cómo garantizan la calidad de cada lote?',
+    answer: 'Cada lote pasa por nuestro laboratorio en Medellín: análisis físico del grano verde, tueste de muestra, catación bajo protocolo SCA, y medición de humedad y actividad de agua. Solo ofrecemos lotes que cumplen nuestro estándar mínimo de 84 puntos.',
+  },
+  {
+    question: '¿Puedo visitar las fincas con las que trabajan?',
+    answer: 'Sí. Organizamos visitas de origen para compradores y profesionales del café. Es la mejor manera de entender el trabajo detrás de cada lote. Contáctanos para coordinar fechas y logística.',
+  },
+  {
+    question: '¿Ofrecen muestras antes de comprar?',
+    answer: 'Sí, enviamos muestras de café verde o tostado para evaluación. Para café verde, el costo de la muestra se descuenta del pedido final. Escríbenos por WhatsApp o correo para solicitarlas.',
+  },
+];
 
 export default function AboutPage() {
   return (
@@ -16,7 +45,7 @@ export default function AboutPage() {
 
       <section className="container-site pb-16 md:pb-24">
         <div className="relative aspect-[16/9] rounded-md overflow-hidden">
-          <Image src="/about-hero.png" alt="Juan Medina" fill className="object-cover" sizes="(max-width: 768px) 100vw, 1200px" />
+          <Image src="/about-hero.jpg" alt="Juan Medina" fill className="object-cover" sizes="(max-width: 768px) 100vw, 1200px" />
         </div>
       </section>
 
@@ -27,7 +56,7 @@ export default function AboutPage() {
             <div>
               <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">La historia</p>
               <h2 className="text-2xl md:text-3xl font-bold text-coffee-black mb-6">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                La finca es la base del conocimiento.
               </h2>
               <div className="space-y-4 text-sm text-coffee-400 leading-relaxed">
                 <p>
@@ -43,14 +72,14 @@ export default function AboutPage() {
             </div>
             <div className="space-y-3">
               <div className="relative aspect-[4/3] rounded-sm overflow-hidden">
-                <Image src="/about1.png" alt="Cucharas de catación" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+                <Image src="/about1.jpg" alt="Cucharas de catación" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="relative aspect-square rounded-sm overflow-hidden">
-                  <Image src="/about3.png" alt="Tostadora Roest en el laboratorio" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+                  <Image src="/about3.jpg" alt="Tostadora Roest en el laboratorio" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
                 </div>
                 <div className="relative aspect-square rounded-sm overflow-hidden">
-                  <Image src="/about2.png" alt="Recolección en finca" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+                  <Image src="/about2.jpg" alt="Recolección en finca" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
                 </div>
               </div>
             </div>
@@ -58,31 +87,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="container-site section-padding">
-        <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">Los cuatro pilares</p>
-        <h2 className="text-2xl md:text-3xl font-bold text-coffee-white mb-10">
-          Grow · Source · Lab · Logistics
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { title: 'Grow', img: '/grow.png', desc: 'Semilla, vivero, cultivo, nutrición, control de plagas, procesamiento, control de calidad.' },
-            { title: 'Source', img: '/source.png', desc: 'Red de productores, consultoría, mejores prácticas, sourcing ético y transparente.' },
-            { title: 'Lab', img: '/lab.png', desc: 'Análisis sensorial, control de calidad, retroalimentación, mejora continua de prácticas.' },
-            { title: 'Logistics', img: '/logistics.png', desc: 'Exportación, importación en EE.UU., transporte terrestre. No vendemos café, vendemos frescura.' },
-          ].map((pillar) => (
-            <div key={pillar.title} className="bg-coffee-900 rounded-md overflow-hidden">
-              <div className="relative aspect-[4/3]">
-                <Image src={pillar.img} alt={pillar.title} fill className="object-cover" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-coffee-white mb-2">{pillar.title}</h3>
-                <p className="text-xs text-coffee-400 leading-relaxed">{pillar.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ProcessSection />
+
+      <FaqAccordion items={aboutFaqs} subtitle="Lo que nos preguntan con más frecuencia sobre Coffee Five y nuestro modelo." />
 
       {/* Awards */}
       <section className="bg-coffee-cream text-coffee-black">

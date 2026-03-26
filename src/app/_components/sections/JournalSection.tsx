@@ -6,6 +6,8 @@ import { SectionTag } from '../SectionTag';
 import { JournalCard } from '../JournalCard';
 import { mockArticles } from '@/lib/mock-data';
 
+const blogImages = ['/blog1.png', '/blog3.png', '/blog5.png', '/blog2.png', '/blog1.png', '/blog3.png'];
+
 export function JournalSection() {
   const gridRef = useStaggerReveal();
 
@@ -40,9 +42,9 @@ export function JournalSection() {
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {mockArticles.map((article) => (
+          {mockArticles.map((article, i) => (
             <div key={article.title} data-reveal>
-              <JournalCard {...article} />
+              <JournalCard {...article} image={blogImages[i % blogImages.length]} />
             </div>
           ))}
         </div>

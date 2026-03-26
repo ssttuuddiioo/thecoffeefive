@@ -41,7 +41,7 @@ export function Footer() {
               The Coffee Five
             </p>
             <p className="text-[11px] tracking-[0.2em] uppercase text-coffee-400 mt-3">
-              We give you a piece of mind
+              We give you peace of mind
             </p>
           </div>
         </div>

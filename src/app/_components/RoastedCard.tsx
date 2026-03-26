@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { useHoverLift } from '@/lib/gsap';
 
@@ -16,20 +17,44 @@ type RoastedCardProps = {
 };
 
 export function RoastedCard({ variedad, img, origin, proceso, tueste, fermentacion, perfil, price, weight }: RoastedCardProps) {
+  const [hovered, setHovered] = useState(false);
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
     childSelector: '.roasted-card-hover-reveal',
   });
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+    onMouseEnter();
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    onMouseLeave();
+  };
+
   return (
     <div
       ref={ref}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="rounded-xl overflow-hidden border border-transparent p-5 will-change-transform cursor-pointer"
       style={{ backgroundColor: '#000000' }}
     >
       <div className="relative aspect-square rounded-md overflow-hidden">
-        <Image src={img} alt={variedad} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        <Image
+          src="/bag-front.jpg"
+          alt={variedad}
+          fill
+          className={`object-cover transition-opacity duration-500 ${hovered ? 'opacity-0' : 'opacity-100'}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <Image
+          src="/bag-back.jpg"
+          alt={`${variedad} — back`}
+          fill
+          className={`object-cover transition-opacity duration-500 ${hovered ? 'opacity-100' : 'opacity-0'}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
       </div>
       <div className="pt-4">
         <h4 className="text-lg font-medium mb-2 text-white">{variedad}</h4>

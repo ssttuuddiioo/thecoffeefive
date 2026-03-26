@@ -28,7 +28,7 @@ export function HeroSection() {
         style={{ transform: `translateY(${offset}px) scale(1.1)` }}
       >
         <Image
-          src="/header.png"
+          src="/header.jpg"
           alt=""
           fill
           priority

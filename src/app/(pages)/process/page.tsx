@@ -8,7 +8,7 @@ const stepColors = ['#4592DB', '#0D7C47', '#ED4035', '#91171F'];
 const pillars = [
   {
     title: 'Cultivo',
-    img: '/grow.png',
+    img: '/grow.jpg',
     color: stepColors[0],
     intro: 'Todo empieza en la tierra. Acompañamos al productor desde la selección de semilla hasta la cosecha.',
     details: [
@@ -23,7 +23,7 @@ const pillars = [
   },
   {
     title: 'Origen',
-    img: '/source.png',
+    img: '/source.jpg',
     color: stepColors[1],
     intro: 'Construimos relaciones directas con productores que comparten nuestra obsesión por la calidad.',
     details: [
@@ -37,7 +37,7 @@ const pillars = [
   },
   {
     title: 'Laboratorio',
-    img: '/lab.png',
+    img: '/lab.jpg',
     color: stepColors[2],
     intro: 'Nuestro laboratorio en Medellín es donde la calidad se mide, se entiende y se mejora.',
     details: [
@@ -52,7 +52,7 @@ const pillars = [
   },
   {
     title: 'Logística',
-    img: '/logistics.png',
+    img: '/logistics.jpg',
     color: stepColors[3],
     intro: '"No vendemos café, vendemos frescura." Cada día cuenta desde que el café sale de la finca.',
     details: [

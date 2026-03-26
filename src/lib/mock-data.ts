@@ -29,7 +29,7 @@ export function greenLotDetailSlug(name: string): string {
 
 export const mockRoastedCoffee = [
   {
-    variedad: 'Caturra', img: '/bag1.jpg', origin: 'Bellavista', proceso: 'Honey', tueste: 'Light–medium',
+    variedad: 'Caturra', img: '/bag-front.jpg', origin: 'Bellavista', proceso: 'Honey', tueste: 'Light–medium',
     fermentacion: '48 horas cherry oxidation', perfil: 'Perfil frutal', price: '$18', weight: '250g',
     brew: {
       ratio: '1:15',
@@ -39,7 +39,7 @@ export const mockRoastedCoffee = [
     },
   },
   {
-    variedad: 'Gesha', img: '/bag2.jpg', origin: 'El Paraíso', proceso: 'Natural', tueste: 'Light',
+    variedad: 'Gesha', img: '/bag-front.jpg', origin: 'El Paraíso', proceso: 'Natural', tueste: 'Light',
     fermentacion: '72 horas anaerobic', perfil: 'Perfil floral', price: '$24', weight: '250g',
     brew: {
       ratio: '1:16',
@@ -49,7 +49,7 @@ export const mockRoastedCoffee = [
     },
   },
   {
-    variedad: 'Castillo', img: '/bag3.jpg', origin: 'La Esperanza', proceso: 'Lavado', tueste: 'Espresso',
+    variedad: 'Castillo', img: '/bag-front.jpg', origin: 'La Esperanza', proceso: 'Lavado', tueste: 'Espresso',
     fermentacion: '36 horas semicarbonic', perfil: 'Perfil chocolate', price: '$16', weight: '250g',
     brew: {
       ratio: '1:2 (espresso) · 1:15 (filtro)',
@@ -87,9 +87,9 @@ export const mockArticles: JournalArticleSummary[] = [
       'Cómo decidir si tiene sentido dar el salto a especialidad o seguir en comercial, según el tipo y tamaño de tu finca — sin romanticismo innecesario.',
   },
   {
-    slug: 'sit-to-cup',
+    slug: 'seed-to-cup',
     category: 'Consultorio',
-    title: 'Sit to cup',
+    title: 'Seed to cup',
     description:
       'Qué significa acompañar el café desde el origen hasta la taza, por qué ese recorrido importa para tomar mejores decisiones — y cómo el consultorio puede ayudarte.',
   },
@@ -99,6 +99,24 @@ export const mockArticles: JournalArticleSummary[] = [
     title: 'Mis primeros pasos hacia la especialidad',
     description:
       'Para el productor curioso: primeros experimentos en lote pequeño, qué observar y cómo saber si tu finca puede jugar en especialidad.',
+  },
+  {
+    slug: 'terra-dulcis',
+    category: 'Origen',
+    title: 'Terra Dulcis',
+    description: '',
+  },
+  {
+    slug: 'vento-calido',
+    category: 'Proceso',
+    title: 'Vento Cálido',
+    description: '',
+  },
+  {
+    slug: 'raíces-verdes',
+    category: 'Catación',
+    title: 'Raíces Verdes',
+    description: '',
   },
 ];
 
@@ -145,10 +163,10 @@ const journalDetailBySlug: Record<string, JournalArticleDetail> = {
       },
     ],
   },
-  'sit-to-cup': {
-    slug: 'sit-to-cup',
+  'seed-to-cup': {
+    slug: 'seed-to-cup',
     category: 'Consultorio',
-    title: 'Sit to cup',
+    title: 'Seed to cup',
     description:
       'Qué significa acompañar el café desde el origen hasta la taza, por qué ese recorrido importa para tomar mejores decisiones — y cómo el consultorio puede ayudarte.',
     readMinutes: 6,
@@ -234,7 +252,7 @@ export function getAllJournalSlugs(): string[] {
 export const processSteps = [
   { title: 'Cultivo', label: 'CULTIVO', img: '/process-0.jpg', description: 'Semilla, vivero, cultivo, nutrición, control de plagas y enfermedades, procesamiento, control de calidad.' },
   { title: 'Origen', label: 'ORIGEN', img: '/process-1.jpg', description: 'Red de productores, consultoría, buenas prácticas, sourcing ético y relaciones directas.' },
-  { title: 'Laboratorio', label: 'LABORATORIO', img: '/process-2.png', description: 'Análisis sensorial, control de calidad, retroalimentación y ajustes, mejora continua de prácticas.' },
+  { title: 'Laboratorio', label: 'LABORATORIO', img: '/process-2.jpg', description: 'Análisis sensorial, control de calidad, retroalimentación y ajustes, mejora continua de prácticas.' },
   { title: 'Logística', label: 'LOGÍSTICA', img: '/process-3.jpg', description: 'Exportación, importación en EE.UU., transporte terrestre. No vendemos café, vendemos frescura.' },
 ];
 
