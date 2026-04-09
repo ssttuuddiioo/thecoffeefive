@@ -7,7 +7,7 @@ import { useScrollReveal } from '@/lib/gsap';
 import { SectionTag } from '../SectionTag';
 import { LotCard } from '../LotCard';
 import { LotDrawer } from '../LotDrawer';
-import { greenLotDetailSlug, mockGreenLots } from '@/lib/mock-data';
+import { mockGreenLots } from '@/lib/mock-data';
 
 type GreenLot = typeof mockGreenLots[number];
 
@@ -53,7 +53,6 @@ export function GreenCoffeeSection() {
               proceso={lot.proceso}
               productor={lot.finca}
               img={lot.img}
-              detailHref={`/cafe-verde/${greenLotDetailSlug(lot.name)}`}
               className="flex-none w-[65vw] md:w-[calc(33.333%-16px)]"
               onOverview={() => setDrawerLot(lot)}
             />
