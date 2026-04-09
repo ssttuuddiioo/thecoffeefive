@@ -99,7 +99,7 @@ export function IdentitySection() {
           </div>
 
           <a
-            href="/about"
+            href="/coming-soon"
             className="inline-block px-8 py-3 bg-black text-white text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm hover:bg-black/85 transition-colors w-fit"
           >
             Conocer más →

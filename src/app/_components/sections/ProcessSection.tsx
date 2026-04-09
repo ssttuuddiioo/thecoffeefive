@@ -15,7 +15,7 @@ function ProcessCard({ step, color }: { step: typeof processSteps[number]; color
 
   return (
     <Link
-      href={`/process#${step.title.toLowerCase()}`}
+      href="/coming-soon"
       ref={ref}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -64,7 +64,7 @@ export function ProcessSection() {
             </p>
           </div>
           <Link
-            href="/process"
+            href="/coming-soon"
             className="inline-block px-8 py-3 text-[11px] tracking-[0.15em] uppercase font-semibold rounded-sm transition-colors self-start lg:self-end hover:opacity-90"
             style={{ backgroundColor: '#ECCD3E', color: '#000' }}
           >

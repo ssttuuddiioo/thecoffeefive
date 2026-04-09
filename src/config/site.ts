@@ -18,11 +18,11 @@ export const siteConfig = {
   nav: {
     main: [
       { key: 'nav.green', label: 'Verde', href: '/cafe-verde' },
-      { key: 'nav.roasted', label: 'Tostado', href: '/tostado' },
-      { key: 'nav.services', label: 'Consultorio', href: '/services' },
-      { key: 'nav.about', label: 'Nosotros', href: '/about' },
-      { key: 'nav.contact', label: 'Contacto', href: '/contact' },
-      { key: 'nav.journal', label: 'Blog', href: '/blog' },
+      { key: 'nav.roasted', label: 'Tostado', href: '/coming-soon' },
+      { key: 'nav.services', label: 'Consultorio', href: '/coming-soon' },
+      { key: 'nav.about', label: 'Nosotros', href: '/coming-soon' },
+      { key: 'nav.contact', label: 'Contacto', href: '/coming-soon' },
+      { key: 'nav.journal', label: 'Blog', href: '/coming-soon' },
     ] as const,
   },
   shopify: {

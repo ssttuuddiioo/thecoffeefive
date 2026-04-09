@@ -42,7 +42,15 @@ export function HeroSection() {
         01
       </span>
 
-      <Image src="/logo.svg" alt="Coffee Five" width={60} height={95} className="brightness-0 invert mb-8 relative z-10" />
+      <div className="flex flex-col items-center mb-8 relative z-10">
+        <Image src="/logo.svg" alt="Coffee Five" width={60} height={95} className="brightness-0 invert" />
+        <span
+          className="text-lg md:text-xl tracking-tight mt-1"
+          style={{ fontFamily: "'salted', cursive", color: '#0D7C47' }}
+        >
+          The Coffee Five
+        </span>
+      </div>
 
       <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-coffee-white text-center max-w-3xl px-5 leading-tight mb-8 relative z-10">
         Somos expertos, pero no dejamos de aprender.
@@ -56,7 +64,7 @@ export function HeroSection() {
           Nuestro Café
         </Link>
         <Link
-          href="/services"
+          href="/coming-soon"
           className="text-coffee-400 text-[12px] tracking-[0.1em] uppercase hover:text-coffee-white transition-colors min-h-[44px] flex items-center"
         >
           Nuestros Servicios

@@ -24,19 +24,19 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20 flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex flex-col items-center">
             <Image
               src="/logo.svg"
               alt="Coffee Five"
-              width={32}
-              height={51}
-              className="h-[51px] w-auto [filter:brightness(0)_saturate(100%)_invert(36%)_sepia(92%)_saturate(600%)_hue-rotate(110deg)_brightness(92%)]"
+              width={28}
+              height={44}
+              className="h-[36px] w-auto [filter:brightness(0)_saturate(100%)_invert(36%)_sepia(92%)_saturate(600%)_hue-rotate(110deg)_brightness(92%)]"
             />
             <span
-              className="text-[13px] leading-tight"
+              className="text-[10px] tracking-tight mt-0.5"
               style={{ fontFamily: "'salted', cursive", color: '#0D7C47' }}
             >
-              The<br />Coffee<br />Five
+              The Coffee Five
             </span>
           </Link>
 
@@ -53,7 +53,7 @@ export function Header() {
             <span className={`text-[11px] tracking-[0.1em] uppercase ml-2 pl-4 border-l ${isLightBg ? 'text-gray-400 border-gray-300' : 'text-coffee-400 border-coffee-700'}`}>
               <span className={`font-medium ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>ES</span> / EN
             </span>
-            <Link href="/tostado" className={`ml-2 ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>
+            <Link href="/coming-soon" className={`ml-2 ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
