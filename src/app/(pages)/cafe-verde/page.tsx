@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LotCard } from '@/app/_components/LotCard';
 import { LotDrawer } from '@/app/_components/LotDrawer';
 import { FilterSidebar } from '@/app/_components/FilterSidebar';
-import { greenLotDetailSlug, mockGreenLots } from '@/lib/mock-data';
+import { mockGreenLots } from '@/lib/mock-data';
 
 
 
@@ -167,7 +167,6 @@ export default function CafeVerdePage() {
                   proceso={lot.proceso}
                   productor={lot.finca}
                   img={lot.img}
-                  detailHref={`/cafe-verde/${greenLotDetailSlug(lot.name)}`}
                   onOverview={() => setDrawerLot(lot)}
                 />
               ))}

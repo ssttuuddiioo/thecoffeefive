@@ -30,11 +30,11 @@ export function Header() {
               alt="Coffee Five"
               width={28}
               height={44}
-              className="h-[36px] w-auto [filter:brightness(0)_saturate(100%)_invert(36%)_sepia(92%)_saturate(600%)_hue-rotate(110deg)_brightness(92%)]"
+              className="h-[36px] w-auto brightness-0 invert"
             />
             <span
-              className="text-[10px] tracking-tight mt-0.5"
-              style={{ fontFamily: "'salted', cursive", color: '#0D7C47' }}
+              className="text-[10px] tracking-tight mt-0.5 text-white"
+              style={{ fontFamily: "'salted', cursive" }}
             >
               The Coffee Five
             </span>

@@ -45,8 +45,8 @@ export function HeroSection() {
       <div className="flex flex-col items-center mb-8 relative z-10">
         <Image src="/logo.svg" alt="Coffee Five" width={60} height={95} className="brightness-0 invert" />
         <span
-          className="text-lg md:text-xl tracking-tight mt-1"
-          style={{ fontFamily: "'salted', cursive", color: '#0D7C47' }}
+          className="text-lg md:text-xl tracking-tight mt-1 text-white"
+          style={{ fontFamily: "'salted', cursive" }}
         >
           The Coffee Five
         </span>

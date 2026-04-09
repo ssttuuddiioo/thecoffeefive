@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site';
+import { NewsletterForm } from './NewsletterForm';
 
 function InstagramIcon({ className = '' }: { className?: string }) {
   return (
@@ -82,16 +83,7 @@ export function Footer() {
           <div>
             <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Newsletter</h5>
             <p className="text-sm text-coffee-400 mb-4">Lotes nuevos, historias de finca, y novedades.</p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="tu@email.com"
-                className="flex-1 min-h-[44px] bg-transparent border border-coffee-700 rounded-l-sm px-3 text-sm text-coffee-white placeholder:text-coffee-600 focus:outline-none focus:border-coffee-400"
-              />
-              <button className="min-h-[44px] px-5 bg-coffee-white text-coffee-black text-[11px] tracking-[0.1em] uppercase rounded-r-sm font-bold hover:bg-coffee-200 transition-colors">
-                →
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
 

@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { slideRightVariants, springSmooth } from '@/lib/framer';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
-import { greenLotDetailSlug, procesoColorMap } from '@/lib/mock-data';
+import { procesoColorMap } from '@/lib/mock-data';
 
 type LotData = {
   name: string;
@@ -116,34 +115,9 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
           )}
 
           <div className="border-t border-coffee-800" />
-
-          {/* Análisis Verde */}
-          <div>
-            <p className="text-[10px] tracking-[0.12em] uppercase text-coffee-400 mb-3">Análisis Verde</p>
-            <div className="space-y-0">
-              {[
-                ['Humedad', lot.humedad],
-                ['Actividad de agua', lot.actividadAgua],
-                ['Densidad', lot.densidad],
-                ['Criba', lot.criba],
-                ['Trilla / Prep', lot.trilla],
-              ].map(([label, value]) => (
-                <div key={label} className="flex items-center justify-between py-2 border-b border-coffee-800/60">
-                  <span className="text-[11px] tracking-[0.05em] text-coffee-400">{label}</span>
-                  <span className="text-xs font-medium text-coffee-white">{value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div className="p-6 border-t border-coffee-800 space-y-3">
-          <Link
-            href={`/cafe-verde/${greenLotDetailSlug(lot.name)}`}
-            className="flex items-center justify-center w-full py-3.5 bg-coffee-white text-coffee-black text-[13px] tracking-[0.1em] uppercase font-semibold rounded-sm hover:bg-coffee-cream transition-colors min-h-[48px]"
-          >
-            Learn More
-          </Link>
           <a
             href={buildWhatsAppUrl(lotInfo)}
             target="_blank"

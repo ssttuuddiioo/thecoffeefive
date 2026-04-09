@@ -9,10 +9,22 @@ export function SignupSection() {
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function handleSubmit(e: FormEvent) {
+  const [sending, setSending] = useState(false);
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
+    if (!email || sending) return;
+    setSending(true);
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      setSubmitted(true);
+    } catch {
+      setSending(false);
+    }
   }
 
   return (
@@ -67,10 +79,11 @@ export function SignupSection() {
             />
             <button
               type="submit"
-              className="min-h-[48px] px-8 text-[11px] tracking-[0.15em] uppercase font-bold rounded-sm transition-colors"
+              disabled={sending}
+              className="min-h-[48px] px-8 text-[11px] tracking-[0.15em] uppercase font-bold rounded-sm transition-colors disabled:opacity-50"
               style={{ backgroundColor: '#0D7C47', color: '#fff' }}
             >
-              Suscribirme
+              {sending ? '...' : 'Suscribirme'}
             </button>
           </form>
         )}

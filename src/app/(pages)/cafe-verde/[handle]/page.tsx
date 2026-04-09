@@ -170,31 +170,6 @@ export default function GreenCoffeeLotPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Análisis Verde */}
-        <div className="max-w-5xl mx-auto px-5 md:px-8 mb-12 md:mb-16">
-          <div>
-            <SectionHeading>Análisis Verde</SectionHeading>
-            <div className="space-y-0">
-              {[
-                ['Humedad', lot.humedad],
-                ['Actividad de agua', lot.actividadAgua],
-                ['Densidad', lot.densidad],
-                ['Criba', lot.criba],
-                ['Trilla / Prep', lot.trilla],
-              ].map(([label, value]) => (
-                <div key={label} className="flex items-center justify-between py-3 border-b border-gray-100">
-                  <span className="text-[11px] tracking-[0.1em] uppercase text-gray-400">{label}</span>
-                  <span className="text-sm font-medium text-coffee-black">{value}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-gray-400 mt-4">
-              Análisis realizado en Lab Coffee Five, Medellín.
-            </p>
-          </div>
-          <Divider />
-        </div>
-
         {/* Enquiry CTAs */}
         <div className="max-w-5xl mx-auto px-5 md:px-8">
           <div className="bg-gray-50 rounded-lg p-8 md:p-10">
