@@ -2,8 +2,10 @@
 
 import { useState, useRef, FormEvent } from 'react';
 import { useScrollReveal } from '@/lib/gsap';
+import { useTranslation } from '../LanguageProvider';
 
 export function SignupSection() {
+  const { t } = useTranslation();
   const sectionRef = useScrollReveal();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -34,18 +36,17 @@ export function SignupSection() {
     >
       <div className="max-w-2xl mx-auto px-5 md:px-8 py-20 md:py-28 text-center">
         <p className="text-[10px] tracking-[0.25em] uppercase text-coffee-400 mb-6">
-          Próximamente
+          {t.signup.eyebrow}
         </p>
 
         <h2
           className="text-2xl md:text-3xl lg:text-4xl font-bold text-coffee-white mb-4 leading-tight"
         >
-          Estamos construyendo algo especial.
+          {t.signup.heading}
         </h2>
 
         <p className="text-base md:text-lg text-coffee-400 leading-relaxed mb-10 max-w-lg mx-auto">
-          Déjanos tu correo y te avisamos cuando lancemos. Lotes nuevos,
-          historias de finca, y todo lo que viene.
+          {t.signup.body}
         </p>
 
         {submitted ? (
@@ -63,7 +64,7 @@ export function SignupSection() {
               <path d="M20 6L9 17l-5-5" />
             </svg>
             <p className="text-coffee-white text-sm font-medium">
-              Listo — te escribimos pronto.
+              {t.common.newsletterSuccess}
             </p>
           </div>
         ) : (
@@ -74,7 +75,7 @@ export function SignupSection() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@email.com"
+              placeholder={t.common.emailPlaceholder}
               className="flex-1 min-h-[48px] bg-transparent border border-coffee-700 rounded-sm px-4 text-sm text-coffee-white placeholder:text-coffee-600 focus:outline-none focus:border-coffee-400 transition-colors"
             />
             <button
@@ -83,7 +84,7 @@ export function SignupSection() {
               className="min-h-[48px] px-8 text-[11px] tracking-[0.15em] uppercase font-bold rounded-sm transition-colors disabled:opacity-50"
               style={{ backgroundColor: '#0D7C47', color: '#fff' }}
             >
-              {sending ? '...' : 'Suscribirme'}
+              {sending ? '...' : t.common.subscribe}
             </button>
           </form>
         )}

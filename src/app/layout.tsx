@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
+import { headers, cookies } from 'next/headers';
+import { Analytics } from '@vercel/analytics/next';
 import { siteConfig } from '@/config/site';
-import { Header } from './_components/Header';
-import { Footer } from './_components/Footer';
+import { defaultLocale, isLocale, LOCALE_COOKIE } from '@/config/i18n';
 import '@/styles/globals.css';
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -43,28 +44,29 @@ export const metadata: Metadata = {
   },
 };
 
+/** Resolve the language for <html lang> — middleware forwards it as a header. */
+function resolveLang(): string {
+  const fromHeader = headers().get('x-locale');
+  if (isLocale(fromHeader)) return fromHeader;
+  const fromCookie = cookies().get(LOCALE_COOKIE)?.value;
+  if (isLocale(fromCookie)) return fromCookie;
+  return defaultLocale;
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={plusJakarta.variable}>
+    <html lang={resolveLang()} className={plusJakarta.variable}>
       <head>
         {/* Adobe Fonts — Salted. Replace PROJECT_ID with your Typekit web project ID */}
         <link rel="stylesheet" href="https://use.typekit.net/vhe5lxj.css" />
       </head>
       <body>
-        <Header />
         {children}
-        <div className="flex h-3">
-          <div className="flex-1" style={{ backgroundColor: '#ECCD3E' }} />
-          <div className="flex-1" style={{ backgroundColor: '#0D7C47' }} />
-          <div className="flex-1" style={{ backgroundColor: '#4592DB' }} />
-          <div className="flex-1" style={{ backgroundColor: '#91171F' }} />
-          <div className="flex-1" style={{ backgroundColor: '#ED4035' }} />
-        </div>
-        <Footer />
+        <Analytics />
       </body>
     </html>
   );

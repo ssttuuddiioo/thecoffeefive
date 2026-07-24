@@ -1,5 +1,7 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
+import { LocaleLink } from './LocaleLink';
 
 type JournalCardProps = {
   slug: string;
@@ -11,7 +13,7 @@ type JournalCardProps = {
 
 export function JournalCard({ slug, category, title, image }: JournalCardProps) {
   return (
-    <Link href={`/blog/${slug}`} className="group block rounded-md overflow-hidden hover:opacity-90 transition-opacity">
+    <LocaleLink href={`/blog/${slug}`} className="group block rounded-md overflow-hidden hover:opacity-90 transition-opacity">
       <div className="relative" style={{ aspectRatio: '683/858' }}>
         {image && (
           <Image
@@ -32,6 +34,6 @@ export function JournalCard({ slug, category, title, image }: JournalCardProps) 
           </h4>
         </div>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }

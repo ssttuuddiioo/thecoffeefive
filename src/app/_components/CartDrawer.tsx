@@ -2,6 +2,26 @@
 
 import { motion } from 'framer-motion';
 import { slideRightVariants, springSmooth } from '@/lib/framer';
+import { useTranslation } from '@/app/_components/LanguageProvider';
+
+const COPY = {
+  es: {
+    title: 'Tu carrito',
+    empty: 'Tu carrito está vacío',
+    remove: 'Eliminar',
+    subtotal: 'Subtotal',
+    checkout: 'Checkout',
+    redirect: 'Serás redirigido a Shopify para completar tu compra.',
+  },
+  en: {
+    title: 'Your cart',
+    empty: 'Your cart is empty',
+    remove: 'Remove',
+    subtotal: 'Subtotal',
+    checkout: 'Checkout',
+    redirect: "You'll be redirected to Shopify to complete your purchase.",
+  },
+} as const;
 
 type CartItem = {
   id: string;
@@ -19,6 +39,8 @@ type CartDrawerProps = {
 };
 
 export function CartDrawer({ items, onClose, onUpdateQuantity, onRemove }: CartDrawerProps) {
+  const { locale } = useTranslation();
+  const c = COPY[locale];
   const total = items.reduce((sum, item) => {
     const price = parseFloat(item.price.replace('$', ''));
     return sum + price * item.quantity;
@@ -42,7 +64,7 @@ export function CartDrawer({ items, onClose, onUpdateQuantity, onRemove }: CartD
         className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-coffee-900 z-50 flex flex-col"
       >
         <div className="flex items-center justify-between p-6 border-b border-coffee-800">
-          <h2 className="text-lg font-bold text-coffee-white">Tu carrito</h2>
+          <h2 className="text-lg font-bold text-coffee-white">{c.title}</h2>
           <button onClick={onClose} className="text-coffee-400 hover:text-coffee-white min-h-[44px] min-w-[44px] flex items-center justify-center">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -53,7 +75,7 @@ export function CartDrawer({ items, onClose, onUpdateQuantity, onRemove }: CartD
 
         <div className="flex-1 overflow-y-auto p-6">
           {items.length === 0 ? (
-            <p className="text-sm text-coffee-400 text-center mt-10">Tu carrito está vacío</p>
+            <p className="text-sm text-coffee-400 text-center mt-10">{c.empty}</p>
           ) : (
             <div className="space-y-6">
               {items.map((item) => (
@@ -80,7 +102,7 @@ export function CartDrawer({ items, onClose, onUpdateQuantity, onRemove }: CartD
                         onClick={() => onRemove(item.id)}
                         className="ml-auto text-[10px] text-coffee-400 hover:text-coffee-white uppercase tracking-wide min-h-[44px] flex items-center"
                       >
-                        Eliminar
+                        {c.remove}
                       </button>
                     </div>
                   </div>
@@ -94,14 +116,14 @@ export function CartDrawer({ items, onClose, onUpdateQuantity, onRemove }: CartD
         {items.length > 0 && (
           <div className="p-6 border-t border-coffee-800">
             <div className="flex justify-between mb-4">
-              <span className="text-sm text-coffee-400">Subtotal</span>
+              <span className="text-sm text-coffee-400">{c.subtotal}</span>
               <span className="text-sm text-coffee-white font-medium">${total.toFixed(2)}</span>
             </div>
             <button className="w-full py-3 bg-coffee-white text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm font-medium hover:bg-coffee-200 transition-colors min-h-[44px]">
-              Checkout
+              {c.checkout}
             </button>
             <p className="text-[10px] text-coffee-400 text-center mt-3">
-              Serás redirigido a Shopify para completar tu compra.
+              {c.redirect}
             </p>
           </div>
         )}

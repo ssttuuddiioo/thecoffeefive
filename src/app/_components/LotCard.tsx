@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useHoverLift } from '@/lib/gsap';
+import { useTranslation } from './LanguageProvider';
 
 type LotCardProps = {
   name: string;
@@ -26,6 +27,7 @@ export function LotCard({
   className = '',
   onOverview,
 }: LotCardProps) {
+  const { t } = useTranslation();
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
     childSelector: '.lot-card-hover-reveal',
   });
@@ -50,7 +52,7 @@ export function LotCard({
           <Image src={img} alt={name} fill className="object-cover" sizes="(max-width: 768px) 65vw, 33vw" />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center text-[10px] tracking-[0.15em] uppercase text-white/40">
-            Foto del lote
+            {t.cafeVerde.photoPlaceholder}
           </span>
         )}
       </div>
@@ -72,7 +74,7 @@ export function LotCard({
             }}
             className="lot-card-hover-reveal mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors"
           >
-            Resumen
+            {t.cafeVerde.overview}
           </button>
         )}
       </div>

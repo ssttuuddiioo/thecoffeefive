@@ -3,6 +3,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useHoverLift } from '@/lib/gsap';
+import { useTranslation } from '@/app/_components/LanguageProvider';
+
+const COPY = {
+  es: { verMas: 'Ver más' },
+  en: { verMas: 'View more' },
+} as const;
 
 type RoastedCardProps = {
   variedad: string;
@@ -17,6 +23,8 @@ type RoastedCardProps = {
 };
 
 export function RoastedCard({ variedad, img, origin, proceso, tueste, fermentacion, perfil, price, weight }: RoastedCardProps) {
+  const { locale } = useTranslation();
+  const c = COPY[locale];
   const [hovered, setHovered] = useState(false);
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
     childSelector: '.roasted-card-hover-reveal',
@@ -69,7 +77,7 @@ export function RoastedCard({ variedad, img, origin, proceso, tueste, fermentaci
           {price} · {weight}
         </p>
         <span className="roasted-card-hover-reveal mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm text-center opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors block">
-          Ver más
+          {c.verMas}
         </span>
       </div>
     </div>

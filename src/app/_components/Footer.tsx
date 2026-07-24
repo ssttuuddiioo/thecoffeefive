@@ -1,6 +1,10 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
 import { siteConfig } from '@/config/site';
+import { useTranslation } from './LanguageProvider';
+import { LocaleLink } from './LocaleLink';
+import { LanguageToggle } from './LanguageToggle';
 import { NewsletterForm } from './NewsletterForm';
 
 function InstagramIcon({ className = '' }: { className?: string }) {
@@ -22,6 +26,8 @@ function WhatsAppIcon({ className = '' }: { className?: string }) {
 }
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-coffee-black border-t border-coffee-800 min-h-screen flex flex-col">
       <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20 flex-1 flex flex-col w-full">
@@ -32,17 +38,17 @@ export function Footer() {
             alt="Coffee Five"
             width={180}
             height={280}
-            className="mb-10 [filter:brightness(0)_saturate(100%)_invert(36%)_sepia(92%)_saturate(600%)_hue-rotate(110deg)_brightness(92%)]"
+            className="mb-10 brightness-0 invert"
           />
           <div style={{ marginLeft: 45 }}>
             <p
-              className="text-3xl md:text-4xl tracking-tight"
-              style={{ fontFamily: "'salted', cursive", fontWeight: 400, color: '#0D7C47' }}
+              className="text-3xl md:text-4xl tracking-tight text-white"
+              style={{ fontFamily: "'salted', cursive", fontWeight: 400 }}
             >
               The Coffee Five
             </p>
             <p className="text-[11px] tracking-[0.2em] uppercase text-coffee-400 mt-3">
-              We give you peace of mind
+              {t.footer.peaceOfMind}
             </p>
           </div>
         </div>
@@ -51,38 +57,38 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16 pt-16 pb-10">
           {/* Café */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Café</h5>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">{t.footer.colCafe}</h5>
             <ul className="space-y-0">
-              <li><Link href="/cafe-verde" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Café Verde</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Café Tostado</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Merch</Link></li>
+              <li><LocaleLink href="/cafe-verde" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.cafeVerde}</LocaleLink></li>
+              <li><LocaleLink href="/tostado" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.cafeTostado}</LocaleLink></li>
+              <li><LocaleLink href="/tostado" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.merch}</LocaleLink></li>
             </ul>
           </div>
 
           {/* Servicios */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Servicios</h5>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">{t.footer.colServices}</h5>
             <ul className="space-y-0">
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Asesoría a Fincas</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Laboratorio</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Formación</Link></li>
+              <li><LocaleLink href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.fincas}</LocaleLink></li>
+              <li><LocaleLink href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.lab}</LocaleLink></li>
+              <li><LocaleLink href="/services" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.formacion}</LocaleLink></li>
             </ul>
           </div>
 
           {/* Compañía */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Compañía</h5>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">{t.footer.colCompany}</h5>
             <ul className="space-y-0">
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Sobre Juan</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Journal</Link></li>
-              <li><Link href="/coming-soon" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">Contacto</Link></li>
+              <li><LocaleLink href="/about" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.aboutJuan}</LocaleLink></li>
+              <li><LocaleLink href="/blog" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.journal}</LocaleLink></li>
+              <li><LocaleLink href="/contact" className="text-sm text-coffee-400 hover:text-coffee-white transition-colors inline-flex items-center min-h-[36px]">{t.footer.contact}</LocaleLink></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">Newsletter</h5>
-            <p className="text-sm text-coffee-400 mb-4">Lotes nuevos, historias de finca, y novedades.</p>
+            <h5 className="text-[11px] tracking-[0.15em] uppercase text-coffee-white font-bold mb-3">{t.footer.colNewsletter}</h5>
+            <p className="text-sm text-coffee-400 mb-4">{t.footer.newsletterBlurb}</p>
             <NewsletterForm />
           </div>
         </div>
@@ -93,7 +99,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-8">
           <p className="text-[11px] text-coffee-600">
-            © {new Date().getFullYear()} Coffee Five. Medellín, Colombia.
+            © {new Date().getFullYear()} Coffee Five. {t.footer.location}
           </p>
 
           <div className="flex items-center gap-5">
@@ -117,11 +123,12 @@ export function Footer() {
             </a>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-[11px] text-coffee-white font-medium">ES</span>
-            <span className="text-[11px] text-coffee-600">/</span>
-            <span className="text-[11px] text-coffee-600">EN</span>
-          </div>
+          <LanguageToggle
+            className="flex items-center gap-4 text-[11px]"
+            activeClassName="text-coffee-white font-medium"
+            inactiveClassName="text-coffee-600 hover:text-coffee-400 transition-colors"
+            separatorClassName="text-coffee-600"
+          />
         </div>
       </div>
     </footer>

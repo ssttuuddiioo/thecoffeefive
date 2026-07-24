@@ -8,7 +8,7 @@ interface FaqItem {
 }
 
 interface FaqAccordionProps {
-  items: FaqItem[];
+  items: readonly FaqItem[];
   title?: string;
   subtitle?: string;
   variant?: 'dark' | 'light';

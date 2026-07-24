@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
 import { SectionTag } from '../SectionTag';
-import { consultingServices } from '@/lib/mock-data';
+import { useTranslation } from '../LanguageProvider';
 
 const serviceColors = ['#ECCD3E', '#4592DB', '#0D7C47'];
 
 export function ConsultingSection() {
+  const { t } = useTranslation();
   const sectionRef = useScrollReveal();
 
   return (
@@ -18,12 +19,12 @@ export function ConsultingSection() {
       <div className="container-site py-16 md:py-24">
         {/* Header */}
         <div className="mb-12 md:mb-16">
-          <SectionTag number="06" label="Consultorio" />
+          <SectionTag number="06" label={t.consulting.tag} />
           <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Consultorio
+            {t.consulting.heading}
           </h3>
           <p className="text-sm md:text-base text-white/50 max-w-xl leading-relaxed">
-            Típicamente 1–2 puntos de mejora en puntaje de taza a través de optimización de procesos, sin inversión de capital importante. Bonificaciones reales para el productor: mejor pago por carga, mejor factor en la cooperativa.
+            {t.consulting.body}
           </p>
         </div>
 
@@ -31,7 +32,7 @@ export function ConsultingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           <div>
             <div className="space-y-3">
-              {consultingServices.map((service, i) => (
+              {t.consulting.services.map((service, i) => (
                 <div
                   key={service.title}
                   className="p-5 rounded-md border border-white/10"

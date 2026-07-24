@@ -16,13 +16,15 @@ export const siteConfig = {
     instagram: 'https://www.instagram.com/thecoffeefive/',
   },
   nav: {
+    // `key` maps to `dictionary.nav[key]` for the label (see src/config/dictionaries).
+    // 'Verde' (offer list) is intentionally hidden — it lives behind the
+    // password gate at /acceso and is shared via a private link.
     main: [
-      { key: 'nav.green', label: 'Verde', href: '/cafe-verde' },
-      { key: 'nav.roasted', label: 'Tostado', href: '/coming-soon' },
-      { key: 'nav.services', label: 'Consultorio', href: '/coming-soon' },
-      { key: 'nav.about', label: 'Nosotros', href: '/coming-soon' },
-      { key: 'nav.contact', label: 'Contacto', href: '/coming-soon' },
-      { key: 'nav.journal', label: 'Blog', href: '/coming-soon' },
+      { key: 'roasted', href: '/tostado' },
+      { key: 'services', href: '/services' },
+      { key: 'about', href: '/about' },
+      { key: 'contact', href: '/contact' },
+      { key: 'journal', href: '/blog' },
     ] as const,
   },
   shopify: {

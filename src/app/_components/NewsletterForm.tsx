@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { useTranslation } from './LanguageProvider';
 
 export function NewsletterForm() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -26,7 +28,7 @@ export function NewsletterForm() {
   if (submitted) {
     return (
       <p className="text-sm text-coffee-400">
-        Listo — te escribimos pronto.
+        {t.common.newsletterSuccess}
       </p>
     );
   }
@@ -38,7 +40,7 @@ export function NewsletterForm() {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="tu@email.com"
+        placeholder={t.common.emailPlaceholder}
         className="flex-1 min-h-[44px] bg-transparent border border-coffee-700 rounded-l-sm px-3 text-sm text-coffee-white placeholder:text-coffee-600 focus:outline-none focus:border-coffee-400"
       />
       <button

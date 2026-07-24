@@ -1,9 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { slideRightVariants, springSmooth } from '@/lib/framer';
+import { withLocale } from '@/config/i18n';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
-import { procesoColorMap } from '@/lib/mock-data';
+import { greenLotDetailSlug, procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { useTranslation } from './LanguageProvider';
 
 type LotData = {
   name: string;
@@ -23,6 +26,7 @@ type LotData = {
   criba: string;
   trilla: string;
   notaFinca: string;
+  notaFincaEn?: string;
 };
 
 type LotDrawerProps = {
@@ -31,6 +35,7 @@ type LotDrawerProps = {
 };
 
 export function LotDrawer({ lot, onClose }: LotDrawerProps) {
+  const { t, locale } = useTranslation();
   const lotInfo = {
     name: lot.name,
     variedad: lot.variedad,
@@ -44,9 +49,9 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
   };
 
   const ubicacionLabel: Record<string, string> = {
-    colombia: '📍 Colombia',
-    en_transito: '🚢 En tránsito',
-    landed_us: '📦 EE.UU.',
+    colombia: t.cafeVerde.drawerColombia,
+    en_transito: t.cafeVerde.drawerTransito,
+    landed_us: t.cafeVerde.drawerLandedUs,
   };
 
   return (
@@ -72,7 +77,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
               className="inline-block text-[10px] tracking-[0.1em] uppercase px-2.5 py-0.5 rounded-full text-white font-medium mb-1"
               style={{ backgroundColor: procesoColorMap[lot.proceso] || lot.color }}
             >
-              {lot.proceso}
+              {procesoLabel(lot.proceso, locale)}
             </span>
             <h2 className="text-lg font-bold text-coffee-white">{lot.name}</h2>
           </div>
@@ -88,14 +93,14 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
           {/* Quick specs */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-3">
             {[
-              ['Variedad', lot.variedad],
-              ['Proceso', lot.proceso],
-              ['Finca', lot.finca],
-              ['Región', lot.region],
-              ['Altura', `${lot.altura} msnm`],
-              ['Puntaje', lot.puntaje],
-              ['Disponible', lot.weight],
-              ['Precio', lot.price],
+              [t.cafeVerde.specVariedad, lot.variedad],
+              [t.cafeVerde.specProceso, procesoLabel(lot.proceso, locale)],
+              [t.cafeVerde.specFinca, lot.finca],
+              [t.cafeVerde.specRegion, lot.region],
+              [t.cafeVerde.specAltura, `${lot.altura} ${t.cafeVerde.msnm}`],
+              [t.cafeVerde.specNorma, lot.puntaje],
+              [t.cafeVerde.specDisponible, lot.weight],
+              [t.cafeVerde.specPrecio, lot.price],
             ].map(([label, value]) => (
               <div key={label}>
                 <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-0.5">{label}</p>
@@ -110,14 +115,39 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
 
           {lot.notaFinca && (
             <p className="text-xs text-coffee-400/80 italic leading-relaxed">
-              {lot.notaFinca}
+              {lotNotaFinca(lot, locale)}
             </p>
           )}
 
           <div className="border-t border-coffee-800" />
+
+          {/* Análisis Verde */}
+          <div>
+            <p className="text-[10px] tracking-[0.12em] uppercase text-coffee-400 mb-3">{t.cafeVerde.analisisVerde}</p>
+            <div className="space-y-0">
+              {[
+                [t.cafeVerde.specHumedad, lot.humedad],
+                [t.cafeVerde.specActividadAgua, lot.actividadAgua],
+                [t.cafeVerde.specDensidad, lot.densidad],
+                [t.cafeVerde.specCriba, lot.criba],
+                [t.cafeVerde.specTrilla, lot.trilla],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-center justify-between py-2 border-b border-coffee-800/60">
+                  <span className="text-[11px] tracking-[0.05em] text-coffee-400">{label}</span>
+                  <span className="text-xs font-medium text-coffee-white">{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="p-6 border-t border-coffee-800 space-y-3">
+          <Link
+            href={withLocale(locale, `/cafe-verde/${greenLotDetailSlug(lot.name)}`)}
+            className="flex items-center justify-center w-full py-3.5 bg-coffee-white text-coffee-black text-[13px] tracking-[0.1em] uppercase font-semibold rounded-sm hover:bg-coffee-cream transition-colors min-h-[48px]"
+          >
+            {t.cafeVerde.learnMore}
+          </Link>
           <a
             href={buildWhatsAppUrl(lotInfo)}
             target="_blank"
@@ -127,7 +157,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
-            Enquire
+            {t.cafeVerde.enquire}
           </a>
           <a
             href={buildEnquiryEmailUrl(lotInfo)}
@@ -137,7 +167,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="M22 4L12 13 2 4" />
             </svg>
-            Enquire
+            {t.cafeVerde.enquire}
           </a>
         </div>
       </motion.div>

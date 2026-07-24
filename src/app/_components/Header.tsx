@@ -2,18 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mobileNavVariants, mobileNavItem, easeSmooth } from '@/lib/framer';
 import { siteConfig } from '@/config/site';
-
-const LIGHT_BG_ROUTES = ['/cafe-verde/'];
+import { splitLocale } from '@/config/i18n';
+import { useTranslation } from './LanguageProvider';
+import { LocaleLink } from './LocaleLink';
+import { LanguageToggle } from './LanguageToggle';
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isLightBg = LIGHT_BG_ROUTES.some((r) => pathname.startsWith(r) && pathname !== '/cafe-verde');
+  const { t } = useTranslation();
+  const { rest } = splitLocale(pathname);
+  const isLightBg = rest.startsWith('/cafe-verde/') && rest !== '/cafe-verde';
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -24,42 +27,44 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20 flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex flex-col items-center">
+          <LocaleLink href="/" className="flex flex-col items-center">
             <Image
               src="/logo.svg"
               alt="Coffee Five"
-              width={28}
-              height={44}
-              className="h-[36px] w-auto brightness-0 invert"
+              width={40}
+              height={63}
+              className="h-[48px] md:h-[54px] w-auto brightness-0 invert"
             />
             <span
-              className="text-[10px] tracking-tight mt-0.5 text-white"
+              className="text-[11px] tracking-tight mt-0.5 text-white"
               style={{ fontFamily: "'salted', cursive" }}
             >
               The Coffee Five
             </span>
-          </Link>
+          </LocaleLink>
 
           <nav className="hidden md:flex items-center gap-7">
             {siteConfig.nav.main.map((item) => (
-              <Link
+              <LocaleLink
                 key={item.key}
                 href={item.href}
                 className={`text-[11px] tracking-[0.1em] uppercase transition-colors ${isLightBg ? 'text-coffee-black hover:text-gray-600' : 'text-coffee-white hover:text-coffee-200'}`}
               >
-                {item.label}
-              </Link>
+                {t.nav[item.key]}
+              </LocaleLink>
             ))}
-            <span className={`text-[11px] tracking-[0.1em] uppercase ml-2 pl-4 border-l ${isLightBg ? 'text-gray-400 border-gray-300' : 'text-coffee-400 border-coffee-700'}`}>
-              <span className={`font-medium ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>ES</span> / EN
-            </span>
-            <Link href="/coming-soon" className={`ml-2 ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>
+            <LanguageToggle
+              className={`text-[11px] tracking-[0.1em] uppercase ml-2 pl-4 border-l flex items-center gap-1.5 ${isLightBg ? 'text-gray-400 border-gray-300' : 'text-coffee-400 border-coffee-700'}`}
+              activeClassName={`font-medium ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}
+              inactiveClassName="hover:opacity-80 transition-opacity"
+            />
+            <LocaleLink href="/tostado" className={`ml-2 ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
-            </Link>
+            </LocaleLink>
           </nav>
 
           <button
@@ -95,19 +100,21 @@ export function Header() {
             <nav className="flex flex-col items-center gap-8">
               {siteConfig.nav.main.map((item) => (
                 <motion.div key={item.key} variants={mobileNavItem}>
-                  <Link
+                  <LocaleLink
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
                     className="text-coffee-white text-2xl tracking-[0.15em] uppercase"
                   >
-                    {item.label}
-                  </Link>
+                    {t.nav[item.key]}
+                  </LocaleLink>
                 </motion.div>
               ))}
               <motion.div variants={mobileNavItem}>
-                <span className="text-coffee-400 text-sm tracking-[0.1em] uppercase mt-4">
-                  <span className="text-coffee-white font-medium">ES</span> / EN
-                </span>
+                <LanguageToggle
+                  className="text-coffee-400 text-sm tracking-[0.1em] uppercase mt-4 flex items-center gap-2"
+                  activeClassName="text-coffee-white font-medium"
+                  inactiveClassName="hover:text-coffee-200 transition-colors"
+                />
               </motion.div>
             </nav>
           </motion.div>

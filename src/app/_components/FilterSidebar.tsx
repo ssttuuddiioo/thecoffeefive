@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from './LanguageProvider';
 
 type FilterSection = {
   key: string;
@@ -8,6 +9,7 @@ type FilterSection = {
   options: string[];
   selected: string[];
   onChange: (values: string[]) => void;
+  defaultOpen?: boolean;
 };
 
 type SliderFilter = {
@@ -17,6 +19,7 @@ type SliderFilter = {
   value: [number, number];
   onChange: (value: [number, number]) => void;
   unit?: string;
+  defaultOpen?: boolean;
 };
 
 type FilterSidebarProps = {
@@ -27,8 +30,8 @@ type FilterSidebarProps = {
   onClear: () => void;
 };
 
-function AccordionSection({ label, options, selected, onChange }: Omit<FilterSection, 'key'>) {
-  const [open, setOpen] = useState(false);
+function AccordionSection({ label, options, selected, onChange, defaultOpen = true }: Omit<FilterSection, 'key'>) {
+  const [open, setOpen] = useState(defaultOpen);
 
   const toggle = (value: string) => {
     if (selected.includes(value)) {
@@ -81,8 +84,8 @@ function AccordionSection({ label, options, selected, onChange }: Omit<FilterSec
   );
 }
 
-function SliderSection({ label, min, max, value, onChange, unit = '' }: SliderFilter) {
-  const [open, setOpen] = useState(false);
+function SliderSection({ label, min, max, value, onChange, unit = '', defaultOpen = true }: SliderFilter) {
+  const [open, setOpen] = useState(defaultOpen);
   const isActive = value[0] !== min || value[1] !== max;
 
   return (
@@ -146,18 +149,19 @@ function SliderSection({ label, min, max, value, onChange, unit = '' }: SliderFi
 }
 
 export function FilterSidebar({ keyword, onKeywordChange, sections, sliders = [], onClear }: FilterSidebarProps) {
+  const { t } = useTranslation();
   const hasActiveFilters = keyword.length > 0 || sections.some(s => s.selected.length > 0) || sliders.some(s => s.value[0] !== s.min || s.value[1] !== s.max);
 
   return (
     <nav className="flex flex-col gap-1">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs tracking-[0.15em] uppercase text-coffee-400">Filtrar</h3>
+        <h3 className="text-xs tracking-[0.15em] uppercase text-coffee-400">{t.cafeVerde.filterButton}</h3>
         {hasActiveFilters && (
           <button
             onClick={onClear}
             className="text-[11px] text-coffee-400 hover:text-coffee-white uppercase tracking-wide transition-colors"
           >
-            Limpiar
+            {t.cafeVerde.clear}
           </button>
         )}
       </div>
@@ -168,7 +172,7 @@ export function FilterSidebar({ keyword, onKeywordChange, sections, sliders = []
           type="text"
           value={keyword}
           onChange={e => onKeywordChange(e.target.value)}
-          placeholder="Buscar por nombre..."
+          placeholder={t.cafeVerde.searchPlaceholder}
           className="w-full bg-transparent border border-coffee-700 text-coffee-white text-[13px] px-3 py-2.5 rounded-sm placeholder:text-coffee-400/50 focus:outline-none focus:border-coffee-400 transition-colors"
         />
       </div>
@@ -181,6 +185,7 @@ export function FilterSidebar({ keyword, onKeywordChange, sections, sliders = []
           options={section.options}
           selected={section.selected}
           onChange={section.onChange}
+          defaultOpen={section.defaultOpen}
         />
       ))}
 
