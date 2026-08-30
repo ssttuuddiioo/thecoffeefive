@@ -10,6 +10,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cdn.shopify.com',
       },
+      {
+        // Sanity image CDN — every lot, product and article image is served
+        // from here. Without this, next/image rejects them outright.
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
     ],
   },
 };

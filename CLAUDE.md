@@ -18,7 +18,9 @@ There is an approved homepage wireframe at `docs/wireframe-reference.html`. Open
 - **Tailwind CSS** for styling
 - **Vercel** for hosting
 
-No Sanity CMS at launch — Shopify is the single data source. The architecture should be clean enough that Sanity can be added later without a rewrite.
+**Sanity is the CMS** (added 2026-08-29). It backs the green coffee offer list, roasted coffee, the journal, and every UI string. The Studio is mounted in this app at `/studio`. See `docs/SANITY.md` for setup and the CSV workflow.
+
+Shopify remains the intended commerce backend for the roasted + merch cart and checkout; that integration is written (`src/lib/shopify.ts`) but not yet wired to any page.
 
 ## Brand Identity & Design Direction
 
@@ -287,7 +289,7 @@ npm run type-check   # TypeScript check
 
 ## Things to Remember
 
-1. **ONE backend: Shopify.** Everything lives there — green lots, roasted coffee, merch, blog posts. Juan has one login, one admin, one workflow. No CMS, no Notion, no Sanity at launch.
+1. **Content lives in Sanity; commerce belongs to Shopify.** Green lots, roasted coffee, journal posts and all site copy are edited in the Studio at `/studio`. Green coffee inventory also round-trips through CSV (`npm run lots:export` / `lots:import`, matched on `ref`). Shopify is still the plan for cart + checkout on roasted and merch. Content fetching falls back to `src/lib/mock-data.ts` when Sanity is unconfigured — see `docs/SANITY.md`.
 2. **Two commerce flows, same admin.** Green coffee → enquiry (WhatsApp + email). Roasted + merch → Shopify cart + checkout. The frontend decides which flow based on the collection. Juan's workflow is identical for both. NEVER put a Shopify cart button on green coffee.
 3. **Enquiry UX:** WhatsApp button with WA logo + email option. Pre-fill the message with lot details. Support multi-lot enquiry lists (client-side state, send all at once).
 4. **Quick-view drawer on green coffee:** Clicking a lot card opens a slide-out panel with key specs + enquiry CTAs. "Ver detalles completos →" links to full product page with six tabs.

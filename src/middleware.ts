@@ -62,8 +62,15 @@ function passThrough(request: NextRequest, locale: Locale) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Never touch API routes, Next internals, or static files.
-  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || PUBLIC_FILE.test(pathname)) {
+  // Never touch API routes, the Sanity Studio, Next internals, or static files.
+  // The Studio is mounted outside the [locale] segment, so locale prefixing
+  // would send /studio to a non-existent /es/studio and 404.
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/studio') ||
+    pathname.startsWith('/_next') ||
+    PUBLIC_FILE.test(pathname)
+  ) {
     return NextResponse.next();
   }
 

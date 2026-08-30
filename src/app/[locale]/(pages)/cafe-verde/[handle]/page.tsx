@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { greenLotDetailSlug, mockGreenLots, procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { ColombiaMap } from '@/app/_components/ColombiaMap';
 import { FincaSlideshow } from '@/app/_components/FincaSlideshow';
@@ -19,8 +20,12 @@ function Divider() {
 
 type Props = { params: { handle: string; locale: string } };
 
-export function generateStaticParams() {
-  return mockGreenLots.map((l) => ({ handle: greenLotDetailSlug(l.name) }));
+/** Lots come from Sanity, falling back to bundled content — see src/sanity/fetch.ts. */
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const slugs = await getGreenLotSlugs();
+  return slugs.map((handle) => ({ handle }));
 }
 
 const C = {
@@ -88,10 +93,10 @@ const C = {
   },
 } as const;
 
-export default function GreenCoffeeLotPage({ params }: Props) {
+export default async function GreenCoffeeLotPage({ params }: Props) {
   const locale = params.locale as import('@/config/i18n').Locale;
   const c = C[locale];
-  const lot = mockGreenLots.find((l) => greenLotDetailSlug(l.name) === params.handle);
+  const lot = await getGreenLotBySlug(params.handle);
   if (!lot) notFound();
   const procesoColor = procesoColorMap[lot.proceso] || lot.color;
   const procesoName = procesoLabel(lot.proceso, locale);

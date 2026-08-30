@@ -7,19 +7,30 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "sanity:gen-copy": "tsx scripts/gen-sitecopy-schema.ts",
+    "sanity:seed": "tsx scripts/seed.ts",
+    "lots:import": "tsx scripts/lots-import.ts",
+    "lots:export": "tsx scripts/lots-export.ts"
   },
   "dependencies": {
+    "@portabletext/react": "^3.2.4",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/vision": "^3.99.0",
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^11.0.0",
     "gsap": "^3.12.0",
     "next": "^14.2.0",
+    "next-sanity": "^9.12.3",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "resend": "^6.10.0"
+    "resend": "^6.10.0",
+    "sanity": "^3.99.0",
+    "styled-components": "^6.5.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/papaparse": "^5.5.2",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.0",
@@ -27,6 +38,7 @@
     "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
+    "tsx": "^4.23.12",
     "typescript": "^5.4.0"
   }
 }

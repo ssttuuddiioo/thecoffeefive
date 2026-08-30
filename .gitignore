@@ -37,5 +37,5 @@ next-env.d.ts
 /Website/
 /feedback/
 
-# optimization scripts
-/scripts/
+# one-off image optimizer — not part of the build
+/scripts/optimize-images.mjs
