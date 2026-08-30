@@ -74,6 +74,10 @@ export const es = {
     body: 'Típicamente 1–2 puntos de mejora en puntaje de taza a través de optimización de procesos, sin inversión de capital importante. Bonificaciones reales para el productor: mejor pago por carga, mejor factor en la cooperativa.',
     services: [
       {
+        title: 'Barista Pro',
+        description: 'Entrenamiento profesional para baristas y equipos de barra: calibración de espresso, perfiles de extracción, flujo de servicio, diseño de menú y preparación para competencia.',
+      },
+      {
         title: 'Asesoría a Fincas',
         description: 'Siembras desde cero, nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.',
       },

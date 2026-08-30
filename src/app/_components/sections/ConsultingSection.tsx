@@ -4,8 +4,18 @@ import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
 import { SectionTag } from '../SectionTag';
 import { useTranslation } from '../LanguageProvider';
+import { LocaleLink } from '../LocaleLink';
 
-const serviceColors = ['#ECCD3E', '#4592DB', '#0D7C47'];
+// One entry per card in `t.consulting.services`, matched by position. Barista Pro
+// leads on the dark red, which needs white text; the lighter accents keep black.
+// The anchors are the section ids on /services (same slugs as the consultation
+// form's service <select>).
+const serviceCards = [
+  { bg: '#91171F', fg: '#FFFFFF', href: '/services#barista-pro' },
+  { bg: '#ECCD3E', fg: '#000000', href: '/services#asesoria-fincas' },
+  { bg: '#4592DB', fg: '#000000', href: '/services#laboratorio' },
+  { bg: '#0D7C47', fg: '#000000', href: '/services#formacion' },
+];
 
 export function ConsultingSection() {
   const { t } = useTranslation();
@@ -32,16 +42,20 @@ export function ConsultingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           <div>
             <div className="space-y-3">
-              {t.consulting.services.map((service, i) => (
-                <div
-                  key={service.title}
-                  className="p-5 rounded-md border border-white/10"
-                  style={{ backgroundColor: serviceColors[i] }}
-                >
-                  <h4 className="text-sm font-bold text-black mb-1.5">{service.title} →</h4>
-                  <p className="text-xs text-black/70 leading-relaxed">{service.description}</p>
-                </div>
-              ))}
+              {t.consulting.services.map((service, i) => {
+                const card = serviceCards[i % serviceCards.length];
+                return (
+                  <LocaleLink
+                    key={service.title}
+                    href={card.href}
+                    className="block p-5 rounded-md border border-white/10 hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: card.bg, color: card.fg }}
+                  >
+                    <h4 className="text-sm font-bold mb-1.5">{service.title} →</h4>
+                    <p className="text-xs leading-relaxed opacity-70">{service.description}</p>
+                  </LocaleLink>
+                );
+              })}
             </div>
           </div>
 

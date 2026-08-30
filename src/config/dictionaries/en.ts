@@ -73,6 +73,10 @@ export const en: Dictionary = {
     body: 'Typically a 1–2 point improvement in cup score through process optimization, with no major capital investment. Real bonuses for the producer: better pay per load, a better factor at the cooperative.',
     services: [
       {
+        title: 'Barista Pro',
+        description: 'Professional training for baristas and bar teams: espresso dialing, extraction profiles, service workflow, menu design, and competition prep.',
+      },
+      {
         title: 'Farm Consulting',
         description: 'Planting from scratch, nutrition, pest management, climate change adaptation, and the design of fermentation and drying processes.',
       },

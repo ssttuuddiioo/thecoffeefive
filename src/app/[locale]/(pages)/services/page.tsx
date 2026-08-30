@@ -15,6 +15,8 @@ const CONTENT = {
         'Adaptación al cambio climático, manejo integrado de plagas, y selección de variedades para maximizar calidad y productividad.',
       ],
       cta: 'Consultar',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Asesoría a Fincas — Quiero saber más',
     },
     lab: {
       title: 'Laboratorio — Medellín',
@@ -23,6 +25,8 @@ const CONTENT = {
         'Control de calidad completo: análisis físico del grano verde, tueste de muestra, catación bajo protocolo SCA, y retroalimentación directa al productor.',
       ],
       cta: 'Agendar Visita',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Laboratorio — Quiero saber más',
     },
     training: {
       title: 'Formación',
@@ -31,6 +35,19 @@ const CONTENT = {
         'Formación personalizada según necesidades: desde productores que quieren entender mejor la calidad de su café, hasta tostadores que buscan mejorar su sourcing.',
       ],
       cta: 'Inscribirse',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Formación — Quiero saber más',
+    },
+    baristaPro: {
+      eyebrow: 'Formación Avanzada',
+      title: 'Barista Pro',
+      paragraphs: [
+        'En Barista Pro, vamos a aprender a identificar todas las variables que se involucran en la extracción del café, y además las vamos a explorar a fondo hasta entender el papel que juega cada una de ellas en el precolado. Vamos a volvernos unos maestros en la interpretación del café tostado, vamos a entender el agua, vamos a saber interpretar los métodos y los filtros, aprenderemos técnicas de vertido y sus implicaciones en la extracción.',
+        'Todo un mundo alrededor de la física y la química, además de la dinámica de fluidos y la termodinámica que se involucran al preparar una taza de café.',
+      ],
+      cta: 'Quiero Saber Más',
+      mailSubject: 'Barista Pro — Quiero saber más',
+      imageAlt: 'Juan Medina preparando café en el brew bar',
     },
     faqTitle: 'Preguntas Frecuentes',
     faqSubtitle: 'Resolvemos las dudas más comunes sobre nuestros servicios de consultoría.',
@@ -80,6 +97,7 @@ const CONTENT = {
     optionFarm: 'Asesoría a Fincas',
     optionLab: 'Laboratorio',
     optionTraining: 'Formación',
+    optionBaristaPro: 'Barista Pro',
     optionOther: 'Otro',
     submit: 'Enviar',
   },
@@ -96,6 +114,8 @@ const CONTENT = {
         'Climate change adaptation, integrated pest management, and variety selection to maximize quality and productivity.',
       ],
       cta: 'Get in Touch',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Farm Consulting — I want to know more',
     },
     lab: {
       title: 'Lab — Medellín',
@@ -104,6 +124,8 @@ const CONTENT = {
         'Complete quality control: physical analysis of the green bean, sample roasting, cupping under SCA protocol, and direct feedback to the producer.',
       ],
       cta: 'Book a Visit',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Lab — I want to know more',
     },
     training: {
       title: 'Training',
@@ -112,6 +134,19 @@ const CONTENT = {
         'Personalized training tailored to your needs: from producers who want to better understand their coffee’s quality to roasters looking to improve their sourcing.',
       ],
       cta: 'Enroll',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Training — I want to know more',
+    },
+    baristaPro: {
+      eyebrow: 'Advanced Training',
+      title: 'Barista Pro',
+      paragraphs: [
+        'In Barista Pro we learn to identify every variable involved in coffee extraction, and we explore each one in depth until we understand the role it plays in the brew. We become masters at reading roasted coffee, we come to understand water, we learn to interpret brewing methods and filters, and we work through pouring techniques and their implications for extraction.',
+        'A whole world of physics and chemistry, plus the fluid dynamics and thermodynamics involved in brewing a cup of coffee.',
+      ],
+      cta: 'I Want to Know More',
+      mailSubject: 'Barista Pro — I want to know more',
+      imageAlt: 'Juan Medina brewing coffee at the brew bar',
     },
     faqTitle: 'Frequently Asked Questions',
     faqSubtitle: 'We answer the most common questions about our consulting services.',
@@ -161,6 +196,7 @@ const CONTENT = {
     optionFarm: 'Farm Consulting',
     optionLab: 'Lab',
     optionTraining: 'Training',
+    optionBaristaPro: 'Barista Pro',
     optionOther: 'Other',
     submit: 'Send',
   },
@@ -202,7 +238,7 @@ export default function ServicesPage({ params }: { params: { locale: string } })
 
       {/* Detail sections */}
       <section className="container-site section-padding">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
+        <div id="asesoria-fincas" className="scroll-mt-20 md:scroll-mt-24 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
           <div>
             <h2 className="text-2xl font-bold text-coffee-white mb-4">{c.farm.title}</h2>
             <div className="space-y-4 text-sm text-coffee-400 leading-relaxed">
@@ -210,16 +246,24 @@ export default function ServicesPage({ params }: { params: { locale: string } })
                 <p key={i}>{p}</p>
               ))}
             </div>
-            <a href="#consulta" className="inline-block mt-6 px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
-              {c.farm.cta}
-            </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#consulta" className="inline-flex items-center px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
+                {c.farm.cta}
+              </a>
+              <a
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.farm.mailSubject)}`}
+                className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
+              >
+                {c.farm.knowMore}
+              </a>
+            </div>
           </div>
           <div className="relative aspect-[4/3] rounded-md overflow-hidden">
             <Image src="/consulting-9.jpg" alt={c.farmImageAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
+        <div id="laboratorio" className="scroll-mt-20 md:scroll-mt-24 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
           <div className="relative aspect-[4/3] rounded-md overflow-hidden order-2 lg:order-1">
             <Image src="/consulting-10.jpg" alt={c.labImageAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
           </div>
@@ -230,13 +274,21 @@ export default function ServicesPage({ params }: { params: { locale: string } })
                 <p key={i}>{p}</p>
               ))}
             </div>
-            <a href="#consulta" className="inline-block mt-6 px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
-              {c.lab.cta}
-            </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#consulta" className="inline-flex items-center px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
+                {c.lab.cta}
+              </a>
+              <a
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.lab.mailSubject)}`}
+                className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
+              >
+                {c.lab.knowMore}
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+        <div id="formacion" className="scroll-mt-20 md:scroll-mt-24 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           <div>
             <h2 className="text-2xl font-bold text-coffee-white mb-4">{c.training.title}</h2>
             <div className="space-y-4 text-sm text-coffee-400 leading-relaxed">
@@ -244,12 +296,56 @@ export default function ServicesPage({ params }: { params: { locale: string } })
                 <p key={i}>{p}</p>
               ))}
             </div>
-            <a href="#consulta" className="inline-block mt-6 px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
-              {c.training.cta}
-            </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#consulta" className="inline-flex items-center px-6 py-3 bg-coffee-orange text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-orange/90 transition-colors min-h-[44px]">
+                {c.training.cta}
+              </a>
+              <a
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.training.mailSubject)}`}
+                className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
+              >
+                {c.training.knowMore}
+              </a>
+            </div>
           </div>
-          <div className="relative aspect-[4/3] rounded-md overflow-hidden">
+          <div className="relative aspect-[4/3] lg:aspect-[3/4] rounded-md overflow-hidden">
             <Image src="/consulting-11.jpg" alt={c.trainingImageAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+          </div>
+        </div>
+      </section>
+
+      {/* Barista Pro */}
+      <section id="barista-pro" className="scroll-mt-20 md:scroll-mt-24 border-y border-coffee-800 bg-coffee-900">
+        <div className="container-site section-padding">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div className="relative aspect-[4/5] rounded-md overflow-hidden order-2 lg:order-1">
+              <Image
+                src="/baristapro.jpeg"
+                alt={c.baristaPro.imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+            <div className="order-1 lg:order-2">
+              <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">
+                {c.baristaPro.eyebrow}
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold text-coffee-white mb-4">
+                {c.baristaPro.title}
+              </h2>
+              <div className="space-y-4 text-sm text-coffee-400 leading-relaxed">
+                {c.baristaPro.paragraphs.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+              <a
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.baristaPro.mailSubject)}`}
+                className="inline-flex items-center mt-8 px-8 py-3 bg-coffee-cream text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white transition-colors min-h-[44px] font-semibold"
+              >
+                {c.baristaPro.cta}
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -299,6 +395,7 @@ export default function ServicesPage({ params }: { params: { locale: string } })
                   <option value="asesoria-fincas">{c.optionFarm}</option>
                   <option value="laboratorio">{c.optionLab}</option>
                   <option value="formacion">{c.optionTraining}</option>
+                  <option value="barista-pro">{c.optionBaristaPro}</option>
                   <option value="otro">{c.optionOther}</option>
                 </select>
               </div>
