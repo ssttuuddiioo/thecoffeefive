@@ -30,7 +30,7 @@ type FilterSidebarProps = {
   onClear: () => void;
 };
 
-function AccordionSection({ label, options, selected, onChange, defaultOpen = true }: Omit<FilterSection, 'key'>) {
+function AccordionSection({ label, options, selected, onChange, defaultOpen = false }: Omit<FilterSection, 'key'>) {
   const [open, setOpen] = useState(defaultOpen);
 
   const toggle = (value: string) => {
@@ -84,7 +84,7 @@ function AccordionSection({ label, options, selected, onChange, defaultOpen = tr
   );
 }
 
-function SliderSection({ label, min, max, value, onChange, unit = '', defaultOpen = true }: SliderFilter) {
+function SliderSection({ label, min, max, value, onChange, unit = '', defaultOpen = false }: SliderFilter) {
   const [open, setOpen] = useState(defaultOpen);
   const isActive = value[0] !== min || value[1] !== max;
 

@@ -1,182 +1,36 @@
-'use client';
+import type { Metadata } from 'next';
+import { isLocale, defaultLocale, type Locale } from '@/config/i18n';
+import { getDictionary } from '@/config/dictionaries';
+import { SignupSection } from '@/app/_components/sections/SignupSection';
 
-import { useState, useMemo } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { RoastedCard } from '@/app/_components/RoastedCard';
-import { FilterSidebar } from '@/app/_components/FilterSidebar';
-import { LocaleLink } from '@/app/_components/LocaleLink';
-import { useTranslation } from '@/app/_components/LanguageProvider';
-import { mockRoastedCoffee } from '@/lib/mock-data';
-
-const COPY = {
-  es: {
-    eyebrow: 'Tostado',
-    title: 'Café Tostado',
-    intro: 'Café de especialidad tostado por Juan. Frescura garantizada — tostamos sobre pedido.',
-    filter: 'Filtrar',
-    filters: 'Filtros',
-    variedad: 'Variedad',
-    proceso: 'Proceso',
-    tueste: 'Tueste',
-    origen: 'Origen',
-    count: (n: number) => `${n} cafés`,
-    empty: 'No se encontraron cafés con estos filtros.',
-  },
-  en: {
-    eyebrow: 'Roasted',
-    title: 'Roasted Coffee',
-    intro: 'Specialty coffee roasted by Juan. Freshness guaranteed — we roast to order.',
-    filter: 'Filter',
-    filters: 'Filters',
-    variedad: 'Variety',
-    proceso: 'Process',
-    tueste: 'Roast',
-    origen: 'Origin',
-    count: (n: number) => `${n} coffees`,
-    empty: 'No coffees found with these filters.',
-  },
-} as const;
-
-export default function TiendaPage() {
-  const { locale } = useTranslation();
-  const c = COPY[locale];
-  const allProducts = [...mockRoastedCoffee, ...mockRoastedCoffee];
-
-  const [keyword, setKeyword] = useState('');
-  const [selVariedad, setSelVariedad] = useState<string[]>([]);
-  const [selProceso, setSelProceso] = useState<string[]>([]);
-  const [selTueste, setSelTueste] = useState<string[]>([]);
-  const [selOrigin, setSelOrigin] = useState<string[]>([]);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
-  const filtered = useMemo(() => {
-    return allProducts.filter(c => {
-      if (keyword && !c.variedad.toLowerCase().includes(keyword.toLowerCase()) && !c.origin.toLowerCase().includes(keyword.toLowerCase())) return false;
-      if (selVariedad.length && !selVariedad.includes(c.variedad)) return false;
-      if (selProceso.length && !selProceso.includes(c.proceso)) return false;
-      if (selTueste.length && !selTueste.includes(c.tueste)) return false;
-      if (selOrigin.length && !selOrigin.includes(c.origin)) return false;
-      return true;
-    });
-  }, [keyword, selVariedad, selProceso, selTueste, selOrigin]);
-
-  const availableFor = useMemo(() => {
-    const check = (exclude: string) => {
-      return allProducts.filter(c => {
-        if (keyword && !c.variedad.toLowerCase().includes(keyword.toLowerCase()) && !c.origin.toLowerCase().includes(keyword.toLowerCase())) return false;
-        if (exclude !== 'variedad' && selVariedad.length && !selVariedad.includes(c.variedad)) return false;
-        if (exclude !== 'proceso' && selProceso.length && !selProceso.includes(c.proceso)) return false;
-        if (exclude !== 'tueste' && selTueste.length && !selTueste.includes(c.tueste)) return false;
-        if (exclude !== 'origin' && selOrigin.length && !selOrigin.includes(c.origin)) return false;
-        return true;
-      });
-    };
-
-    return {
-      variedad: Array.from(new Set(check('variedad').map(c => c.variedad))).sort(),
-      proceso: Array.from(new Set(check('proceso').map(c => c.proceso))).sort(),
-      tueste: Array.from(new Set(check('tueste').map(c => c.tueste))).sort(),
-      origin: Array.from(new Set(check('origin').map(c => c.origin))).sort(),
-    };
-  }, [keyword, selVariedad, selProceso, selTueste, selOrigin]);
-
-  const clearAll = () => {
-    setKeyword('');
-    setSelVariedad([]);
-    setSelProceso([]);
-    setSelTueste([]);
-    setSelOrigin([]);
+/**
+ * Roasted coffee isn't for sale yet. The nav, footer and homepage all still
+ * link here — rather than dead links or a hidden nav item, /tostado is a
+ * coming-soon page that collects emails for launch.
+ *
+ * The product pages live in git history; restore them when the store opens.
+ */
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  const locale: Locale = isLocale(params.locale) ? params.locale : defaultLocale;
+  const dict = getDictionary(locale);
+  return {
+    title: dict.nav.roasted,
+    description: dict.signup.body,
   };
+}
 
-  const filterSections = [
-    { key: 'variedad', label: c.variedad, options: availableFor.variedad, selected: selVariedad, onChange: setSelVariedad },
-    { key: 'proceso', label: c.proceso, options: availableFor.proceso, selected: selProceso, onChange: setSelProceso },
-    { key: 'tueste', label: c.tueste, options: availableFor.tueste, selected: selTueste, onChange: setSelTueste },
-    { key: 'origin', label: c.origen, options: availableFor.origin, selected: selOrigin, onChange: setSelOrigin },
-  ];
-
-  const sidebarContent = (
-    <FilterSidebar
-      keyword={keyword}
-      onKeywordChange={setKeyword}
-      sections={filterSections}
-      onClear={clearAll}
-    />
-  );
+export default function TostadoPage({ params }: { params: { locale: string } }) {
+  const locale: Locale = isLocale(params.locale) ? params.locale : defaultLocale;
+  const t = getDictionary(locale);
 
   return (
-    <main className="pt-20 md:pt-24">
-      <div className="container-site section-padding">
-        <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">{c.eyebrow}</p>
-        <h1 className="text-3xl md:text-4xl font-bold text-coffee-white mb-4">{c.title}</h1>
-        <p className="text-sm text-coffee-400 mb-8 max-w-lg">
-          {c.intro}
+    <main className="min-h-screen bg-coffee-black flex flex-col justify-center pt-20 md:pt-24">
+      <div className="text-center px-5 pt-10">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-coffee-400">
+          {t.nav.roasted}
         </p>
-
-        {/* Mobile filter toggle */}
-        <button
-          onClick={() => setMobileFiltersOpen(true)}
-          className="lg:hidden mb-6 px-5 py-2.5 border border-coffee-700 text-coffee-white text-[11px] tracking-[0.1em] uppercase rounded-sm"
-        >
-          {c.filter}
-        </button>
-
-        {/* Sidebar + Grid layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-10">
-          {/* Desktop sidebar */}
-          <aside className="hidden lg:block sticky top-28 self-start max-h-[calc(100vh-8rem)] overflow-y-auto pr-4 scrollbar-thin">
-            {sidebarContent}
-          </aside>
-
-          {/* Product grid */}
-          <div>
-            <p className="text-xs text-coffee-400 mb-4">{c.count(filtered.length)}</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filtered.map((coffee, i) => (
-                <LocaleLink key={`${coffee.variedad}-${i}`} href={`/tostado/${coffee.variedad.toLowerCase().replace(/\s+/g, '-')}`}>
-                  <RoastedCard {...coffee} />
-                </LocaleLink>
-              ))}
-            </div>
-            {filtered.length === 0 && (
-              <p className="text-coffee-400 text-sm py-20 text-center">{c.empty}</p>
-            )}
-          </div>
-        </div>
       </div>
-
-      {/* Mobile filter drawer */}
-      <AnimatePresence>
-        {mobileFiltersOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
-              onClick={() => setMobileFiltersOpen(false)}
-            />
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-[300px] bg-coffee-900 z-50 p-6 overflow-y-auto lg:hidden"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-sm font-bold text-coffee-white">{c.filters}</span>
-                <button
-                  onClick={() => setMobileFiltersOpen(false)}
-                  className="text-coffee-400 hover:text-coffee-white text-lg"
-                >
-                  ✕
-                </button>
-              </div>
-              {sidebarContent}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <SignupSection />
     </main>
   );
 }
