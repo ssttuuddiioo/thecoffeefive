@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Coffee Five',
   tagline: 'Desde la semilla hasta la taza',
   description: 'Juan Medina — Specialty coffee from origin to cup. Green coffee, roasted coffee, and consulting services.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://coffeefive.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://thecoffeefive.com',
   author: 'Juan Medina',
   email: 'info@coffeefive.com',
   whatsapp: {

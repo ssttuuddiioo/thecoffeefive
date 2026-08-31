@@ -44,7 +44,7 @@ the browser.
 
 ```bash
 npx sanity cors add http://localhost:3001 --credentials
-npx sanity cors add https://coffeefive.com --credentials
+npx sanity cors add https://thecoffeefive.com --credentials
 ```
 
 Skipping this makes the Studio load but fail every request with a CORS error.
