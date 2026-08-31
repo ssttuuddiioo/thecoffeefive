@@ -4,13 +4,13 @@ export const siteConfig = {
   description: 'Juan Medina — Specialty coffee from origin to cup. Green coffee, roasted coffee, and consulting services.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://thecoffeefive.com',
   author: 'Juan Medina',
-  email: 'info@coffeefive.com',
+  email: 'juan@thecoffeefive.com',
   whatsapp: {
     /** E.164 without + — used for wa.me links */
     number: '15167578800',
     /** Human-readable (US) */
     display: '+1 (516) 757-8800',
-    email: 'info@coffeefive.com', // Fallback email for enquiries
+    email: 'juan@thecoffeefive.com', // Fallback email for enquiries
   },
   social: {
     instagram: 'https://www.instagram.com/thecoffeefive/',

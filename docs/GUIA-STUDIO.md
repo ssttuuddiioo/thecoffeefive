@@ -1,6 +1,6 @@
 # Guía del Studio — Café Verde
 
-Todo el contenido del sitio se edita en **coffeefive.com/studio**.
+Todo el contenido del sitio se edita en **thecoffeefive.com/studio**.
 Los cambios aparecen en la página en menos de un minuto.
 
 ---

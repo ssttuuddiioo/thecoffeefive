@@ -78,8 +78,8 @@ export default function ContactPage({ params }: { params: { locale: string } }) 
             <div className="space-y-6 mb-10">
               <div>
                 <h3 className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-2">{c.emailLabel}</h3>
-                <a href="mailto:info@coffeefive.com" className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]">
-                  info@coffeefive.com
+                <a href={`mailto:${siteConfig.email}`} className="text-sm text-coffee-white hover:text-coffee-200 transition-colors inline-flex items-center min-h-[44px]">
+                  {siteConfig.email}
                 </a>
               </div>
               <div>
