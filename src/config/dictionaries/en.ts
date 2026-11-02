@@ -38,7 +38,7 @@ export const en: Dictionary = {
     body: 'Fourth-generation coffee growers — present at every step of the coffee chain.',
     roles: ['Planting', 'Nutrition', 'Production', 'Roasting', 'Cupping', 'Export'],
     cta: 'Learn more →',
-    reassurance: 'Let us give you the peace of mind you need. We walk with you at every step toward specialty.',
+    reassurance: 'Let us give you the peace of mind you need, we walk with you at every step toward specialty.',
     photo: photo('/identity-juan.jpg', 'Juan Medina'),
   },
   process: {
@@ -61,7 +61,7 @@ export const en: Dictionary = {
       laboratorio: {
         title: 'Lab',
         description: 'Sensory analysis, quality control, feedback and adjustments, continuous improvement of practices.',
-        photo: photo('/process-2.jpg', 'Lab'),
+        photo: photo('/consulting-2.jpg', 'Roest roaster in the lab'),
       },
       logistica: {
         title: 'Logistics',
@@ -401,7 +401,7 @@ export const en: Dictionary = {
       logistica: {
         title: 'Logistics',
         photo: photo('/logistics.jpg', 'Logistics'),
-        intro: '"We don\'t sell coffee, we sell freshness." Every day counts from the moment the coffee leaves the farm.',
+        intro: '"We don\'t sell coffee, we sell peace of mind and freshness." Every day counts from the moment the coffee leaves the farm.',
         details: [
           'Direct export from Colombia',
           'Import and warehousing in the USA',

@@ -39,7 +39,7 @@ export const es = {
     body: 'Cuarta generación de caficultores — con presencia en cada paso de la cadena del café.',
     roles: ['Siembra', 'Nutrición', 'Producción', 'Tostión', 'Catación', 'Exportación'],
     cta: 'Conocer más →',
-    reassurance: 'Permítenos darte la tranquilidad que necesitas. Te acompañamos en cada paso hacia la especialidad.',
+    reassurance: 'Permítenos darte la tranquilidad que necesitas, nosotros te acompañamos en cada paso hacia la especialidad.',
     photo: photo('/identity-juan.jpg', 'Juan Medina'),
   },
   process: {
@@ -62,7 +62,7 @@ export const es = {
       laboratorio: {
         title: 'Laboratorio',
         description: 'Análisis sensorial, control de calidad, retroalimentación y ajustes, mejora continua de prácticas.',
-        photo: photo('/process-2.jpg', 'Laboratorio'),
+        photo: photo('/consulting-2.jpg', 'Tostadora Roest en el laboratorio'),
       },
       logistica: {
         title: 'Logística',
@@ -402,7 +402,7 @@ export const es = {
       logistica: {
         title: 'Logística',
         photo: photo('/logistics.jpg', 'Logística'),
-        intro: '"No vendemos café, vendemos frescura." Cada día cuenta desde que el café sale de la finca.',
+        intro: '"No vendemos café, vendemos tranquilidad y frescura." Cada día cuenta desde que el café sale de la finca.',
         details: [
           'Exportación directa desde Colombia',
           'Importación y almacenamiento en EE.UU.',
