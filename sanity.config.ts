@@ -9,7 +9,7 @@ import { structure } from './src/sanity/structure';
 import { apiVersion, dataset, projectId, studioBasePath } from './src/sanity/env';
 
 /** One fixed document each: never created, duplicated or removed from the Studio UI. */
-const SINGLETONS = new Set<string>(['siteCopy', ...COPY_DOC_IDS]);
+const SINGLETONS = new Set<string>(COPY_DOC_IDS);
 
 export default defineConfig({
   name: 'coffee-five',

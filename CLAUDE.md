@@ -18,9 +18,9 @@ There is an approved homepage wireframe at `docs/wireframe-reference.html`. Open
 - **Tailwind CSS** for styling
 - **Vercel** for hosting
 
-**Sanity is the CMS** (added 2026-08-29). It backs the green coffee offer list, roasted coffee, the journal, and every UI string. The Studio is mounted in this app at `/studio`. See `docs/SANITY.md` for setup and the CSV workflow.
+**Sanity is the CMS.** It backs the green coffee offer list, roasted coffee, the blog, and the text and photos of every page, edited in the Studio at `/studio`. `es.ts` and `en.ts` hold the fallback copy and the shape; published Studio values win over them. See `docs/SANITY.md`.
 
-Shopify remains the intended commerce backend for the roasted + merch cart and checkout; that integration is written (`src/lib/shopify.ts`) but not yet wired to any page.
+Roasted coffee is a catalog behind a Studio switch, with orders over WhatsApp. `src/lib/shopify.ts` is written but not wired to any page. **Where the Shopify sections below disagree with this, this wins.**
 
 ## Brand Identity & Design Direction
 

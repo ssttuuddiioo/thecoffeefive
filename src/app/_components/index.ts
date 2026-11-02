@@ -6,4 +6,3 @@ export { LotCard } from './LotCard';
 export { RoastedCard } from './RoastedCard';
 export { JournalCard } from './JournalCard';
 export { LotDrawer } from './LotDrawer';
-export { CartDrawer } from './CartDrawer';

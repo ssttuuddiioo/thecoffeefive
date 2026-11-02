@@ -78,5 +78,3 @@ export const journalArticleBySlugQuery = groq`
 `;
 
 export const journalSlugsQuery = groq`*[_type == "journalArticle"].slug.current`;
-
-export const siteCopyQuery = groq`*[_type == "siteCopy"][0]`;

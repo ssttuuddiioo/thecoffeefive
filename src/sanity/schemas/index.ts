@@ -5,7 +5,6 @@ import { editorialImage } from './objects/editorialImage';
 import { greenLot } from './documents/greenLot';
 import { roastedCoffee } from './documents/roastedCoffee';
 import { journalArticle } from './documents/journalArticle';
-import { siteCopy } from './documents/siteCopy';
 import { copyDocuments } from './documents/copy';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -19,6 +18,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   greenLot,
   roastedCoffee,
   journalArticle,
-  siteCopy,
   ...copyDocuments,
 ];

@@ -1,9 +1,78 @@
-# Guía del Studio — Café Verde
+# Guía del Studio
 
-Todo el contenido del sitio se edita en **thecoffeefive.com/studio**.
-Los cambios aparecen en la página en menos de un minuto.
+Todo el contenido del sitio se edita en **thecoffeefive.com/studio**. Al darle
+**Publish**, el cambio aparece en la página en segundos.
+
+## Dónde está cada cosa
+
+| Quieres cambiar | Ve a |
+|---|---|
+| Menú, pie de página, botones | **General** |
+| Textos y fotos de una página | **Inicio**, **Consultorio**, **Nosotros**, **Proceso** o **Contacto** |
+| Lotes de café verde | **Café verde** |
+| Cafés tostados y abrir la tienda | **Café tostado** |
+| Artículos | **Blog** |
 
 ---
+
+# Páginas
+
+## Cambiar un texto
+
+1. Abre la página en la barra lateral, por ejemplo **Inicio**.
+2. Elige la pestaña de la sección, por ejemplo **Portada**.
+3. Cambia el texto en **Español** y en **English**.
+4. **Publish**.
+
+Si dejas un campo vacío, la página muestra el texto original, así que nunca queda
+un hueco en blanco.
+
+## Cambiar una foto
+
+Cada foto tiene su campo. Sube la imagen nueva y escribe una descripción corta.
+Con el lápiz eliges el **punto de enfoque**, la parte de la foto que no se debe
+recortar. Si quitas la imagen, vuelve la foto original.
+
+## Listas
+
+Las preguntas frecuentes, las etiquetas y los párrafos se pueden agregar, quitar y
+arrastrar para cambiar el orden. Si borras todos los elementos de una lista,
+vuelve la lista original.
+
+---
+
+# Blog
+
+**Blog → Artículos**. Cada artículo tiene título, categoría, foto de portada, fecha
+y contenido en los dos idiomas. Si el inglés está vacío, la página en inglés
+muestra el español.
+
+La **fecha de publicación** se muestra en el artículo y ordena la lista, con el más
+reciente primero.
+
+---
+
+# Café tostado
+
+**Café tostado → Cafés** tiene un documento por cada café. Desmarca **Disponible**
+para ocultar uno sin borrarlo.
+
+## Abrir la tienda
+
+Mientras no la abras, la página de tostado muestra **Próximamente**.
+
+1. Revisa que los cafés tengan fotos, precio y textos reales.
+2. **Café tostado → Apertura y textos** → activa **Abrir la tienda**.
+3. **Publish**.
+
+Para cerrarla, la desactivas y publicas de nuevo. Si no hay ningún café disponible,
+sigue mostrando Próximamente.
+
+Los pedidos llegan por WhatsApp: el botón abre un mensaje con el café ya escrito.
+
+---
+
+# Café verde
 
 ## Buscar un lote
 
@@ -67,6 +136,13 @@ con cuál choca. `HS-` para especialidad, `RG-` para comercial.
 El resto (variedad, finca, altura, humedad, densidad…) es opcional: lo que
 llenes se muestra, lo que dejes vacío no aparece.
 
+## Notas de cata y proceso
+
+Pestaña **Contenido**. Cada lote puede tener su propia **descripción del proceso**,
+**notas de cata** (separadas por comas) y **descripción del perfil**. Mientras estén
+vacías, la página muestra un texto general, así que conviene llenarlas para que cada
+lote cuente su propia historia.
+
 ---
 
 ## Fotos
@@ -79,8 +155,8 @@ de la lista. Arrastra para reordenarlas.
 ## Textos en dos idiomas
 
 Los campos de texto largo tienen **Español** e **Inglés**. El español es el
-principal: si dejas el inglés vacío, la página en inglés muestra el español en
-vez de quedarse en blanco.
+principal: si dejas el inglés vacío en un lote, la página en inglés muestra el
+español en vez de quedarse en blanco.
 
 ---
 
@@ -113,7 +189,7 @@ Reglas:
 - Los lotes se emparejan por **referencia** (`HS-001`). Si la referencia ya
   existe, se actualiza; si es nueva, se crea el lote.
 - **Solo se tocan las columnas del archivo.** Las fotos y todo lo demás quedan
-  intactos.
+  intactos. Una celda vacía no borra nada: deja el valor como estaba.
 - **Nunca borra.** Si quitas una fila del archivo, ese lote sigue igual. Para
   bajar un lote de la lista, pon `disponible` en `false`.
 - Si el archivo tiene un error (una referencia mal escrita, un proceso que no

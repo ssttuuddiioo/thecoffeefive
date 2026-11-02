@@ -28,39 +28,6 @@ export function greenLotDetailSlug(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export const mockRoastedCoffee = [
-  {
-    variedad: 'Caturra', img: '/bag-front.jpg', origin: 'Bellavista', proceso: 'Honey', tueste: 'Light–medium',
-    fermentacion: '48 horas cherry oxidation', perfil: 'Perfil frutal', price: '$18', weight: '250g',
-    brew: {
-      ratio: '1:15',
-      temperatura: '92 °C',
-      metodos: ['V60', 'Kalita Wave', 'Batch brew'],
-      tip: 'Dale tiempo al bloom — este honey necesita unos 40 segundos para desgasificar bien. Vas a notar cómo se expande la cama de café. Mantené vertidos suaves y circulares para extraer ese dulzor de panela sin sobre-extraer.',
-    },
-  },
-  {
-    variedad: 'Gesha', img: '/bag-front.jpg', origin: 'El Paraíso', proceso: 'Natural', tueste: 'Light',
-    fermentacion: '72 horas anaerobic', perfil: 'Perfil floral', price: '$24', weight: '250g',
-    brew: {
-      ratio: '1:16',
-      temperatura: '90 °C',
-      metodos: ['V60', 'Chemex'],
-      tip: 'Con este Gesha, menos es más. Usá agua un poco más fría que lo habitual — 90 °C máximo — para no quemar las notas florales. Molienda media-gruesa y extracción lenta. Si lo hacés bien, vas a sentir jazmín en la taza.',
-    },
-  },
-  {
-    variedad: 'Castillo', img: '/bag-front.jpg', origin: 'La Esperanza', proceso: 'Lavado', tueste: 'Espresso',
-    fermentacion: '36 horas semicarbonic', perfil: 'Perfil chocolate', price: '$16', weight: '250g',
-    brew: {
-      ratio: '1:2 (espresso) · 1:15 (filtro)',
-      temperatura: '93 °C',
-      metodos: ['Espresso', 'Moka', 'AeroPress'],
-      tip: 'Diseñado para espresso — apuntá a 25–30 segundos de extracción con 18g in, 36g out. Si lo querés en filtro, subí la temperatura a 94 °C y usá ratio 1:15. En AeroPress invertido queda brutal: 2 minutos, press lento.',
-    },
-  },
-];
-
 export type JournalContentBlock =
   | { type: 'p'; text: string }
   | { type: 'h2'; text: string }
