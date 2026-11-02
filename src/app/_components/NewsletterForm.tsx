@@ -41,12 +41,12 @@ export function NewsletterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t.common.emailPlaceholder}
-        className="flex-1 min-h-[44px] bg-transparent border border-coffee-700 rounded-l-sm px-3 text-sm text-coffee-white placeholder:text-coffee-600 focus:outline-none focus:border-coffee-400"
+        className="flex-1 min-w-0 min-h-[44px] bg-transparent border border-coffee-700 rounded-l-sm px-3 text-sm text-coffee-white placeholder:text-coffee-600 focus:outline-none focus:border-coffee-400"
       />
       <button
         type="submit"
         disabled={sending}
-        className="min-h-[44px] px-5 bg-coffee-white text-coffee-black text-[11px] tracking-[0.1em] uppercase rounded-r-sm font-bold hover:bg-coffee-200 transition-colors disabled:opacity-50"
+        className="shrink-0 min-h-[44px] px-5 bg-coffee-white text-coffee-black text-[11px] tracking-[0.1em] uppercase rounded-r-sm font-bold hover:bg-coffee-200 transition-colors disabled:opacity-50"
       >
         {sending ? '...' : '→'}
       </button>

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { FaqAccordion } from '@/app/_components/FaqAccordion';
 import { getSiteCopy } from '@/sanity/copy';
 import { photoProps } from '@/lib/photo';
+import { siteConfig } from '@/config/site';
 
 export default async function ServicesPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as import('@/config/i18n').Locale;
@@ -159,7 +160,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
             <p className="text-sm text-coffee-400 mb-10 text-center">
               {c.formBody}
             </p>
-            <form action="https://formsubmit.co/your-email@example.com" method="POST" className="space-y-6">
+            <form action={`https://formsubmit.co/${siteConfig.email}`} method="POST" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-[11px] tracking-[0.1em] uppercase text-coffee-400 mb-2">{c.labelName}</label>
