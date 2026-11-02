@@ -305,19 +305,6 @@ export function getAllJournalSlugs(): string[] {
   return journalSources.map((a) => a.slug);
 }
 
-export const processSteps = [
-  { title: 'Cultivo', label: 'CULTIVO', img: '/process-0.jpg', description: 'Semilla, vivero, cultivo, nutrición, control de plagas y enfermedades, procesamiento, control de calidad.' },
-  { title: 'Origen', label: 'ORIGEN', img: '/process-1.jpg', description: 'Red de productores, consultoría, buenas prácticas, sourcing ético y relaciones directas.' },
-  { title: 'Laboratorio', label: 'LABORATORIO', img: '/process-2.jpg', description: 'Análisis sensorial, control de calidad, retroalimentación y ajustes, mejora continua de prácticas.' },
-  { title: 'Logística', label: 'LOGÍSTICA', img: '/process-3.jpg', description: 'Exportación, importación en EE.UU., transporte terrestre. No vendemos café, vendemos tranquilidad y frescura.' },
-];
-
-export const consultingServices = [
-  { title: 'Asesoría a Fincas', description: 'Siembras desde cero, nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.' },
-  { title: 'Laboratorio — Medellín', description: 'Análisis sensorial y físico. Lab propio con tostadora, trilladora, espresso, percolado. Recomendaciones de mejora.' },
-  { title: 'Formación', description: 'Talleres de filtrados, home barista, catación, fermentación, secado, logística. Compra de verde. Herramientas para que productores, tostadores y compradores tomen mejores decisiones.' },
-];
-
 export const procesoColorMap: Record<string, string> = {
   Lavado: siteConfig.procesoColors.lavado,
   Natural: siteConfig.procesoColors.natural,

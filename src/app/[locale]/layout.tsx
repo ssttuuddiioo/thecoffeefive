@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { locales, isLocale, type Locale } from '@/config/i18n';
-import { getDictionary } from '@/config/dictionaries';
+import { getDictionary, toClientDictionary } from '@/config/dictionaries';
 import { LanguageProvider } from '@/app/_components/LanguageProvider';
 import { Header } from '@/app/_components/Header';
 import { Footer } from '@/app/_components/Footer';
@@ -20,7 +20,7 @@ export default function LocaleLayout({
   params: { locale: string };
 }) {
   if (!isLocale(locale)) notFound();
-  const dict = getDictionary(locale as Locale);
+  const dict = toClientDictionary(getDictionary(locale as Locale));
 
   return (
     <LanguageProvider locale={locale as Locale} dict={dict}>

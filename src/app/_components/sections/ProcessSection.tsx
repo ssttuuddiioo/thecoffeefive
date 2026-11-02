@@ -6,19 +6,20 @@ import { useStaggerReveal, useHoverLift } from '@/lib/gsap';
 import { withLocale } from '@/config/i18n';
 import { SectionTag } from '../SectionTag';
 import { useTranslation } from '../LanguageProvider';
-import { processSteps } from '@/lib/mock-data';
+import { photoProps, type Photo } from '@/lib/photo';
 
-const stepColors = ['#000000', '#000000', '#000000', '#000000'];
+const STEP_IDS = ['cultivo', 'origen', 'laboratorio', 'logistica'] as const;
+const CARD_COLOR = '#000000';
 
 function ProcessCard({
   title,
   description,
-  img,
+  photo,
   color,
 }: {
   title: string;
   description: string;
-  img: string;
+  photo: Photo;
   color: string;
 }) {
   const { t, locale } = useTranslation();
@@ -38,8 +39,7 @@ function ProcessCard({
     >
       <div className="relative aspect-square rounded-md overflow-hidden">
         <Image
-          src={img}
-          alt={title}
+          {...photoProps(photo)} alt={photo.alt}
           fill
           className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -91,13 +91,13 @@ export function ProcessSection() {
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {t.process.steps.map((step, i) => (
+          {STEP_IDS.map((id) => (
             <ProcessCard
-              key={step.title}
-              title={step.title}
-              description={step.description}
-              img={processSteps[i]?.img ?? ''}
-              color={stepColors[i % stepColors.length]}
+              key={id}
+              title={t.process.steps[id].title}
+              description={t.process.steps[id].description}
+              photo={t.process.steps[id].photo}
+              color={CARD_COLOR}
             />
           ))}
         </div>

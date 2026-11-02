@@ -1,65 +1,9 @@
+import { getDictionary } from '@/config/dictionaries';
 import { siteConfig } from '@/config/site';
-
-const CONTENT = {
-  es: {
-    eyebrow: 'Contacto',
-    heading: 'Hablemos sobre café.',
-    intro:
-      'Ya sea que busques café verde de especialidad, necesites consultoría para tu finca, o quieras saber más sobre nuestros servicios — estamos aquí para conversar.',
-    emailLabel: 'Email',
-    whatsappLabel: 'WhatsApp',
-    labLabel: 'Laboratorio',
-    labValue: 'Medellín, Colombia',
-    instagramLabel: 'Instagram',
-    formHeading: 'Enviar mensaje',
-    nameLabel: 'Nombre',
-    namePlaceholder: 'Tu nombre',
-    emailPlaceholder: 'tu@email.com',
-    subjectLabel: 'Asunto',
-    messageLabel: 'Mensaje',
-    messagePlaceholder: '¿En qué podemos ayudarte?',
-    options: {
-      empty: 'Seleccionar',
-      green: 'Café Verde — Compra',
-      roasted: 'Café Tostado',
-      consulting: 'Consultoría / Asesoría',
-      training: 'Formación / Cursos',
-      other: 'Otro',
-    },
-    submit: 'Enviar',
-  },
-  en: {
-    eyebrow: 'Contact',
-    heading: "Let's talk coffee.",
-    intro:
-      'Whether you’re looking for specialty green coffee, need consulting for your farm, or want to learn more about our services — we’re here to talk.',
-    emailLabel: 'Email',
-    whatsappLabel: 'WhatsApp',
-    labLabel: 'Lab',
-    labValue: 'Medellín, Colombia',
-    instagramLabel: 'Instagram',
-    formHeading: 'Send a message',
-    nameLabel: 'Name',
-    namePlaceholder: 'Your name',
-    emailPlaceholder: 'you@email.com',
-    subjectLabel: 'Subject',
-    messageLabel: 'Message',
-    messagePlaceholder: 'How can we help you?',
-    options: {
-      empty: 'Select',
-      green: 'Green Coffee — Purchase',
-      roasted: 'Roasted Coffee',
-      consulting: 'Consulting',
-      training: 'Training / Courses',
-      other: 'Other',
-    },
-    submit: 'Send',
-  },
-} as const;
 
 export default function ContactPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as import('@/config/i18n').Locale;
-  const c = CONTENT[locale];
+  const c = getDictionary(locale).contact;
 
   return (
     <main className="pt-20 md:pt-24">

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { getDictionary } from '@/config/dictionaries';
 import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { ColombiaMap } from '@/app/_components/ColombiaMap';
@@ -28,74 +29,9 @@ export async function generateStaticParams() {
   return slugs.map((handle) => ({ handle }));
 }
 
-const C = {
-  es: {
-    proceso: 'Proceso',
-    perfil: 'Perfil',
-    metodo: 'Método',
-    procesoDescripcion:
-      'Cereza seleccionada a mano en punto óptimo de maduración. Fermentación controlada de 48–60 horas con monitoreo de temperatura. Secado en camas elevadas durante 15–20 días hasta alcanzar 10.5–11% de humedad. Todo el proceso supervisado por el equipo de Coffee Five.',
-    notasCata: ['Frutas tropicales', 'Cítrico brillante', 'Final limpio'],
-    perfilDescripcion:
-      'Notas de frutas tropicales, acidez cítrica brillante, cuerpo medio con un final limpio y prolongado. Un café con carácter que destaca en métodos de filtro y también en espresso. Complejidad que evoluciona a medida que la taza se enfría.',
-    masl: 'msnm',
-    breadcrumbOrigen: 'Origen',
-    factVarietal: 'Variedad',
-    factProceso: 'Proceso',
-    factRegion: 'Región',
-    factMunicipio: 'Municipio',
-    factFinca: 'Finca',
-    factAltitude: 'Altura',
-    factNorma: 'Norma',
-    factAvailable: 'Disponible',
-    factPrice: 'Precio',
-    enquiryTitle: '¿Interesado en este lote?',
-    enquiryBody: 'Contáctanos directamente para hablar sobre disponibilidad, precio y envío.',
-    enquire: 'Consultar',
-    email: 'Email',
-    whatsapp: 'WhatsApp',
-    ubicacionLabel: {
-      colombia: 'En Colombia',
-      en_transito: 'En tránsito',
-      landed_us: 'Aterrizado en EE.UU.',
-    } as Record<string, string>,
-  },
-  en: {
-    proceso: 'Process',
-    perfil: 'Profile',
-    metodo: 'Method',
-    procesoDescripcion:
-      'Cherries hand-picked at peak ripeness. Controlled fermentation of 48–60 hours with temperature monitoring. Dried on raised beds for 15–20 days until reaching 10.5–11% moisture. The entire process is supervised by the Coffee Five team.',
-    notasCata: ['Tropical fruit', 'Bright citrus', 'Clean finish'],
-    perfilDescripcion:
-      'Tropical fruit notes, bright citric acidity, medium body with a clean, lingering finish. A coffee with character that shines in filter methods as well as espresso. Complexity that evolves as the cup cools.',
-    masl: 'masl',
-    breadcrumbOrigen: 'Origin',
-    factVarietal: 'Varietal',
-    factProceso: 'Process',
-    factRegion: 'Region',
-    factMunicipio: 'Municipality',
-    factFinca: 'Farm',
-    factAltitude: 'Altitude',
-    factNorma: 'Grade',
-    factAvailable: 'Available',
-    factPrice: 'Price',
-    enquiryTitle: 'Interested in this lot?',
-    enquiryBody: 'Contact us directly to discuss availability, pricing, and shipping.',
-    enquire: 'Enquire',
-    email: 'Email',
-    whatsapp: 'WhatsApp',
-    ubicacionLabel: {
-      colombia: 'In Colombia',
-      en_transito: 'In transit',
-      landed_us: 'Landed in USA',
-    } as Record<string, string>,
-  },
-} as const;
-
 export default async function GreenCoffeeLotPage({ params }: Props) {
   const locale = params.locale as import('@/config/i18n').Locale;
-  const c = C[locale];
+  const c = getDictionary(locale).lotDetail;
   const lot = await getGreenLotBySlug(params.handle);
   if (!lot) notFound();
   const procesoColor = procesoColorMap[lot.proceso] || lot.color;
@@ -113,8 +49,6 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
     quantity: lot.weight,
     ubicacion: lot.ubicacion,
   };
-
-  const ubicacionLabel = c.ubicacionLabel;
 
   return (
     <main className="bg-white min-h-screen">

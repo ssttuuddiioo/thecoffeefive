@@ -2,12 +2,12 @@
 
 import { createContext, useContext } from 'react';
 import type { Locale } from '@/config/i18n';
-import type { Dictionary } from '@/config/dictionaries';
+import type { ClientDictionary } from '@/config/dictionaries';
 
 type LanguageContextValue = {
   locale: Locale;
   /** The active dictionary. */
-  t: Dictionary;
+  t: ClientDictionary;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -18,7 +18,7 @@ export function LanguageProvider({
   children,
 }: {
   locale: Locale;
-  dict: Dictionary;
+  dict: ClientDictionary;
   children: React.ReactNode;
 }) {
   return (

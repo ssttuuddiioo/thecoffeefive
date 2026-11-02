@@ -3,26 +3,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
 import { getAllJournalSlugs, getJournalArticleBySlug, type JournalContentBlock } from '@/lib/mock-data';
+import { getDictionary } from '@/config/dictionaries';
 import { withLocale, type Locale } from '@/config/i18n';
 
 type Props = {
   params: { locale: string; slug: string };
 };
-
-const C = {
-  es: {
-    back: '← Volver al journal',
-    readMinutes: 'min de lectura',
-    role: 'Productor · Catador · Tostador',
-    featuredImage: 'Imagen destacada',
-  },
-  en: {
-    back: '← Back to journal',
-    readMinutes: 'min read',
-    role: 'Producer · Cupper · Roaster',
-    featuredImage: 'Featured image',
-  },
-} as const;
 
 export function generateStaticParams() {
   return getAllJournalSlugs().map((slug) => ({ slug }));
@@ -84,7 +70,7 @@ function renderBlock(block: JournalContentBlock, index: number) {
 
 export default function BlogPostPage({ params }: Props) {
   const locale = params.locale as Locale;
-  const c = C[locale];
+  const c = getDictionary(locale).blog;
   const article = getJournalArticleBySlug(params.slug, locale);
 
   if (!article) {
@@ -108,7 +94,7 @@ export default function BlogPostPage({ params }: Props) {
             {article.title}
           </h1>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-coffee-400">
-            <span>Juan Medina</span>
+            <span>{c.author}</span>
             <span className="hidden sm:inline">·</span>
             <span>{article.readMinutes} {c.readMinutes}</span>
           </div>
@@ -128,7 +114,7 @@ export default function BlogPostPage({ params }: Props) {
               <Image src="/logo.svg" alt="Coffee Five" width={24} height={38} className="brightness-0 invert" />
             </div>
             <div>
-              <p className="text-sm font-medium text-coffee-white">Juan Medina</p>
+              <p className="text-sm font-medium text-coffee-white">{c.author}</p>
               <p className="text-xs text-coffee-400">{c.role}</p>
             </div>
           </div>

@@ -1,3 +1,5 @@
+import { photo } from '@/lib/photo';
+
 /**
  * Spanish dictionary — the canonical shape. `en.ts` is typed against this via
  * the `Dictionary` type in `./dictionary`, so both stay in sync.
@@ -23,6 +25,7 @@ export const es = {
     ctaPrimary: 'Nuestro Café',
     ctaSecondary: 'Nuestros Servicios',
     scroll: 'Scroll',
+    photo: photo('/header.jpg', ''),
   },
   signup: {
     eyebrow: 'Próximamente',
@@ -35,13 +38,9 @@ export const es = {
     subheading: 'Garantizamos la calidad en cada taza.',
     body: 'Cuarta generación de caficultores — con presencia en cada paso de la cadena del café.',
     roles: ['Siembra', 'Nutrición', 'Producción', 'Tostión', 'Catación', 'Exportación'],
-    competenciasLabel: 'Competencias',
-    award1Title: 'Roasted Regional 2025',
-    award1Place: '1er lugar — Colombia',
-    award2Title: 'V60 Regional 2024',
-    award2Place: '2do lugar — Colombia',
     cta: 'Conocer más →',
     reassurance: 'Permítenos darte la tranquilidad que necesitas. Te acompañamos en cada paso hacia la especialidad.',
+    photo: photo('/identity-juan.jpg', 'Juan Medina'),
   },
   process: {
     tag: 'El Proceso',
@@ -49,47 +48,54 @@ export const es = {
     body: 'La calidad es trabajo intencional en cada etapa. Desde la selección de semilla hasta la taza final, cada paso está diseñado para proteger y revelar lo que hace único a cada lote de café de especialidad.',
     ctaFull: 'Ver el proceso completo →',
     cardCta: 'Ver más',
-    steps: [
-      {
+    steps: {
+      cultivo: {
         title: 'Cultivo',
         description: 'Semilla, vivero, cultivo, nutrición, control de plagas y enfermedades, procesamiento, control de calidad.',
+        photo: photo('/process-0.jpg', 'Cultivo'),
       },
-      {
+      origen: {
         title: 'Origen',
         description: 'Red de productores, consultoría, buenas prácticas, sourcing ético y relaciones directas.',
+        photo: photo('/process-1.jpg', 'Origen'),
       },
-      {
+      laboratorio: {
         title: 'Laboratorio',
         description: 'Análisis sensorial, control de calidad, retroalimentación y ajustes, mejora continua de prácticas.',
+        photo: photo('/process-2.jpg', 'Laboratorio'),
       },
-      {
+      logistica: {
         title: 'Logística',
         description: 'Exportación, importación en EE.UU., transporte terrestre. No vendemos café, vendemos tranquilidad y frescura.',
+        photo: photo('/process-3.jpg', 'Logística'),
       },
-    ],
+    },
   },
   consulting: {
     tag: 'Consultorio',
     heading: 'Consultorio',
     body: 'Típicamente 1–2 puntos de mejora en puntaje de taza a través de optimización de procesos, sin inversión de capital importante. Bonificaciones reales para el productor: mejor pago por carga, mejor factor en la cooperativa.',
-    services: [
-      {
+    services: {
+      baristaPro: {
         title: 'Barista Pro',
         description: 'Entrenamiento profesional para baristas y equipos de barra: calibración de espresso, perfiles de extracción, flujo de servicio, diseño de menú y preparación para competencia.',
       },
-      {
+      fincas: {
         title: 'Asesoría a Fincas. Siembras desde cero',
         description: 'Nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.',
       },
-      {
+      laboratorio: {
         title: 'Laboratorio — Medellín. Análisis sensorial y físico',
         description: 'Lab propio con tostadora, trilladora, espresso, percolado, recomendaciones de mejora.',
       },
-      {
+      formacion: {
         title: 'Formación. Talleres de filtrados, home barista, catación, fermentación, secado, logística',
         description: 'Compra de verde. Herramientas para que productores, tostadores y compradores tomen mejores decisiones.',
       },
-    ],
+    },
+    photo1: photo('/consulting-1.jpg', 'Asesoría en finca'),
+    photo2: photo('/consulting-2.jpg', 'Tostadora Roest en el laboratorio'),
+    photo3: photo('/consulting-3.jpg', 'Catación con Juan Medina'),
   },
   footer: {
     peaceOfMind: 'We give you peace of mind',
@@ -164,5 +170,286 @@ export const es = {
     drawerTransito: '🚢 En tránsito',
     drawerLandedUs: '📦 EE.UU.',
     msnm: 'msnm',
+  },
+  services: {
+    heroEyebrow: 'Consultoría y Servicios',
+    heroTitle: 'Ayudamos a los productores a mejorar la calidad — con resultados medibles.',
+    heroBody:
+      'Típicamente 1–2 puntos de mejora en puntaje de taza a través de optimización de procesos, sin inversión de capital mayor.',
+    heroCta: 'Agenda una Consulta',
+    farm: {
+      title: 'Asesoría a Fincas',
+      paragraphs: [
+        'Trabajamos directamente con productores en sus fincas. Análisis de suelos, planes de nutrición, diseño de procesos de fermentación y secado adaptados a las condiciones específicas de cada finca.',
+        'Adaptación al cambio climático, manejo integrado de plagas, y selección de variedades para maximizar calidad y productividad.',
+      ],
+      cta: 'Consultar',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Asesoría a Fincas — Quiero saber más',
+    },
+    lab: {
+      title: 'Laboratorio — Medellín',
+      paragraphs: [
+        'Lab propio equipado con tostadora de muestra, trilladora, máquina de espresso, medición de humedad, color, granulometría, y mesa de catación profesional.',
+        'Control de calidad completo: análisis físico del grano verde, tueste de muestra, catación bajo protocolo SCA, y retroalimentación directa al productor.',
+      ],
+      cta: 'Agendar Visita',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Laboratorio — Quiero saber más',
+    },
+    training: {
+      title: 'Formación',
+      paragraphs: [
+        'Curso semilla a taza — catación, tueste, compra de verde. Herramientas prácticas para que productores, tostadores y compradores tomen mejores decisiones.',
+        'Formación personalizada según necesidades: desde productores que quieren entender mejor la calidad de su café, hasta tostadores que buscan mejorar su sourcing.',
+      ],
+      cta: 'Inscribirse',
+      knowMore: 'Quiero Saber Más',
+      mailSubject: 'Formación — Quiero saber más',
+    },
+    baristaPro: {
+      eyebrow: 'Formación Avanzada',
+      title: 'Barista Pro',
+      paragraphs: [
+        'En Barista Pro, vamos a aprender a identificar todas las variables que se involucran en la extracción del café, y además las vamos a explorar a fondo hasta entender el papel que juega cada una de ellas en el precolado. Vamos a volvernos unos maestros en la interpretación del café tostado, vamos a entender el agua, vamos a saber interpretar los métodos y los filtros, aprenderemos técnicas de vertido y sus implicaciones en la extracción.',
+        'Todo un mundo alrededor de la física y la química, además de la dinámica de fluidos y la termodinámica que se involucran al preparar una taza de café.',
+      ],
+      cta: 'Quiero Saber Más',
+      mailSubject: 'Barista Pro — Quiero saber más',
+      photo: photo('/baristapro.jpeg', 'Juan Medina preparando café en el brew bar'),
+    },
+    faqTitle: 'Preguntas Frecuentes',
+    faqSubtitle: 'Resolvemos las dudas más comunes sobre nuestros servicios de consultoría.',
+    faqs: [
+      {
+        question: '¿Cuánto tiempo toma ver resultados en la calidad del café?',
+        answer:
+          'Típicamente entre una y dos cosechas. Los ajustes en fermentación y secado pueden mostrar mejoras inmediatas, mientras que cambios en nutrición de suelos y manejo agronómico se reflejan en la siguiente cosecha. En promedio logramos 1–2 puntos de mejora en puntaje de taza.',
+      },
+      {
+        question: '¿Necesito una inversión grande para empezar?',
+        answer:
+          'No. Nuestro enfoque se basa en optimizar los recursos que ya tienes — ajustes en procesos, tiempos de fermentación, métodos de secado. No requiere infraestructura nueva ni equipos costosos para comenzar a ver mejoras.',
+      },
+      {
+        question: '¿Cómo funciona la asesoría a fincas?',
+        answer:
+          'Empezamos con una visita de diagnóstico para evaluar suelos, infraestructura, y procesos actuales. Luego diseñamos un plan personalizado con metas claras y medibles. Hacemos seguimiento periódico — presencial y remoto — hasta alcanzar los objetivos.',
+      },
+      {
+        question: '¿Los cursos de formación son presenciales o virtuales?',
+        answer:
+          'Ambos. Los cursos prácticos de catación y tueste son presenciales en nuestro laboratorio en Medellín. También ofrecemos sesiones virtuales de consultoría y formación teórica para productores en zonas remotas.',
+      },
+      {
+        question: '¿Trabajan solo con productores colombianos?',
+        answer:
+          'Nuestro enfoque principal es Colombia, pero hemos asesorado productores en otros países de la región. Si tienes un proyecto fuera de Colombia, contáctanos para evaluar cómo podemos ayudarte.',
+      },
+      {
+        question: '¿Cuál es el costo de una consulta inicial?',
+        answer:
+          'La primera conversación es sin costo — queremos entender tu situación antes de proponer un plan. Los costos dependen del alcance del proyecto. Completa el formulario de contacto y te enviaremos una propuesta detallada.',
+      },
+    ],
+    heroPhoto: photo('/process-1.jpg', 'Juan Medina en consultoría de café'),
+    farmPhoto: photo('/consulting-9.jpg', 'Bultos de café verde en costal de fique'),
+    labPhoto: photo('/consulting-10.jpg', 'Muestras de café verde para análisis de calidad'),
+    trainingPhoto: photo('/consulting-11.jpg', 'Juan en la tostadora Diedrich'),
+    formTitle: 'Agenda una Consulta',
+    formBody: 'Cuéntanos sobre tu proyecto y te responderemos en menos de 24 horas.',
+    labelName: 'Nombre',
+    labelEmail: 'Email',
+    labelService: 'Servicio de Interés',
+    labelMessage: 'Mensaje',
+    optionSelect: 'Seleccionar...',
+    optionFarm: 'Asesoría a Fincas',
+    optionLab: 'Laboratorio',
+    optionTraining: 'Formación',
+    optionBaristaPro: 'Barista Pro',
+    optionOther: 'Otro',
+    submit: 'Enviar',
+  },
+  about: {
+    heroEyebrow: 'Sobre Juan Medina',
+    heroHeading: 'Desde la semilla hasta la taza — cada paso con intención.',
+    heroBody:
+      'Juan Medina es productor, catador, tostador, barista y exportador. Un profesional del café de especialidad que opera en toda la cadena, desde el cultivo en las montañas de Colombia hasta la taza final.',
+    heroPhoto: photo('/about-hero.jpg', 'Juan Medina'),
+    storyEyebrow: 'La historia',
+    storyHeading: 'La finca es la base del conocimiento.',
+    storyParagraphs: [
+      'Coffee Five nació de la convicción de que la calidad del café empieza mucho antes de la taza. Empieza en el suelo, en la semilla, en las decisiones de cada etapa del proceso.',
+      'Juan trabaja directamente con productores en Nariño, Huila, Cauca, Santander y Tolima. No solo compra su café — los asesora en nutrición de suelos, manejo de plagas, diseño de procesos de fermentación y secado.',
+      'El resultado: cafés con trazabilidad completa, calidad medible, y una historia real detrás de cada lote.',
+    ],
+    storyPhoto1: photo('/about1.jpg', 'Cucharas de catación'),
+    storyPhoto2: photo('/about3.jpg', 'Tostadora Roest en el laboratorio'),
+    storyPhoto3: photo('/about2.jpg', 'Recolección en finca'),
+    faqTitle: 'Preguntas Frecuentes',
+    faqSubtitle: 'Lo que nos preguntan con más frecuencia sobre Coffee Five y nuestro modelo.',
+    faqs: [
+      {
+        question: '¿Qué significa "desde la semilla hasta la taza"?',
+        answer:
+          'Significa que participamos en cada etapa del proceso: desde la selección de semillas y el manejo agronómico en finca, pasando por la fermentación, secado, catación, tueste, hasta la preparación final. No somos intermediarios — somos operadores en toda la cadena.',
+      },
+      {
+        question: '¿En qué regiones de Colombia trabajan?',
+        answer:
+          'Trabajamos con productores en Nariño, Huila, Cauca, Santander y Tolima. Cada región tiene perfiles de taza distintos que seleccionamos según las necesidades de nuestros clientes.',
+      },
+      {
+        question: '¿Coffee Five es un exportador o un tostador?',
+        answer:
+          'Ambos. Exportamos café verde para compradores B2B internacionales y también tostamos lotes seleccionados para venta directa al consumidor. El modelo nos permite controlar la calidad de principio a fin.',
+      },
+      {
+        question: '¿Cómo garantizan la calidad de cada lote?',
+        answer:
+          'Cada lote pasa por nuestro laboratorio en Medellín: análisis físico del grano verde, tueste de muestra, catación bajo protocolo SCA, y medición de humedad y actividad de agua. Solo ofrecemos lotes que cumplen nuestro estándar mínimo de 84 puntos.',
+      },
+      {
+        question: '¿Puedo visitar las fincas con las que trabajan?',
+        answer:
+          'Sí. Organizamos visitas de origen para compradores y profesionales del café. Es la mejor manera de entender el trabajo detrás de cada lote. Contáctanos para coordinar fechas y logística.',
+      },
+      {
+        question: '¿Ofrecen muestras antes de comprar?',
+        answer:
+          'Sí, enviamos muestras de café verde o tostado para evaluación. Para café verde, el costo de la muestra se descuenta del pedido final. Escríbenos por WhatsApp o correo para solicitarlas.',
+      },
+    ],
+    awardsEyebrow: 'Reconocimientos',
+    awards: [
+      { title: 'Roasted Regional 2025', place: 'Primer lugar — Colombia' },
+      { title: 'V60 Regional 2024', place: 'Segundo lugar — Colombia' },
+    ],
+  },
+  contact: {
+    eyebrow: 'Contacto',
+    heading: 'Hablemos sobre café.',
+    intro:
+      'Ya sea que busques café verde de especialidad, necesites consultoría para tu finca, o quieras saber más sobre nuestros servicios — estamos aquí para conversar.',
+    emailLabel: 'Email',
+    whatsappLabel: 'WhatsApp',
+    labLabel: 'Laboratorio',
+    labValue: 'Medellín, Colombia',
+    instagramLabel: 'Instagram',
+    formHeading: 'Enviar mensaje',
+    nameLabel: 'Nombre',
+    namePlaceholder: 'Tu nombre',
+    emailPlaceholder: 'tu@email.com',
+    subjectLabel: 'Asunto',
+    messageLabel: 'Mensaje',
+    messagePlaceholder: '¿En qué podemos ayudarte?',
+    options: {
+      empty: 'Seleccionar',
+      green: 'Café Verde — Compra',
+      roasted: 'Café Tostado',
+      consulting: 'Consultoría / Asesoría',
+      training: 'Formación / Cursos',
+      other: 'Otro',
+    },
+    submit: 'Enviar',
+  },
+  processPage: {
+    eyebrow: 'El Proceso',
+    h1: 'De la Semilla a la Taza',
+    intro: 'Cuatro pilares que definen cómo trabajamos. Cada uno existe para proteger la calidad del café y garantizar que lo que llega a tu taza refleje el trabajo de origen.',
+    pillars: {
+      cultivo: {
+        title: 'Cultivo',
+        photo: photo('/grow.jpg', 'Cultivo'),
+        intro: 'Todo empieza en la tierra. Acompañamos al productor desde la selección de semilla hasta la cosecha.',
+        details: [
+          'Selección de semillas y variedades adaptadas al terroir',
+          'Diseño de viveros y planes de renovación',
+          'Nutrición del suelo y manejo orgánico',
+          'Control integrado de plagas y enfermedades',
+          'Protocolos de cosecha selectiva en punto óptimo de maduración',
+          'Diseño de procesos de fermentación y secado en finca',
+          'Control de calidad en cereza, pergamino y trilla',
+        ],
+      },
+      origen: {
+        title: 'Origen',
+        photo: photo('/source.jpg', 'Origen'),
+        intro: 'Construimos relaciones directas con productores que comparten nuestra obsesión por la calidad.',
+        details: [
+          'Red de productores en Nariño, Huila, Cauca, Tolima, Antioquia y Santander',
+          'Consultoría en buenas prácticas agrícolas y de beneficio',
+          'Precios justos basados en calidad, no en mercado C',
+          'Trazabilidad completa: finca, lote, variedad, proceso',
+          'Visitas periódicas a finca para retroalimentación directa',
+          'Sourcing ético con compromiso a largo plazo',
+        ],
+      },
+      laboratorio: {
+        title: 'Laboratorio',
+        photo: photo('/lab.jpg', 'Laboratorio'),
+        intro: 'Nuestro laboratorio en Medellín es donde la calidad se mide, se entiende y se mejora.',
+        details: [
+          'Análisis sensorial con protocolo SCA',
+          'Mesa de catación calibrada semanalmente',
+          'Medición de humedad, actividad de agua y densidad',
+          'Análisis de color y granulometría del tueste',
+          'Perfilado de tueste con curvas documentadas',
+          'Retroalimentación con productores: cada lote tiene reporte',
+          'Mejora continua — cada cosecha mejor que la anterior',
+        ],
+      },
+      logistica: {
+        title: 'Logística',
+        photo: photo('/logistics.jpg', 'Logística'),
+        intro: '"No vendemos café, vendemos frescura." Cada día cuenta desde que el café sale de la finca.',
+        details: [
+          'Exportación directa desde Colombia',
+          'Importación y almacenamiento en EE.UU.',
+          'Transporte terrestre con cadena de frío cuando aplica',
+          'Seguimiento de cada lote desde origen hasta destino',
+          'Tiempos de tránsito optimizados para preservar frescura',
+          'Documentación y logística aduanera incluida',
+          'Entrega puerta a puerta para tostadores y compradores',
+        ],
+      },
+    },
+  },
+  blog: {
+    eyebrow: 'Journal',
+    heading: 'Desde la finca',
+    intro:
+      'Historias de origen, casos de estudio, y conocimiento técnico del mundo del café de especialidad.',
+    back: '← Volver al journal',
+    readMinutes: 'min de lectura',
+    role: 'Productor · Catador · Tostador',
+    featuredImage: 'Imagen destacada',
+    author: 'Juan Medina',
+  },
+  lotDetail: {
+    proceso: 'Proceso',
+    perfil: 'Perfil',
+    metodo: 'Método',
+    procesoDescripcion:
+      'Cereza seleccionada a mano en punto óptimo de maduración. Fermentación controlada de 48–60 horas con monitoreo de temperatura. Secado en camas elevadas durante 15–20 días hasta alcanzar 10.5–11% de humedad. Todo el proceso supervisado por el equipo de Coffee Five.',
+    notasCata: ['Frutas tropicales', 'Cítrico brillante', 'Final limpio'],
+    perfilDescripcion:
+      'Notas de frutas tropicales, acidez cítrica brillante, cuerpo medio con un final limpio y prolongado. Un café con carácter que destaca en métodos de filtro y también en espresso. Complejidad que evoluciona a medida que la taza se enfría.',
+    masl: 'msnm',
+    breadcrumbOrigen: 'Origen',
+    factVarietal: 'Variedad',
+    factProceso: 'Proceso',
+    factRegion: 'Región',
+    factMunicipio: 'Municipio',
+    factFinca: 'Finca',
+    factAltitude: 'Altura',
+    factNorma: 'Norma',
+    factAvailable: 'Disponible',
+    factPrice: 'Precio',
+    enquiryTitle: '¿Interesado en este lote?',
+    enquiryBody: 'Contáctanos directamente para hablar sobre disponibilidad, precio y envío.',
+    enquire: 'Consultar',
+    email: 'Email',
+    whatsapp: 'WhatsApp',
   },
 };

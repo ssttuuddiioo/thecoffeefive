@@ -1,27 +1,13 @@
 import { JournalCard } from '@/app/_components/JournalCard';
 import { getJournalArticles } from '@/lib/mock-data';
+import { getDictionary } from '@/config/dictionaries';
 import type { Locale } from '@/config/i18n';
 
 const blogImages = ['/blog1.png', '/blog3.png', '/blog5.png', '/blog2.png', '/blog1.png', '/blog3.png'];
 
-const C = {
-  es: {
-    eyebrow: 'Journal',
-    heading: 'Desde la finca',
-    intro:
-      'Historias de origen, casos de estudio, y conocimiento técnico del mundo del café de especialidad.',
-  },
-  en: {
-    eyebrow: 'Journal',
-    heading: 'From the journal',
-    intro:
-      'Origin stories, case studies, and technical knowledge from the world of specialty coffee.',
-  },
-} as const;
-
 export default function BlogPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as Locale;
-  const c = C[locale];
+  const c = getDictionary(locale).blog;
   const articles = getJournalArticles(locale);
 
   return (

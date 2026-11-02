@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
+import { photoProps } from '@/lib/photo';
 import { useTranslation } from '../LanguageProvider';
 import { LocaleLink } from '../LocaleLink';
 export function IdentitySection() {
@@ -35,8 +36,7 @@ export function IdentitySection() {
             style={{ transform: `translateY(${offset}px) scale(1.08)` }}
           >
             <Image
-              src="/identity-juan.jpg"
-              alt="Juan Medina"
+              {...photoProps(t.identity.photo)} alt={t.identity.photo.alt}
               fill
               className="object-cover object-center"
               sizes="(max-width: 1024px) 100vw, 50vw"

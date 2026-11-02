@@ -1,3 +1,5 @@
+import { photo } from '@/lib/photo';
+
 import type { Dictionary } from './dictionary';
 
 /** English dictionary — typed against the Spanish shape so keys can't drift. */
@@ -22,6 +24,7 @@ export const en: Dictionary = {
     ctaPrimary: 'Our Coffee',
     ctaSecondary: 'Our Services',
     scroll: 'Scroll',
+    photo: photo('/header.jpg', ''),
   },
   signup: {
     eyebrow: 'Coming soon',
@@ -34,13 +37,9 @@ export const en: Dictionary = {
     subheading: 'We guarantee quality in every cup.',
     body: 'Fourth-generation coffee growers — present at every step of the coffee chain.',
     roles: ['Planting', 'Nutrition', 'Production', 'Roasting', 'Cupping', 'Export'],
-    competenciasLabel: 'Competitions',
-    award1Title: 'Roasted Regional 2025',
-    award1Place: '1st place — Colombia',
-    award2Title: 'V60 Regional 2024',
-    award2Place: '2nd place — Colombia',
     cta: 'Learn more →',
     reassurance: 'Let us give you the peace of mind you need. We walk with you at every step toward specialty.',
+    photo: photo('/identity-juan.jpg', 'Juan Medina'),
   },
   process: {
     tag: 'The Process',
@@ -48,47 +47,54 @@ export const en: Dictionary = {
     body: 'Quality is intentional work at every stage. From seed selection to the final cup, every step is designed to protect and reveal what makes each specialty coffee lot unique.',
     ctaFull: 'See the full process →',
     cardCta: 'See more',
-    steps: [
-      {
+    steps: {
+      cultivo: {
         title: 'Cultivation',
         description: 'Seed, nursery, cultivation, nutrition, pest and disease control, processing, quality control.',
+        photo: photo('/process-0.jpg', 'Cultivation'),
       },
-      {
+      origen: {
         title: 'Sourcing',
         description: 'Producer network, consulting, best practices, ethical sourcing, and direct relationships.',
+        photo: photo('/process-1.jpg', 'Sourcing'),
       },
-      {
+      laboratorio: {
         title: 'Lab',
         description: 'Sensory analysis, quality control, feedback and adjustments, continuous improvement of practices.',
+        photo: photo('/process-2.jpg', 'Lab'),
       },
-      {
+      logistica: {
         title: 'Logistics',
         description: "Export, US import, land transport. We don't sell coffee, we sell peace of mind and freshness.",
+        photo: photo('/process-3.jpg', 'Logistics'),
       },
-    ],
+    },
   },
   consulting: {
     tag: 'Consulting',
     heading: 'Consulting',
     body: 'Typically a 1–2 point improvement in cup score through process optimization, with no major capital investment. Real bonuses for the producer: better pay per load, a better factor at the cooperative.',
-    services: [
-      {
+    services: {
+      baristaPro: {
         title: 'Barista Pro',
         description: 'Professional training for baristas and bar teams: espresso dialing, extraction profiles, service workflow, menu design, and competition prep.',
       },
-      {
+      fincas: {
         title: 'Farm Consulting. Planting from scratch',
         description: 'Nutrition, pest management, climate change adaptation, and the design of fermentation and drying processes.',
       },
-      {
+      laboratorio: {
         title: 'Lab — Medellín. Sensory and physical analysis',
         description: 'Our own lab with a roaster, huller, espresso, pour-over, and improvement recommendations.',
       },
-      {
+      formacion: {
         title: 'Training. Workshops on pour-over, home barista, cupping, fermentation, drying, and logistics',
         description: 'Green buying. Tools so producers, roasters, and buyers make better decisions.',
       },
-    ],
+    },
+    photo1: photo('/consulting-1.jpg', 'Consulting on the farm'),
+    photo2: photo('/consulting-2.jpg', 'Roest roaster in the lab'),
+    photo3: photo('/consulting-3.jpg', 'Cupping with Juan Medina'),
   },
   footer: {
     peaceOfMind: 'We give you peace of mind',
@@ -163,5 +169,286 @@ export const en: Dictionary = {
     drawerTransito: '🚢 In transit',
     drawerLandedUs: '📦 USA',
     msnm: 'masl',
+  },
+  services: {
+    heroEyebrow: 'Consulting & Services',
+    heroTitle: 'Helping producers improve quality — with measurable results.',
+    heroBody:
+      'Typically a 1–2 point improvement in cup score through process optimization, with no major capital investment.',
+    heroCta: 'Book a Consultation',
+    farm: {
+      title: 'Farm Consulting',
+      paragraphs: [
+        'We work directly with producers on their farms. Soil analysis, nutrition plans, and fermentation and drying process design tailored to each farm’s specific conditions.',
+        'Climate change adaptation, integrated pest management, and variety selection to maximize quality and productivity.',
+      ],
+      cta: 'Get in Touch',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Farm Consulting — I want to know more',
+    },
+    lab: {
+      title: 'Lab — Medellín',
+      paragraphs: [
+        'Our own lab equipped with a sample roaster, huller, espresso machine, and measurement of moisture, color, and particle size, plus a professional cupping table.',
+        'Complete quality control: physical analysis of the green bean, sample roasting, cupping under SCA protocol, and direct feedback to the producer.',
+      ],
+      cta: 'Book a Visit',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Lab — I want to know more',
+    },
+    training: {
+      title: 'Training',
+      paragraphs: [
+        'Seed-to-cup course — cupping, roasting, green buying. Practical tools that help producers, roasters, and buyers make better decisions.',
+        'Personalized training tailored to your needs: from producers who want to better understand their coffee’s quality to roasters looking to improve their sourcing.',
+      ],
+      cta: 'Enroll',
+      knowMore: 'I Want to Know More',
+      mailSubject: 'Training — I want to know more',
+    },
+    baristaPro: {
+      eyebrow: 'Advanced Training',
+      title: 'Barista Pro',
+      paragraphs: [
+        'In Barista Pro we learn to identify every variable involved in coffee extraction, and we explore each one in depth until we understand the role it plays in the brew. We become masters at reading roasted coffee, we come to understand water, we learn to interpret brewing methods and filters, and we work through pouring techniques and their implications for extraction.',
+        'A whole world of physics and chemistry, plus the fluid dynamics and thermodynamics involved in brewing a cup of coffee.',
+      ],
+      cta: 'I Want to Know More',
+      mailSubject: 'Barista Pro — I want to know more',
+      photo: photo('/baristapro.jpeg', 'Juan Medina brewing coffee at the brew bar'),
+    },
+    faqTitle: 'Frequently Asked Questions',
+    faqSubtitle: 'We answer the most common questions about our consulting services.',
+    faqs: [
+      {
+        question: 'How long does it take to see results in coffee quality?',
+        answer:
+          'Typically between one and two harvests. Adjustments to fermentation and drying can show immediate improvements, while changes to soil nutrition and agronomic management show up in the next harvest. On average we achieve a 1–2 point improvement in cup score.',
+      },
+      {
+        question: 'Do I need a large investment to get started?',
+        answer:
+          'No. Our approach is based on optimizing the resources you already have — process adjustments, fermentation times, drying methods. It requires no new infrastructure or expensive equipment to start seeing improvements.',
+      },
+      {
+        question: 'How does farm consulting work?',
+        answer:
+          'We start with a diagnostic visit to assess soils, infrastructure, and current processes. Then we design a personalized plan with clear, measurable goals. We follow up regularly — in person and remotely — until the objectives are reached.',
+      },
+      {
+        question: 'Are the training courses in person or online?',
+        answer:
+          'Both. The hands-on cupping and roasting courses are held in person at our lab in Medellín. We also offer virtual consulting sessions and theoretical training for producers in remote areas.',
+      },
+      {
+        question: 'Do you only work with Colombian producers?',
+        answer:
+          'Our main focus is Colombia, but we have advised producers in other countries in the region. If you have a project outside Colombia, reach out so we can assess how we can help.',
+      },
+      {
+        question: 'What is the cost of an initial consultation?',
+        answer:
+          'The first conversation is free — we want to understand your situation before proposing a plan. Costs depend on the scope of the project. Fill out the contact form and we will send you a detailed proposal.',
+      },
+    ],
+    heroPhoto: photo('/process-1.jpg', 'Juan Medina consulting on coffee'),
+    farmPhoto: photo('/consulting-9.jpg', 'Bags of green coffee in fique sacks'),
+    labPhoto: photo('/consulting-10.jpg', 'Green coffee samples for quality analysis'),
+    trainingPhoto: photo('/consulting-11.jpg', 'Juan at the Diedrich roaster'),
+    formTitle: 'Book a Consultation',
+    formBody: 'Tell us about your project and we will get back to you within 24 hours.',
+    labelName: 'Name',
+    labelEmail: 'Email',
+    labelService: 'Service of Interest',
+    labelMessage: 'Message',
+    optionSelect: 'Select...',
+    optionFarm: 'Farm Consulting',
+    optionLab: 'Lab',
+    optionTraining: 'Training',
+    optionBaristaPro: 'Barista Pro',
+    optionOther: 'Other',
+    submit: 'Send',
+  },
+  about: {
+    heroEyebrow: 'About Juan Medina',
+    heroHeading: 'From seed to cup — every step with intention.',
+    heroBody:
+      'Juan Medina is a producer, cupper, roaster, barista and exporter. A specialty coffee professional who operates across the entire chain, from cultivation in the mountains of Colombia to the final cup.',
+    heroPhoto: photo('/about-hero.jpg', 'Juan Medina'),
+    storyEyebrow: 'The story',
+    storyHeading: 'The farm is the foundation of knowledge.',
+    storyParagraphs: [
+      'Coffee Five was born from the conviction that coffee quality begins long before the cup. It begins in the soil, in the seed, in the decisions made at every stage of the process.',
+      'Juan works directly with producers in Nariño, Huila, Cauca, Santander and Tolima. He does not just buy their coffee — he advises them on soil nutrition, pest management, and the design of fermentation and drying processes.',
+      'The result: coffees with full traceability, measurable quality, and a real story behind every lot.',
+    ],
+    storyPhoto1: photo('/about1.jpg', 'Cupping spoons'),
+    storyPhoto2: photo('/about3.jpg', 'Roest roaster in the lab'),
+    storyPhoto3: photo('/about2.jpg', 'Harvesting on the farm'),
+    faqTitle: 'Frequently Asked Questions',
+    faqSubtitle: 'The questions we get most often about Coffee Five and how we work.',
+    faqs: [
+      {
+        question: 'What does "from seed to cup" mean?',
+        answer:
+          'It means we take part in every stage of the process: from seed selection and agronomic management on the farm, through fermentation, drying, cupping and roasting, all the way to the final brew. We are not middlemen — we are operators across the entire chain.',
+      },
+      {
+        question: 'Which regions of Colombia do you work in?',
+        answer:
+          'We work with producers in Nariño, Huila, Cauca, Santander and Tolima. Each region has distinct cup profiles that we select according to our clients’ needs.',
+      },
+      {
+        question: 'Is Coffee Five an exporter or a roaster?',
+        answer:
+          'Both. We export green coffee for international B2B buyers and we also roast selected lots for direct-to-consumer sales. This model lets us control quality from start to finish.',
+      },
+      {
+        question: 'How do you guarantee the quality of each lot?',
+        answer:
+          'Every lot passes through our lab in Medellín: physical analysis of the green bean, sample roasting, cupping under SCA protocol, and measurement of moisture and water activity. We only offer lots that meet our minimum standard of 84 points.',
+      },
+      {
+        question: 'Can I visit the farms you work with?',
+        answer:
+          'Yes. We organize origin trips for buyers and coffee professionals. It is the best way to understand the work behind every lot. Contact us to coordinate dates and logistics.',
+      },
+      {
+        question: 'Do you offer samples before buying?',
+        answer:
+          'Yes, we send green or roasted coffee samples for evaluation. For green coffee, the cost of the sample is deducted from the final order. Reach out on WhatsApp or by email to request them.',
+      },
+    ],
+    awardsEyebrow: 'Recognition',
+    awards: [
+      { title: 'Roasted Regional 2025', place: 'First place — Colombia' },
+      { title: 'V60 Regional 2024', place: 'Second place — Colombia' },
+    ],
+  },
+  contact: {
+    eyebrow: 'Contact',
+    heading: "Let's talk coffee.",
+    intro:
+      'Whether you’re looking for specialty green coffee, need consulting for your farm, or want to learn more about our services — we’re here to talk.',
+    emailLabel: 'Email',
+    whatsappLabel: 'WhatsApp',
+    labLabel: 'Lab',
+    labValue: 'Medellín, Colombia',
+    instagramLabel: 'Instagram',
+    formHeading: 'Send a message',
+    nameLabel: 'Name',
+    namePlaceholder: 'Your name',
+    emailPlaceholder: 'you@email.com',
+    subjectLabel: 'Subject',
+    messageLabel: 'Message',
+    messagePlaceholder: 'How can we help you?',
+    options: {
+      empty: 'Select',
+      green: 'Green Coffee — Purchase',
+      roasted: 'Roasted Coffee',
+      consulting: 'Consulting',
+      training: 'Training / Courses',
+      other: 'Other',
+    },
+    submit: 'Send',
+  },
+  processPage: {
+    eyebrow: 'The Process',
+    h1: 'From Seed to Cup',
+    intro: 'Four pillars that define how we work. Each one exists to protect the quality of the coffee and ensure that what reaches your cup reflects the work done at origin.',
+    pillars: {
+      cultivo: {
+        title: 'Cultivation',
+        photo: photo('/grow.jpg', 'Cultivation'),
+        intro: 'It all begins in the soil. We work alongside the producer from seed selection through harvest.',
+        details: [
+          'Seed selection and varieties adapted to the terroir',
+          'Nursery design and renovation plans',
+          'Soil nutrition and organic management',
+          'Integrated pest and disease control',
+          'Selective harvest protocols at peak ripeness',
+          'On-farm fermentation and drying process design',
+          'Quality control across cherry, parchment, and milling',
+        ],
+      },
+      origen: {
+        title: 'Sourcing',
+        photo: photo('/source.jpg', 'Sourcing'),
+        intro: 'We build direct relationships with producers who share our obsession with quality.',
+        details: [
+          'Producer network across Nariño, Huila, Cauca, Tolima, Antioquia, and Santander',
+          'Consulting on best agricultural and processing practices',
+          'Fair prices based on quality, not the C market',
+          'Full traceability: farm, lot, variety, process',
+          'Regular farm visits for direct feedback',
+          'Ethical sourcing with a long-term commitment',
+        ],
+      },
+      laboratorio: {
+        title: 'Lab',
+        photo: photo('/lab.jpg', 'Lab'),
+        intro: 'Our lab in Medellín is where quality is measured, understood, and improved.',
+        details: [
+          'Sensory analysis following the SCA protocol',
+          'Cupping table calibrated weekly',
+          'Moisture, water activity, and density measurement',
+          'Roast color and particle-size analysis',
+          'Roast profiling with documented curves',
+          'Producer feedback: every lot gets a report',
+          'Continuous improvement — every harvest better than the last',
+        ],
+      },
+      logistica: {
+        title: 'Logistics',
+        photo: photo('/logistics.jpg', 'Logistics'),
+        intro: '"We don\'t sell coffee, we sell freshness." Every day counts from the moment the coffee leaves the farm.',
+        details: [
+          'Direct export from Colombia',
+          'Import and warehousing in the USA',
+          'Ground transport with cold chain where applicable',
+          'Tracking of every lot from origin to destination',
+          'Transit times optimized to preserve freshness',
+          'Customs documentation and logistics included',
+          'Door-to-door delivery for roasters and buyers',
+        ],
+      },
+    },
+  },
+  blog: {
+    eyebrow: 'Journal',
+    heading: 'From the journal',
+    intro:
+      'Origin stories, case studies, and technical knowledge from the world of specialty coffee.',
+    back: '← Back to journal',
+    readMinutes: 'min read',
+    role: 'Producer · Cupper · Roaster',
+    featuredImage: 'Featured image',
+    author: 'Juan Medina',
+  },
+  lotDetail: {
+    proceso: 'Process',
+    perfil: 'Profile',
+    metodo: 'Method',
+    procesoDescripcion:
+      'Cherries hand-picked at peak ripeness. Controlled fermentation of 48–60 hours with temperature monitoring. Dried on raised beds for 15–20 days until reaching 10.5–11% moisture. The entire process is supervised by the Coffee Five team.',
+    notasCata: ['Tropical fruit', 'Bright citrus', 'Clean finish'],
+    perfilDescripcion:
+      'Tropical fruit notes, bright citric acidity, medium body with a clean, lingering finish. A coffee with character that shines in filter methods as well as espresso. Complexity that evolves as the cup cools.',
+    masl: 'masl',
+    breadcrumbOrigen: 'Origin',
+    factVarietal: 'Varietal',
+    factProceso: 'Process',
+    factRegion: 'Region',
+    factMunicipio: 'Municipality',
+    factFinca: 'Farm',
+    factAltitude: 'Altitude',
+    factNorma: 'Grade',
+    factAvailable: 'Available',
+    factPrice: 'Price',
+    enquiryTitle: 'Interested in this lot?',
+    enquiryBody: 'Contact us directly to discuss availability, pricing, and shipping.',
+    enquire: 'Enquire',
+    email: 'Email',
+    whatsapp: 'WhatsApp',
   },
 };

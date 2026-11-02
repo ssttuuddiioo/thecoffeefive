@@ -2,20 +2,20 @@
 
 import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
+import { photoProps } from '@/lib/photo';
 import { SectionTag } from '../SectionTag';
 import { useTranslation } from '../LanguageProvider';
 import { LocaleLink } from '../LocaleLink';
 
-// One entry per card in `t.consulting.services`, matched by position. Barista Pro
-// leads on the dark red, which needs white text; the lighter accents keep black.
-// The anchors are the section ids on /services (same slugs as the consultation
-// form's service <select>).
+// One entry per card, keyed into `t.consulting.services`. Barista Pro leads on the
+// dark red, which needs white text; the lighter accents keep black. The anchors are
+// the section ids on /services (same slugs as the consultation form's service <select>).
 const serviceCards = [
-  { bg: '#91171F', fg: '#FFFFFF', href: '/services#barista-pro' },
-  { bg: '#ECCD3E', fg: '#000000', href: '/services#asesoria-fincas' },
-  { bg: '#4592DB', fg: '#000000', href: '/services#laboratorio' },
-  { bg: '#0D7C47', fg: '#000000', href: '/services#formacion' },
-];
+  { id: 'baristaPro', bg: '#91171F', fg: '#FFFFFF', href: '/services#barista-pro' },
+  { id: 'fincas', bg: '#ECCD3E', fg: '#000000', href: '/services#asesoria-fincas' },
+  { id: 'laboratorio', bg: '#4592DB', fg: '#000000', href: '/services#laboratorio' },
+  { id: 'formacion', bg: '#0D7C47', fg: '#000000', href: '/services#formacion' },
+] as const;
 
 export function ConsultingSection() {
   const { t } = useTranslation();
@@ -42,11 +42,11 @@ export function ConsultingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           <div>
             <div className="space-y-3">
-              {t.consulting.services.map((service, i) => {
-                const card = serviceCards[i % serviceCards.length];
+              {serviceCards.map((card) => {
+                const service = t.consulting.services[card.id];
                 return (
                   <LocaleLink
-                    key={service.title}
+                    key={card.id}
                     href={card.href}
                     className="block p-5 rounded-md border border-white/10 hover:opacity-90 transition-opacity"
                     style={{ backgroundColor: card.bg, color: card.fg }}
@@ -61,13 +61,13 @@ export function ConsultingSection() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="relative aspect-square rounded-md overflow-hidden">
-              <Image src="/consulting-1.jpg" alt="Lab — Medellín" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+              <Image {...photoProps(t.consulting.photo1)} alt={t.consulting.photo1.alt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
             <div className="relative aspect-square rounded-md overflow-hidden">
-              <Image src="/consulting-2.jpg" alt="Cupping table" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+              <Image {...photoProps(t.consulting.photo2)} alt={t.consulting.photo2.alt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
             <div className="relative aspect-[2/1] rounded-md overflow-hidden col-span-2">
-              <Image src="/consulting-3.jpg" alt="Field work — finca consulting" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image {...photoProps(t.consulting.photo3)} alt={t.consulting.photo3.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             </div>
           </div>
         </div>

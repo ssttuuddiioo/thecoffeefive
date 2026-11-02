@@ -10,4 +10,15 @@ export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];
 }
 
+/** Page copy read only by server components, kept out of the client payload. */
+export type ClientDictionary = Omit<
+  Dictionary,
+  'services' | 'about' | 'contact' | 'processPage' | 'blog' | 'lotDetail'
+>;
+
+export function toClientDictionary(dict: Dictionary): ClientDictionary {
+  const { services, about, contact, processPage, blog, lotDetail, ...client } = dict;
+  return client;
+}
+
 export type { Dictionary };

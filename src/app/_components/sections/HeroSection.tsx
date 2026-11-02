@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { photoProps } from '@/lib/photo';
 import { useTranslation } from '../LanguageProvider';
 import { LocaleLink } from '../LocaleLink';
 
@@ -30,8 +31,7 @@ export function HeroSection() {
         style={{ transform: `translateY(${offset}px) scale(1.1)` }}
       >
         <Image
-          src="/header.jpg"
-          alt=""
+          {...photoProps(t.hero.photo)} alt={t.hero.photo.alt}
           fill
           priority
           className="object-cover object-center opacity-60"
