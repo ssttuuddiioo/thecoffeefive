@@ -23,7 +23,10 @@ const GREEN_LOT_FIELDS = groq`
   trilla,
   images,
   recomendaciones,
-  notaFinca
+  notaFinca,
+  procesoDescripcion,
+  notasCata,
+  perfilDescripcion
 `;
 
 export const greenLotsQuery = groq`
@@ -37,7 +40,7 @@ export const allGreenLotsQuery = groq`
 `;
 
 export const greenLotBySlugQuery = groq`
-  *[_type == "greenLot" && slug.current == $slug][0] { ${GREEN_LOT_FIELDS} }
+  *[_type == "greenLot" && slug.current == $slug && disponible != false][0] { ${GREEN_LOT_FIELDS} }
 `;
 
 export const greenLotSlugsQuery = groq`

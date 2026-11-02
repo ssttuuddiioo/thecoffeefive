@@ -1,3 +1,4 @@
+import type { Locale } from '@/config/i18n';
 import { getGreenLots } from '@/sanity/fetch';
 import { OfferList } from './OfferList';
 
@@ -10,7 +11,7 @@ import { OfferList } from './OfferList';
  */
 export const revalidate = 60;
 
-export default async function CafeVerdePage() {
-  const lots = await getGreenLots();
+export default async function CafeVerdePage({ params }: { params: { locale: string } }) {
+  const lots = await getGreenLots(params.locale as Locale);
   return <OfferList lots={lots} />;
 }

@@ -22,6 +22,7 @@ import {
   prepareRows,
   planImport,
   buildNewLot,
+  buildLotPatches,
   EXISTING_LOTS_QUERY,
 } from '../src/sanity/lib/lot-csv';
 
@@ -74,7 +75,9 @@ async function main() {
   const tx = client.transaction();
   for (const row of creates) tx.create(buildNewLot(row) as never);
   // Slug is deliberately omitted from patches — renaming must not change a URL.
-  for (const { id, row } of updates) tx.patch(id, { set: row.fields });
+  for (const { id, row } of updates) {
+    for (const patch of buildLotPatches(row.fields)) tx.patch(id, patch);
+  }
   await tx.commit();
 
   console.log(`\nListo: ${creates.length} creado${creates.length === 1 ? '' : 's'}, ${updates.length} actualizado${updates.length === 1 ? '' : 's'}.`);

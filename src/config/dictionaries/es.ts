@@ -429,6 +429,7 @@ export const es = {
   lotDetail: {
     proceso: 'Proceso',
     perfil: 'Perfil',
+    recomendaciones: 'Recomendaciones de tueste',
     metodo: 'Método',
     procesoDescripcion:
       'Cereza seleccionada a mano en punto óptimo de maduración. Fermentación controlada de 48–60 horas con monitoreo de temperatura. Secado en camas elevadas durante 15–20 días hasta alcanzar 10.5–11% de humedad. Todo el proceso supervisado por el equipo de Coffee Five.',

@@ -10,7 +10,8 @@ import {
 } from './queries';
 import { mockGreenLots, mockRoastedCoffee, procesoColorMap } from '@/lib/mock-data';
 import { slugifyLot } from '@/lib/slug';
-import type { GreenLot, RoastedCoffee, LocaleField } from '@/types/content';
+import type { Locale } from '@/config/i18n';
+import { pickLocale, type GreenLot, type RoastedCoffee, type LocaleField } from '@/types/content';
 
 /**
  * Fallback policy for lots and products
@@ -76,6 +77,9 @@ type SanityGreenLot = {
   images?: Image[];
   recomendaciones?: LocaleField;
   notaFinca?: LocaleField;
+  procesoDescripcion?: LocaleField;
+  notasCata?: LocaleField;
+  perfilDescripcion?: LocaleField;
 };
 
 /** Photos fall back to the bundled `/lots/<ref>.jpg` files when none are uploaded. */
@@ -86,7 +90,7 @@ function resolvePhotos(doc: SanityGreenLot): string[] {
   return [local];
 }
 
-function toGreenLot(doc: SanityGreenLot): GreenLot {
+function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
   const photos = resolvePhotos(doc);
   const proceso = doc.proceso ?? 'Lavado';
   return {
@@ -111,21 +115,24 @@ function toGreenLot(doc: SanityGreenLot): GreenLot {
     densidad: doc.densidad ?? '',
     criba: doc.criba ?? '',
     trilla: doc.trilla ?? '',
-    recomendaciones: doc.recomendaciones?.es ?? '',
+    recomendaciones: pickLocale(doc.recomendaciones, locale),
     notaFinca: doc.notaFinca?.es ?? '',
     notaFincaEn: doc.notaFinca?.en,
+    procesoDescripcion: pickLocale(doc.procesoDescripcion, locale),
+    notasCata: pickLocale(doc.notasCata, locale).split(',').map((note) => note.trim()).filter(Boolean),
+    perfilDescripcion: pickLocale(doc.perfilDescripcion, locale),
   };
 }
 
-export async function getGreenLots(): Promise<GreenLot[]> {
+export async function getGreenLots(locale: Locale): Promise<GreenLot[]> {
   const docs = await query<SanityGreenLot[]>(greenLotsQuery);
   if (shouldFallback(docs)) return mockGreenLots as GreenLot[];
-  return (docs ?? []).map(toGreenLot);
+  return (docs ?? []).map((doc) => toGreenLot(doc, locale));
 }
 
-export async function getGreenLotBySlug(slug: string): Promise<GreenLot | undefined> {
+export async function getGreenLotBySlug(slug: string, locale: Locale): Promise<GreenLot | undefined> {
   const doc = await query<SanityGreenLot | null>(greenLotBySlugQuery, { slug });
-  if (doc) return toGreenLot(doc);
+  if (doc) return toGreenLot(doc, locale);
   if (isSanityConfigured && !isDev) return undefined;
   return (mockGreenLots as GreenLot[]).find((lot) => slugifyLot(lot.name) === slug);
 }

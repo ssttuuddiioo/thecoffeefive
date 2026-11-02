@@ -386,6 +386,7 @@ export const copyCafeVerde = page('copyCafeVerde', 'Textos de café verde', [
     fields: [
       text('proceso', 'Título: proceso'),
       text('perfil', 'Título: perfil'),
+      text('recomendaciones', 'Título: recomendaciones'),
       text('metodo', 'Etiqueta: método'),
       para('procesoDescripcion', 'Texto de proceso, si el lote no tiene uno'),
       texts('notasCata', 'Notas de cata, si el lote no tiene'),

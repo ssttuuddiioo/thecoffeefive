@@ -39,6 +39,10 @@ export interface GreenLot {
   recomendaciones: string;
   notaFinca: string;
   notaFincaEn?: string;
+  /** Per-lot tasting copy. When absent the page shows the general text. */
+  procesoDescripcion?: string;
+  notasCata?: string[];
+  perfilDescripcion?: string;
 }
 
 export interface RoastedCoffee {

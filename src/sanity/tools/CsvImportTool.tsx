@@ -5,7 +5,8 @@ import {
 } from '@sanity/ui';
 import Papa from 'papaparse';
 import {
-  COLUMNS, EXISTING_LOTS_QUERY, buildNewLot, getPath, parseLotCsvText, planImport,
+  COLUMNS, EXISTING_LOTS_QUERY, buildNewLot,
+  buildLotPatches, getPath, parseLotCsvText, planImport,
   prepareRows, toCell, type ImportPlan,
 } from '../lib/lot-csv';
 import { apiVersion } from '../env';
@@ -65,7 +66,9 @@ export function CsvImportTool() {
       const tx = client.transaction();
       for (const row of phase.plan.creates) tx.create(buildNewLot(row));
       // Slug is deliberately not patched — renaming a lot must not change its URL.
-      for (const { id, row } of phase.plan.updates) tx.patch(id, { set: row.fields });
+      for (const { id, row } of phase.plan.updates) {
+        for (const patch of buildLotPatches(row.fields)) tx.patch(id, patch);
+      }
       await tx.commit();
       setPhase({
         status: 'done',

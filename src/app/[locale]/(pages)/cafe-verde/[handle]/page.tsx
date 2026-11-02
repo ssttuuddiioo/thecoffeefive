@@ -32,7 +32,7 @@ export async function generateStaticParams() {
 export default async function GreenCoffeeLotPage({ params }: Props) {
   const locale = params.locale as import('@/config/i18n').Locale;
   const c = (await getSiteCopy(locale)).lotDetail;
-  const lot = await getGreenLotBySlug(params.handle);
+  const lot = await getGreenLotBySlug(params.handle, locale);
   if (!lot) notFound();
   const procesoColor = procesoColorMap[lot.proceso] || lot.color;
   const procesoName = procesoLabel(lot.proceso, locale);
@@ -110,22 +110,28 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
                 <p className="text-sm font-semibold text-coffee-black">{procesoName}</p>
               </div>
               <p className="text-sm text-gray-600 leading-relaxed">
-                {c.procesoDescripcion}
+                {lot.procesoDescripcion || c.procesoDescripcion}
               </p>
             </div>
             {/* Perfil */}
             <div>
               <SectionHeading>{c.perfil}</SectionHeading>
               <div className="flex flex-wrap gap-2 mb-6 min-h-[3rem] items-end">
-                {c.notasCata.map((note) => (
+                {(lot.notasCata?.length ? lot.notasCata : c.notasCata).map((note) => (
                   <span key={note} className="text-xs px-3 py-1 rounded-full border border-gray-300 text-coffee-black">{note}</span>
                 ))}
               </div>
               <p className="text-sm text-gray-600 leading-relaxed">
-                {c.perfilDescripcion}
+                {lot.perfilDescripcion || c.perfilDescripcion}
               </p>
             </div>
           </div>
+          {lot.recomendaciones && (
+            <div className="mt-10 md:mt-16">
+              <SectionHeading>{c.recomendaciones}</SectionHeading>
+              <p className="text-sm text-gray-600 leading-relaxed">{lot.recomendaciones}</p>
+            </div>
+          )}
         </div>
 
         {/* Origen — Map + Quick Facts Grid */}

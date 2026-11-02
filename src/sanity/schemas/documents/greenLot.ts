@@ -154,6 +154,27 @@ export const greenLot = defineType({
       group: 'contenido',
     }),
     defineField({
+      name: 'procesoDescripcion',
+      title: 'Descripción del proceso',
+      description: 'Fermentación, secado y demás. Si está vacío se muestra el texto general.',
+      type: 'localeText',
+      group: 'contenido',
+    }),
+    defineField({
+      name: 'notasCata',
+      title: 'Notas de cata',
+      description: 'Separadas por comas: Frutas tropicales, Cítrico brillante, Final limpio.',
+      type: 'localeString',
+      group: 'contenido',
+    }),
+    defineField({
+      name: 'perfilDescripcion',
+      title: 'Descripción del perfil',
+      description: 'Si está vacío se muestra el texto general.',
+      type: 'localeText',
+      group: 'contenido',
+    }),
+    defineField({
       name: 'notaFinca',
       title: 'Nota de finca',
       type: 'localeText',

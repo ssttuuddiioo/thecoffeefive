@@ -428,6 +428,7 @@ export const en: Dictionary = {
   lotDetail: {
     proceso: 'Process',
     perfil: 'Profile',
+    recomendaciones: 'Roasting recommendations',
     metodo: 'Method',
     procesoDescripcion:
       'Cherries hand-picked at peak ripeness. Controlled fermentation of 48–60 hours with temperature monitoring. Dried on raised beds for 15–20 days until reaching 10.5–11% moisture. The entire process is supervised by the Coffee Five team.',

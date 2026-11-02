@@ -46,6 +46,12 @@ export const COLUMNS: ColumnSpec[] = [
   { header: 'recomendaciones_en', path: 'recomendaciones.en' },
   { header: 'nota_finca_es', path: 'notaFinca.es' },
   { header: 'nota_finca_en', path: 'notaFinca.en' },
+  { header: 'proceso_descripcion_es', path: 'procesoDescripcion.es' },
+  { header: 'proceso_descripcion_en', path: 'procesoDescripcion.en' },
+  { header: 'notas_cata_es', path: 'notasCata.es' },
+  { header: 'notas_cata_en', path: 'notasCata.en' },
+  { header: 'perfil_descripcion_es', path: 'perfilDescripcion.es' },
+  { header: 'perfil_descripcion_en', path: 'perfilDescripcion.en' },
 ];
 
 export function getPath(obj: unknown, path: string): unknown {
@@ -251,6 +257,26 @@ export function planImport(
   }
 
   return { creates, updates, unchanged };
+}
+
+/**
+ * Patches for updating a lot from a CSV row, to apply in order. Bilingual fields are
+ * written by dotted path, so a CSV holding only `nota_finca_es` keeps the stored
+ * English: `set: { notaFinca: { es } }` would replace the whole object. Parents are
+ * created in an earlier patch because Sanity ignores a deep set under a missing parent.
+ */
+export function buildLotPatches(fields: Record<string, unknown>): Record<string, Record<string, unknown>>[] {
+  const set: Record<string, unknown> = {};
+  const setIfMissing: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(fields)) {
+    if (typeof value === 'object' && value !== null) {
+      setIfMissing[key] = {};
+      for (const [child, childValue] of Object.entries(value)) set[`${key}.${child}`] = childValue;
+    } else {
+      set[key] = value;
+    }
+  }
+  return [...(Object.keys(setIfMissing).length > 0 ? [{ setIfMissing }] : []), { set }];
 }
 
 /** The document to create for a new CSV row. */
