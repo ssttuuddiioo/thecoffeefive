@@ -1,7 +1,7 @@
-import { randomUUID } from 'node:crypto';
 import type { JournalContentBlock } from './mock-data';
 
-const key = () => randomUUID().slice(0, 8);
+let counter = 0;
+const key = () => `b${(counter++).toString(36)}`;
 
 /** Sanity requires a _key on every item in an array. */
 function keyed<T extends object>(items: T[]): (T & { _key: string })[] {

@@ -62,8 +62,10 @@ export const journalArticlesQuery = groq`
 `;
 
 export const journalArticleBySlugQuery = groq`
-  *[_type == "journalArticle" && slug.current == $slug][0] {
-    "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage, body
+  {
+    "article": *[_type == "journalArticle" && slug.current == $slug][0] {
+      "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage, body
+    }
   }
 `;
 

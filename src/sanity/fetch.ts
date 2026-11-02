@@ -6,9 +6,20 @@ import {
   greenLotsQuery,
   greenLotBySlugQuery,
   greenLotSlugsQuery,
+  journalArticleBySlugQuery,
+  journalArticlesQuery,
+  journalSlugsQuery,
   roastedCoffeeQuery,
 } from './queries';
-import { mockGreenLots, mockRoastedCoffee, procesoColorMap } from '@/lib/mock-data';
+import {
+  getAllJournalSlugs,
+  getJournalArticleBySlug as getBundledArticle,
+  getJournalArticles as getBundledArticles,
+  mockGreenLots,
+  mockRoastedCoffee,
+  procesoColorMap,
+} from '@/lib/mock-data';
+import { toPortableText } from '@/lib/journal-portable-text';
 import { slugifyLot } from '@/lib/slug';
 import type { Locale } from '@/config/i18n';
 import { pickLocale, type GreenLot, type RoastedCoffee, type LocaleField } from '@/types/content';
@@ -183,4 +194,70 @@ export async function getRoastedCoffee(): Promise<RoastedCoffee[]> {
   const docs = await query<SanityRoasted[]>(roastedCoffeeQuery);
   if (shouldFallback(docs)) return mockRoastedCoffee as RoastedCoffee[];
   return (docs ?? []).map(toRoasted);
+}
+
+export type JournalSummary = {
+  slug: string;
+  category: string;
+  title: string;
+  description: string;
+  /** Sanity image URL. Absent for articles with no cover. */
+  cover?: string;
+  publishedAt?: string;
+};
+
+export type JournalArticle = JournalSummary & {
+  readMinutes?: number;
+  body: unknown[];
+};
+
+type SanityArticle = {
+  slug: string;
+  category?: LocaleField;
+  title?: LocaleField;
+  description?: LocaleField;
+  readMinutes?: number;
+  publishedAt?: string;
+  coverImage?: Image;
+  body?: { es?: unknown[]; en?: unknown[] };
+};
+
+function toSummary(doc: SanityArticle, locale: Locale): JournalSummary {
+  return {
+    slug: doc.slug,
+    category: pickLocale(doc.category, locale),
+    title: pickLocale(doc.title, locale),
+    description: pickLocale(doc.description, locale),
+    cover: urlForImage(doc.coverImage) || undefined,
+    publishedAt: doc.publishedAt,
+  };
+}
+
+/** Bundled articles stand in only when Sanity fails or holds no articles. */
+export async function getJournalArticles(locale: Locale): Promise<JournalSummary[]> {
+  const docs = await query<SanityArticle[]>(journalArticlesQuery);
+  if (!docs || docs.length === 0) return getBundledArticles(locale);
+  return docs.map((doc) => toSummary(doc, locale));
+}
+
+export async function getJournalArticleBySlug(slug: string, locale: Locale): Promise<JournalArticle | undefined> {
+  // The query wraps the article, so null means Sanity failed and { article: null } means no such post.
+  const result = await query<{ article: SanityArticle | null }>(journalArticleBySlugQuery, { slug });
+  if (result?.article) {
+    const { body } = result.article;
+    return {
+      ...toSummary(result.article, locale),
+      readMinutes: result.article.readMinutes,
+      body: (locale === 'en' && body?.en?.length ? body.en : body?.es) ?? [],
+    };
+  }
+  const hasSanityArticles = result !== null && (await query<string[]>(journalSlugsQuery))?.length;
+  if (hasSanityArticles) return undefined;
+  const bundled = getBundledArticle(slug, locale);
+  return bundled && { ...bundled, body: toPortableText(bundled.blocks) };
+}
+
+export async function getJournalSlugs(): Promise<string[]> {
+  const slugs = await query<string[]>(journalSlugsQuery);
+  return slugs && slugs.length > 0 ? slugs.filter(Boolean) : getAllJournalSlugs();
 }

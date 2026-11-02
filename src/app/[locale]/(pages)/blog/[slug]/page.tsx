@@ -2,7 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
-import { getAllJournalSlugs, getJournalArticleBySlug, type JournalContentBlock } from '@/lib/mock-data';
+import { PortableBody } from '@/app/_components/PortableBody';
+import { getJournalArticleBySlug, getJournalSlugs } from '@/sanity/fetch';
 import { getSiteCopy } from '@/sanity/copy';
 import { withLocale, type Locale } from '@/config/i18n';
 
@@ -10,68 +11,15 @@ type Props = {
   params: { locale: string; slug: string };
 };
 
-export function generateStaticParams() {
-  return getAllJournalSlugs().map((slug) => ({ slug }));
-}
-
-function renderBlock(block: JournalContentBlock, index: number) {
-  switch (block.type) {
-    case 'p':
-      return (
-        <p key={index}>
-          {block.text}
-        </p>
-      );
-    case 'h2':
-      return (
-        <h2 key={index} className="text-xl font-bold text-coffee-white pt-4">
-          {block.text}
-        </h2>
-      );
-    case 'ul':
-      return (
-        <ul key={index} className="list-disc list-inside space-y-2 text-coffee-400">
-          {block.items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      );
-    case 'table':
-      return (
-        <div key={index} className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-          <table className="w-full text-left text-xs md:text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-coffee-700">
-                {block.headers.map((header) => (
-                  <th key={header} className="py-3 pr-4 align-top font-bold text-coffee-white">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {block.rows.map((row, rowIndex) => (
-                <tr key={rowIndex} className="border-b border-coffee-800 align-top">
-                  {row.map((cell, cellIndex) => (
-                    <td key={cellIndex} className="py-3 pr-4 text-coffee-400">
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    default:
-      return null;
-  }
+export async function generateStaticParams() {
+  const slugs = await getJournalSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const locale = params.locale as Locale;
   const c = (await getSiteCopy(locale)).blog;
-  const article = getJournalArticleBySlug(params.slug, locale);
+  const article = await getJournalArticleBySlug(params.slug, locale);
 
   if (!article) {
     notFound();
@@ -96,17 +44,31 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-coffee-400">
             <span>{c.author}</span>
             <span className="hidden sm:inline">·</span>
-            <span>{article.readMinutes} {c.readMinutes}</span>
+            {article.readMinutes && <span>{article.readMinutes} {c.readMinutes}</span>}
+            {article.publishedAt && (
+              <>
+                <span className="hidden sm:inline">·</span>
+                <time dateTime={article.publishedAt}>
+                  {new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(article.publishedAt))}
+                </time>
+              </>
+            )}
           </div>
         </div>
 
         <div className="max-w-3xl mx-auto mb-12">
-          <ImagePlaceholder aspectRatio="16/9" label={c.featuredImage} className="rounded-md" />
+          {article.cover ? (
+            <div className="relative aspect-video rounded-md overflow-hidden">
+              <Image src={article.cover} alt={article.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 768px" priority />
+            </div>
+          ) : (
+            <ImagePlaceholder aspectRatio="16/9" label={c.featuredImage} className="rounded-md" />
+          )}
         </div>
 
         <div className="max-w-2xl mx-auto">
           <div className="space-y-6 text-sm md:text-base text-coffee-400 leading-relaxed">
-            {article.blocks.map((block, i) => renderBlock(block, i))}
+            <PortableBody value={article.body as never} />
           </div>
 
           <div className="mt-12 pt-8 border-t border-coffee-800 flex items-center gap-4">
