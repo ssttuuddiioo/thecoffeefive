@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, FormEvent } from 'react';
+import Image from 'next/image';
 import { useScrollReveal } from '@/lib/gsap';
 import { useTranslation } from '../LanguageProvider';
 
@@ -32,9 +33,17 @@ export function SignupSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-coffee-black border-t border-coffee-800"
+      className="relative bg-coffee-black"
     >
       <div className="max-w-2xl mx-auto px-5 md:px-8 py-20 md:py-28 text-center">
+        <Image
+          src="/logo.svg"
+          alt="Coffee Five"
+          width={120}
+          height={190}
+          className="w-[92px] md:w-[120px] h-auto mx-auto mb-8 brightness-0 invert"
+        />
+
         <p className="text-[10px] tracking-[0.25em] uppercase text-coffee-400 mb-6">
           {t.signup.eyebrow}
         </p>

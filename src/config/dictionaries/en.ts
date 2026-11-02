@@ -77,16 +77,16 @@ export const en: Dictionary = {
         description: 'Professional training for baristas and bar teams: espresso dialing, extraction profiles, service workflow, menu design, and competition prep.',
       },
       {
-        title: 'Farm Consulting',
-        description: 'Planting from scratch, nutrition, pest management, climate change adaptation, and the design of fermentation and drying processes.',
+        title: 'Farm Consulting. Planting from scratch',
+        description: 'Nutrition, pest management, climate change adaptation, and the design of fermentation and drying processes.',
       },
       {
-        title: 'Lab — Medellín',
-        description: 'Sensory and physical analysis. Our own lab with a roaster, huller, espresso, and pour-over. Improvement recommendations.',
+        title: 'Lab — Medellín. Sensory and physical analysis',
+        description: 'Our own lab with a roaster, huller, espresso, pour-over, and improvement recommendations.',
       },
       {
-        title: 'Training',
-        description: 'Workshops on pour-over, home barista, cupping, fermentation, drying, and logistics. Green buying. Tools so producers, roasters, and buyers make better decisions.',
+        title: 'Training. Workshops on pour-over, home barista, cupping, fermentation, drying, and logistics',
+        description: 'Green buying. Tools so producers, roasters, and buyers make better decisions.',
       },
     ],
   },

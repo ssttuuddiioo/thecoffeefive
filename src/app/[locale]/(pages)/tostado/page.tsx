@@ -19,17 +19,9 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   };
 }
 
-export default function TostadoPage({ params }: { params: { locale: string } }) {
-  const locale: Locale = isLocale(params.locale) ? params.locale : defaultLocale;
-  const t = getDictionary(locale);
-
+export default function TostadoPage() {
   return (
     <main className="min-h-screen bg-coffee-black flex flex-col justify-center pt-20 md:pt-24">
-      <div className="text-center px-5 pt-10">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-coffee-400">
-          {t.nav.roasted}
-        </p>
-      </div>
       <SignupSection />
     </main>
   );

@@ -27,16 +27,16 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20 flex items-center justify-between h-16 md:h-20">
-          <LocaleLink href="/" className="flex flex-col items-center">
+          <LocaleLink href="/" className="flex flex-col items-center self-start pt-3 md:pt-4">
             <Image
               src="/logo.svg"
               alt="Coffee Five"
-              width={40}
-              height={63}
-              className="h-[48px] md:h-[54px] w-auto brightness-0 invert"
+              width={120}
+              height={190}
+              className="w-[92px] md:w-[120px] h-auto max-w-none brightness-0 invert"
             />
             <span
-              className="text-[11px] tracking-tight mt-0.5 text-white"
+              className="text-xl md:text-2xl whitespace-nowrap tracking-tight mt-2 text-white"
               style={{ fontFamily: "'salted', cursive" }}
             >
               The Coffee Five

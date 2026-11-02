@@ -78,16 +78,16 @@ export const es = {
         description: 'Entrenamiento profesional para baristas y equipos de barra: calibración de espresso, perfiles de extracción, flujo de servicio, diseño de menú y preparación para competencia.',
       },
       {
-        title: 'Asesoría a Fincas',
-        description: 'Siembras desde cero, nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.',
+        title: 'Asesoría a Fincas. Siembras desde cero',
+        description: 'Nutrición, manejo de plagas, adaptación al cambio climático, diseño de procesos de fermentación y secado.',
       },
       {
-        title: 'Laboratorio — Medellín',
-        description: 'Análisis sensorial y físico. Lab propio con tostadora, trilladora, espresso, percolado. Recomendaciones de mejora.',
+        title: 'Laboratorio — Medellín. Análisis sensorial y físico',
+        description: 'Lab propio con tostadora, trilladora, espresso, percolado, recomendaciones de mejora.',
       },
       {
-        title: 'Formación',
-        description: 'Talleres de filtrados, home barista, catación, fermentación, secado, logística. Compra de verde. Herramientas para que productores, tostadores y compradores tomen mejores decisiones.',
+        title: 'Formación. Talleres de filtrados, home barista, catación, fermentación, secado, logística',
+        description: 'Compra de verde. Herramientas para que productores, tostadores y compradores tomen mejores decisiones.',
       },
     ],
   },
