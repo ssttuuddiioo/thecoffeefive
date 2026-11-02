@@ -1,7 +1,8 @@
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import type { Locale } from '@/config/i18n';
 import { ProcessPageContent } from './ProcessPageContent';
 
-export default function ProcessPage({ params }: { params: { locale: string } }) {
-  return <ProcessPageContent c={getDictionary(params.locale as Locale).processPage} />;
+export default async function ProcessPage({ params }: { params: { locale: string } }) {
+  const copy = await getSiteCopy(params.locale as Locale);
+  return <ProcessPageContent c={copy.processPage} />;
 }

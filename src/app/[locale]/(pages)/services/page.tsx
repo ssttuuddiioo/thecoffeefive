@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { FaqAccordion } from '@/app/_components/FaqAccordion';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { photoProps } from '@/lib/photo';
 
-export default function ServicesPage({ params }: { params: { locale: string } }) {
+export default async function ServicesPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as import('@/config/i18n').Locale;
-  const c = getDictionary(locale).services;
+  const c = (await getSiteCopy(locale)).services;
 
   return (
     <main className="pt-20 md:pt-24">

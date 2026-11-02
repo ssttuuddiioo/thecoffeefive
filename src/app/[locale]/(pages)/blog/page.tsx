@@ -1,13 +1,13 @@
 import { JournalCard } from '@/app/_components/JournalCard';
 import { getJournalArticles } from '@/lib/mock-data';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import type { Locale } from '@/config/i18n';
 
 const blogImages = ['/blog1.png', '/blog3.png', '/blog5.png', '/blog2.png', '/blog1.png', '/blog3.png'];
 
-export default function BlogPage({ params }: { params: { locale: string } }) {
+export default async function BlogPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as Locale;
-  const c = getDictionary(locale).blog;
+  const c = (await getSiteCopy(locale)).blog;
   const articles = getJournalArticles(locale);
 
   return (

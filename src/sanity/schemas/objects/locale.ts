@@ -6,7 +6,7 @@ import { defineField, defineType } from 'sanity';
  * article, both languages edited side by side, no plugin required.
  *
  * Spanish is the source of truth — `en` falling back to `es` is handled by the
- * `pickLocale` reader in `src/sanity/lib/locale.ts`.
+ * `pickLocale` reader in `src/types/content.ts`.
  */
 export const localeString = defineType({
   name: 'localeString',

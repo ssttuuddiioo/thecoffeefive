@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { locales, isLocale, type Locale } from '@/config/i18n';
-import { getDictionary, toClientDictionary } from '@/config/dictionaries';
+import { toClientDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { LanguageProvider } from '@/app/_components/LanguageProvider';
 import { Header } from '@/app/_components/Header';
 import { Footer } from '@/app/_components/Footer';
@@ -12,7 +13,7 @@ export function generateStaticParams() {
 // Only `es` and `en` are valid locales — the isLocale check below 404s the rest.
 // No `dynamicParams = false` here: it would also apply to child routes, and lots
 // or posts published after the build have to resolve without a redeploy.
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params: { locale },
 }: {
@@ -20,7 +21,7 @@ export default function LocaleLayout({
   params: { locale: string };
 }) {
   if (!isLocale(locale)) notFound();
-  const dict = toClientDictionary(getDictionary(locale as Locale));
+  const dict = toClientDictionary(await getSiteCopy(locale as Locale));
 
   return (
     <LanguageProvider locale={locale as Locale} dict={dict}>

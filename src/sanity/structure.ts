@@ -1,13 +1,22 @@
 import type { StructureResolver } from 'sanity/structure';
+import type { CopyDocId } from './lib/copy-docs';
 
 /**
  * Studio sidebar, organised around how Juan actually works: find a lot, change
  * it, publish. The green coffee list is split by the two questions he asks most
  * — is it still available, and where is it — so he never scrolls a flat list.
  *
- * `siteCopy` is a singleton: one document, opened directly, with no "create new"
- * affordance, so the site's text can't end up with two competing copies.
+ * Each page's text is a singleton: one document, opened directly, with no "create
+ * new" affordance, so the site's text can't end up with two competing copies.
  */
+
+/** A fixed document opened directly from the sidebar. */
+function singleton(S: Parameters<StructureResolver>[0], id: CopyDocId, title: string) {
+  return S.listItem()
+    .title(title)
+    .id(id)
+    .child(S.document().schemaType(id).documentId(id).title(title));
+}
 
 /** A filtered list of green lots that still creates new lots correctly. */
 function lotList(S: Parameters<StructureResolver>[0], title: string, filter?: string) {
@@ -29,6 +38,13 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Coffee Five')
     .items([
+      singleton(S, 'copyGlobal', 'General'),
+      singleton(S, 'copyHome', 'Inicio'),
+      singleton(S, 'copyServicios', 'Consultorio'),
+      singleton(S, 'copyNosotros', 'Nosotros'),
+      singleton(S, 'copyProceso', 'Proceso'),
+      singleton(S, 'copyContacto', 'Contacto'),
+      S.divider(),
       S.listItem()
         .title('Café verde')
         .child(
@@ -52,14 +68,19 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title('Landed in US')
                 .child(lotList(S, 'Landed in US', 'ubicacion == "landed_us"')),
+              S.divider(),
+              singleton(S, 'copyCafeVerde', 'Textos de café verde'),
             ]),
         ),
-      S.divider(),
       S.documentTypeListItem('roastedCoffee').title('Café tostado'),
-      S.documentTypeListItem('journalArticle').title('Blog'),
-      S.divider(),
       S.listItem()
-        .title('Textos del sitio')
-        .id('siteCopy')
-        .child(S.document().schemaType('siteCopy').documentId('siteCopy').title('Textos del sitio')),
+        .title('Blog')
+        .child(
+          S.list()
+            .title('Blog')
+            .items([
+              S.documentTypeListItem('journalArticle').title('Artículos'),
+              singleton(S, 'copyBlog', 'Textos del blog'),
+            ]),
+        ),
     ]);

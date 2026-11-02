@@ -8,7 +8,7 @@ import {
   LOCALE_COOKIE,
   type Locale,
 } from '@/config/i18n';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 
 function resolveLocale(): Locale {
   const fromHeader = headers().get('x-locale');
@@ -18,9 +18,9 @@ function resolveLocale(): Locale {
   return defaultLocale;
 }
 
-export default function NotFound() {
+export default async function NotFound() {
   const locale = resolveLocale();
-  const dict = getDictionary(locale);
+  const dict = await getSiteCopy(locale);
 
   return (
     <main className="min-h-screen bg-coffee-black flex flex-col items-center justify-center px-5 text-center">

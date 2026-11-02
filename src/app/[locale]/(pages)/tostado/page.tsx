@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { isLocale, defaultLocale, type Locale } from '@/config/i18n';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { SignupSection } from '@/app/_components/sections/SignupSection';
 
 /**
@@ -10,9 +10,9 @@ import { SignupSection } from '@/app/_components/sections/SignupSection';
  *
  * The product pages live in git history; restore them when the store opens.
  */
-export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale: Locale = isLocale(params.locale) ? params.locale : defaultLocale;
-  const dict = getDictionary(locale);
+  const dict = await getSiteCopy(locale);
   return {
     title: dict.nav.roasted,
     description: dict.signup.body,

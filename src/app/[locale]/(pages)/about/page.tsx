@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import { ProcessSection } from '@/app/_components/sections/ProcessSection';
 import { FaqAccordion } from '@/app/_components/FaqAccordion';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import type { Locale } from '@/config/i18n';
 import { photoProps } from '@/lib/photo';
 
-export default function AboutPage({ params }: { params: { locale: string } }) {
+export default async function AboutPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as Locale;
-  const c = getDictionary(locale).about;
+  const c = (await getSiteCopy(locale)).about;
 
   return (
     <main className="pt-20 md:pt-24">

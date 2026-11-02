@@ -1,9 +1,9 @@
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { siteConfig } from '@/config/site';
 
-export default function ContactPage({ params }: { params: { locale: string } }) {
+export default async function ContactPage({ params }: { params: { locale: string } }) {
   const locale = params.locale as import('@/config/i18n').Locale;
-  const c = getDictionary(locale).contact;
+  const c = (await getSiteCopy(locale)).contact;
 
   return (
     <main className="pt-20 md:pt-24">

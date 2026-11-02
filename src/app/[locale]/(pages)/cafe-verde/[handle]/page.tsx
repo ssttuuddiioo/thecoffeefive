@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { ColombiaMap } from '@/app/_components/ColombiaMap';
@@ -31,7 +31,7 @@ export async function generateStaticParams() {
 
 export default async function GreenCoffeeLotPage({ params }: Props) {
   const locale = params.locale as import('@/config/i18n').Locale;
-  const c = getDictionary(locale).lotDetail;
+  const c = (await getSiteCopy(locale)).lotDetail;
   const lot = await getGreenLotBySlug(params.handle);
   if (!lot) notFound();
   const procesoColor = procesoColorMap[lot.proceso] || lot.color;

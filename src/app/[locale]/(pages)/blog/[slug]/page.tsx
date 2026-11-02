@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ImagePlaceholder } from '@/app/_components/ImagePlaceholder';
 import { getAllJournalSlugs, getJournalArticleBySlug, type JournalContentBlock } from '@/lib/mock-data';
-import { getDictionary } from '@/config/dictionaries';
+import { getSiteCopy } from '@/sanity/copy';
 import { withLocale, type Locale } from '@/config/i18n';
 
 type Props = {
@@ -68,9 +68,9 @@ function renderBlock(block: JournalContentBlock, index: number) {
   }
 }
 
-export default function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: Props) {
   const locale = params.locale as Locale;
-  const c = getDictionary(locale).blog;
+  const c = (await getSiteCopy(locale)).blog;
   const article = getJournalArticleBySlug(params.slug, locale);
 
   if (!article) {

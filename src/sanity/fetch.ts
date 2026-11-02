@@ -30,7 +30,7 @@ function rejectAfter(ms: number): { promise: Promise<never>; clear: () => void }
   return { promise, clear: () => clearTimeout(timer) };
 }
 
-async function query<T>(q: string, params: Record<string, unknown> = {}): Promise<T | null> {
+export async function query<T>(q: string, params: Record<string, unknown> = {}): Promise<T | null> {
   if (!client) return null;
   const timeout = rejectAfter(QUERY_TIMEOUT_MS);
   try {
