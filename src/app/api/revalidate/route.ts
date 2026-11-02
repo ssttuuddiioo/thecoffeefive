@@ -1,37 +1,27 @@
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { parseBody } from 'next-sanity/webhook';
+import { SANITY_CACHE_TAG } from '@/sanity/lib/client';
 
 /**
- * Shopify webhook handler for ISR revalidation.
+ * Sanity webhook: purges cached content the moment something is published.
  *
- * Configure in Shopify admin → Settings → Notifications → Webhooks:
- * - Product creation → POST https://yourdomain.com/api/revalidate
- * - Product update → POST https://yourdomain.com/api/revalidate
- * - Product deletion → POST https://yourdomain.com/api/revalidate
- *
- * TODO: Verify Shopify webhook HMAC signature in production.
+ * Configure at sanity.io/manage → API → Webhooks:
+ * - URL: https://thecoffeefive.com/api/revalidate
+ * - Trigger on: create, update, delete. Dataset: production.
+ * - Secret: the same value as SANITY_REVALIDATE_SECRET in Vercel.
  */
 export async function POST(req: NextRequest) {
-  const secret = req.headers.get('x-revalidation-secret');
-
-  // Basic auth check (upgrade to HMAC verification for production)
-  if (secret !== process.env.REVALIDATION_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const secret = process.env.SANITY_REVALIDATE_SECRET;
+  if (!secret) {
+    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
   }
 
-  try {
-    // Revalidate all product-related cached data
-    revalidateTag('products');
-    revalidateTag('blog');
-
-    return NextResponse.json({
-      revalidated: true,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Revalidation failed' },
-      { status: 500 }
-    );
+  const { isValidSignature } = await parseBody(req, secret);
+  if (!isValidSignature) {
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
+
+  revalidateTag(SANITY_CACHE_TAG);
+  return NextResponse.json({ revalidated: true, timestamp: new Date().toISOString() });
 }

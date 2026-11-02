@@ -9,7 +9,6 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "sanity:gen-copy": "tsx scripts/gen-sitecopy-schema.ts",
-    "sanity:seed": "tsx scripts/seed.ts",
     "lots:import": "tsx scripts/lots-import.ts",
     "lots:export": "tsx scripts/lots-export.ts"
   },

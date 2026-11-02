@@ -1,5 +1,5 @@
 import type { Image } from 'sanity';
-import { client, REVALIDATE_SECONDS } from './lib/client';
+import { client, QUERY_TIMEOUT_MS, REVALIDATE_SECONDS, SANITY_CACHE_TAG } from './lib/client';
 import { urlForImage } from './lib/image';
 import { isSanityConfigured } from './env';
 import {
@@ -13,32 +13,44 @@ import { slugifyLot } from '@/lib/slug';
 import type { GreenLot, RoastedCoffee, LocaleField } from '@/types/content';
 
 /**
- * Fallback policy
- * ---------------
- * - Sanity not configured        → bundled mock data (local dev before setup).
- * - Sanity errors / unreachable  → bundled mock data, with a loud warning, so an
- *                                  outage degrades instead of taking the site down.
- * - Sanity configured but empty  → mock data in development only. In production an
- *                                  empty dataset returns empty, because silently
- *                                  serving stale prices to buyers is worse than an
- *                                  obviously empty page.
+ * Fallback policy for lots and products
+ * -------------------------------------
+ * - Sanity not configured          → bundled mock data (local dev before setup).
+ * - Development, error or empty    → bundled mock data.
+ * - Production, error or empty     → empty, because serving stale prices to buyers
+ *                                    is worse than an obviously empty page.
  */
 const isDev = process.env.NODE_ENV !== 'production';
 
+function rejectAfter(ms: number): { promise: Promise<never>; clear: () => void } {
+  let timer: ReturnType<typeof setTimeout>;
+  const promise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms);
+  });
+  return { promise, clear: () => clearTimeout(timer) };
+}
+
 async function query<T>(q: string, params: Record<string, unknown> = {}): Promise<T | null> {
   if (!client) return null;
+  const timeout = rejectAfter(QUERY_TIMEOUT_MS);
   try {
-    return await client.fetch<T>(q, params, { next: { revalidate: REVALIDATE_SECONDS } });
+    return await Promise.race([
+      client.fetch<T>(q, params, {
+        next: { revalidate: REVALIDATE_SECONDS, tags: [SANITY_CACHE_TAG] },
+      }),
+      timeout.promise,
+    ]);
   } catch (error) {
-    console.warn('[sanity] query failed, falling back to bundled content:', error);
+    console.warn('[sanity] query failed:', error);
     return null;
+  } finally {
+    timeout.clear();
   }
 }
 
-/** Empty results only fall back to mock data outside production. */
 function shouldFallback(list: unknown[] | null): boolean {
-  if (list === null) return true;
-  return list.length === 0 && (isDev || !isSanityConfigured);
+  if (!isSanityConfigured) return true;
+  return isDev && (list === null || list.length === 0);
 }
 
 type SanityGreenLot = {
@@ -108,7 +120,7 @@ function toGreenLot(doc: SanityGreenLot): GreenLot {
 export async function getGreenLots(): Promise<GreenLot[]> {
   const docs = await query<SanityGreenLot[]>(greenLotsQuery);
   if (shouldFallback(docs)) return mockGreenLots as GreenLot[];
-  return docs!.map(toGreenLot);
+  return (docs ?? []).map(toGreenLot);
 }
 
 export async function getGreenLotBySlug(slug: string): Promise<GreenLot | undefined> {
@@ -121,7 +133,7 @@ export async function getGreenLotBySlug(slug: string): Promise<GreenLot | undefi
 export async function getGreenLotSlugs(): Promise<string[]> {
   const slugs = await query<string[]>(greenLotSlugsQuery);
   if (shouldFallback(slugs)) return mockGreenLots.map((lot) => slugifyLot(lot.name));
-  return slugs!.filter(Boolean);
+  return (slugs ?? []).filter(Boolean);
 }
 
 type SanityRoasted = {
@@ -163,5 +175,5 @@ function toRoasted(doc: SanityRoasted): RoastedCoffee {
 export async function getRoastedCoffee(): Promise<RoastedCoffee[]> {
   const docs = await query<SanityRoasted[]>(roastedCoffeeQuery);
   if (shouldFallback(docs)) return mockRoastedCoffee as RoastedCoffee[];
-  return docs!.map(toRoasted);
+  return (docs ?? []).map(toRoasted);
 }

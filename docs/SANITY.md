@@ -49,15 +49,14 @@ npx sanity cors add https://thecoffeefive.com --credentials
 
 Skipping this makes the Studio load but fail every request with a CORS error.
 
-### Migrate the existing content
+### Existing content
+
+The production dataset already holds live content. The old seed script was removed
+because it overwrote Studio edits. Take a backup before any bulk write:
 
 ```bash
-npm run sanity:seed -- --dry-run     # report what would be written
-npm run sanity:seed -- --images      # write, and upload public/lots photos
+npx sanity dataset export production backup.tar.gz
 ```
-
-The seed is idempotent — documents use deterministic ids (`greenLot-HS-001`),
-so re-running updates in place instead of creating duplicates.
 
 Then open <http://localhost:3001/studio>.
 

@@ -41,7 +41,7 @@ async function main() {
   writeFileSync(target, csv + '\n');
   console.log(`Exported ${rows.length} lot${rows.length === 1 ? '' : 's'} to ${target}`);
   if (rows.length === 0) {
-    console.log('Dataset is empty — run `npm run sanity:seed` first to migrate the bundled lots.');
+    console.log('Dataset has no lots yet.');
   }
 }
 

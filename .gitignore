@@ -39,3 +39,6 @@ next-env.d.ts
 
 # one-off image optimizer — not part of the build
 /scripts/optimize-images.mjs
+
+# Local Sanity snapshots
+.backups/
