@@ -14,6 +14,7 @@ export const COPY_DOCS = {
   copyContacto: ['contact'],
   copyCafeVerde: ['cafeVerde', 'lotDetail'],
   copyBlog: ['blog'],
+  copyTostado: ['tostado'],
 } as const satisfies Record<string, readonly (keyof Dictionary)[]>;
 
 export type CopyDocId = keyof typeof COPY_DOCS;

@@ -9,6 +9,8 @@ import {
   journalArticleBySlugQuery,
   journalArticlesQuery,
   journalSlugsQuery,
+  catalogOpenQuery,
+  roastedCoffeeBySlugQuery,
   roastedCoffeeQuery,
 } from './queries';
 import {
@@ -16,7 +18,6 @@ import {
   getJournalArticleBySlug as getBundledArticle,
   getJournalArticles as getBundledArticles,
   mockGreenLots,
-  mockRoastedCoffee,
   procesoColorMap,
 } from '@/lib/mock-data';
 import { toPortableText } from '@/lib/journal-portable-text';
@@ -25,7 +26,7 @@ import type { Locale } from '@/config/i18n';
 import { pickLocale, type GreenLot, type RoastedCoffee, type LocaleField } from '@/types/content';
 
 /**
- * Fallback policy for lots and products
+ * Fallback policy for lots
  * -------------------------------------
  * - Sanity not configured          → bundled mock data (local dev before setup).
  * - Development, error or empty    → bundled mock data.
@@ -156,44 +157,65 @@ export async function getGreenLotSlugs(): Promise<string[]> {
 
 type SanityRoasted = {
   variedad: string;
-  origin?: string;
+  slug: string;
+  // Plain strings until the migration has made these bilingual.
+  origin?: LocaleField | string;
+  tueste?: LocaleField | string;
+  fermentacion?: LocaleField | string;
   image?: Image;
+  imageBack?: Image;
   price?: string;
   weight?: string;
   proceso?: string;
-  tueste?: string;
-  fermentacion?: string;
   perfil?: LocaleField;
+  descripcion?: LocaleField;
   brewRatio?: string;
   brewTemperatura?: string;
   brewMetodos?: string[];
   brewTip?: LocaleField;
 };
 
-function toRoasted(doc: SanityRoasted): RoastedCoffee {
+function localeOrPlain(field: LocaleField | string, locale: Locale): string {
+  return typeof field === 'string' ? field : pickLocale(field, locale);
+}
+
+function toRoasted(doc: SanityRoasted, locale: Locale): RoastedCoffee {
   return {
+    slug: doc.slug,
     variedad: doc.variedad,
     img: urlForImage(doc.image, '/bag-front.jpg'),
-    origin: doc.origin ?? '',
+    imgBack: urlForImage(doc.imageBack, '/bag-back.jpg'),
+    origin: localeOrPlain(doc.origin, locale),
     proceso: doc.proceso ?? '',
-    tueste: doc.tueste ?? '',
-    fermentacion: doc.fermentacion ?? '',
-    perfil: doc.perfil?.es ?? '',
+    tueste: localeOrPlain(doc.tueste, locale),
+    fermentacion: localeOrPlain(doc.fermentacion, locale),
+    perfil: pickLocale(doc.perfil, locale),
+    descripcion: pickLocale(doc.descripcion, locale),
     price: doc.price ?? '',
     weight: doc.weight ?? '',
     brew: {
       ratio: doc.brewRatio ?? '',
       temperatura: doc.brewTemperatura ?? '',
       metodos: doc.brewMetodos ?? [],
-      tip: doc.brewTip?.es ?? '',
+      tip: pickLocale(doc.brewTip, locale),
     },
   };
 }
 
-export async function getRoastedCoffee(): Promise<RoastedCoffee[]> {
+/** The Studio switch. A failed read counts as closed, so a Sanity outage shows Próximamente. */
+export async function isCatalogOpen(): Promise<boolean> {
+  return (await query<boolean | null>(catalogOpenQuery)) === true;
+}
+
+/** Empty when Sanity fails: mock products must never reach the catalog. */
+export async function getRoastedCoffee(locale: Locale): Promise<RoastedCoffee[]> {
   const docs = await query<SanityRoasted[]>(roastedCoffeeQuery);
-  if (shouldFallback(docs)) return mockRoastedCoffee as RoastedCoffee[];
-  return (docs ?? []).map(toRoasted);
+  return (docs ?? []).map((doc) => toRoasted(doc, locale));
+}
+
+export async function getRoastedCoffeeBySlug(slug: string, locale: Locale): Promise<RoastedCoffee | undefined> {
+  const result = await query<{ product: SanityRoasted | null }>(roastedCoffeeBySlugQuery, { slug });
+  return result?.product ? toRoasted(result.product, locale) : undefined;
 }
 
 export type JournalSummary = {

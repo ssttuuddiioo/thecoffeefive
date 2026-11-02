@@ -1,7 +1,7 @@
 import { defineField, defineType } from 'sanity';
 import { PROCESO_VALUES } from './greenLot';
 
-/** A retail bag sold through the Shopify-style cart flow on `/tostado`. */
+/** A retail bag on the `/tostado` catalog, ordered over WhatsApp. */
 export const roastedCoffee = defineType({
   name: 'roastedCoffee',
   title: 'Café tostado',
@@ -27,10 +27,25 @@ export const roastedCoffee = defineType({
       options: { source: 'variedad', maxLength: 96 },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({ name: 'origin', title: 'Origen', type: 'string', group: 'basics' }),
+    defineField({
+      name: 'disponible',
+      title: 'Disponible',
+      description: 'Apágalo para ocultar este café sin borrarlo.',
+      type: 'boolean',
+      group: 'basics',
+      initialValue: true,
+    }),
+    defineField({ name: 'origin', title: 'Origen', type: 'localeString', group: 'basics' }),
     defineField({
       name: 'image',
       title: 'Foto',
+      type: 'image',
+      group: 'basics',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'imageBack',
+      title: 'Foto posterior',
       type: 'image',
       group: 'basics',
       options: { hotspot: true },
@@ -58,8 +73,15 @@ export const roastedCoffee = defineType({
       group: 'perfil',
       options: { list: PROCESO_VALUES.map((v) => ({ title: v, value: v })), layout: 'radio' },
     }),
-    defineField({ name: 'tueste', title: 'Tueste', type: 'string', group: 'perfil' }),
-    defineField({ name: 'fermentacion', title: 'Fermentación', type: 'string', group: 'perfil' }),
+    defineField({ name: 'tueste', title: 'Tueste', type: 'localeString', group: 'perfil' }),
+    defineField({ name: 'fermentacion', title: 'Fermentación', type: 'localeString', group: 'perfil' }),
+    defineField({
+      name: 'descripcion',
+      title: 'Sobre este café',
+      description: 'Si está vacío se muestra el texto general.',
+      type: 'localeText',
+      group: 'perfil',
+    }),
     defineField({ name: 'perfil', title: 'Perfil sensorial', type: 'localeString', group: 'perfil' }),
 
     defineField({ name: 'brewRatio', title: 'Ratio', type: 'string', group: 'brew' }),

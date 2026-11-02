@@ -1,8 +1,8 @@
 /**
  * Copies the bundled text and photos into the Studio's page documents, so editors
  * start from what the site shows instead of empty fields. Only fills what is
- * missing: a value already in Sanity is never replaced, and lots, blog posts and
- * products are not touched.
+ * missing: a value already in Sanity is never replaced, and lots and blog posts are
+ * not touched. Plain product fields that became bilingual keep their text as Spanish.
  *
  *   npm run sanity:migrate                          # report only, needs no token
  *   npm run sanity:migrate -- --dataset staging     # report on another dataset
@@ -96,6 +96,15 @@ async function main() {
     return { id, held, plan: planFill(wanted, held) };
   });
 
+  // Product fields that became bilingual keep their text, as the Spanish value.
+  const products = await client.fetch<Record<string, unknown>[]>(`*[_type == "roastedCoffee"]`);
+  const conversions = products.flatMap((doc) =>
+    ['origin', 'tueste', 'fermentacion']
+      .filter((field) => typeof doc[field] === 'string')
+      .map((field) => ({ id: String(doc._id), field, es: String(doc[field]) })),
+  );
+  console.log(`roastedCoffee: ${conversions.length} plain fields to make bilingual`);
+
   let totalSets = 0;
   for (const { id, held, plan } of plans) {
     totalSets += plan.sets.length;
@@ -111,7 +120,7 @@ async function main() {
     console.log('Nothing written. Re-run with --apply to write.');
     return;
   }
-  if (totalSets === 0) {
+  if (totalSets === 0 && conversions.length === 0) {
     console.log('Nothing to do.');
     return;
   }
@@ -125,6 +134,14 @@ async function main() {
     }
     await tx.commit({ visibility: 'async' });
     console.log(`wrote ${id}${held ? '' : ' (new)'}`);
+  }
+  if (conversions.length > 0) {
+    const tx = client.transaction();
+    for (const { id, field, es: value } of conversions) {
+      tx.patch(id, (patch) => patch.set({ [field]: { _type: 'localeString', es: value, en: '' } }));
+    }
+    await tx.commit({ visibility: 'async' });
+    console.log(`converted ${conversions.length} product fields`);
   }
   console.log('\nDone. Run again: it should report 0 to fill.');
 }

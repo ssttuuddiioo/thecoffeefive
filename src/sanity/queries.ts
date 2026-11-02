@@ -47,13 +47,21 @@ export const greenLotSlugsQuery = groq`
   *[_type == "greenLot" && disponible != false].slug.current
 `;
 
-export const roastedCoffeeQuery = groq`
-  *[_type == "roastedCoffee"] | order(order asc) {
-    variedad, "slug": slug.current, origin, image, price, weight,
-    proceso, tueste, fermentacion, perfil,
-    brewRatio, brewTemperatura, brewMetodos, brewTip
-  }
+const ROASTED_FIELDS = groq`
+  variedad, "slug": slug.current, origin, image, imageBack, price, weight,
+  proceso, tueste, fermentacion, perfil, descripcion,
+  brewRatio, brewTemperatura, brewMetodos, brewTip
 `;
+
+export const roastedCoffeeQuery = groq`
+  *[_type == "roastedCoffee" && disponible != false] | order(order asc) { ${ROASTED_FIELDS} }
+`;
+
+export const roastedCoffeeBySlugQuery = groq`
+  { "product": *[_type == "roastedCoffee" && slug.current == $slug && disponible != false][0] { ${ROASTED_FIELDS} } }
+`;
+
+export const catalogOpenQuery = groq`*[_id == "copyTostado"][0].catalogoActivo`;
 
 export const journalArticlesQuery = groq`
   *[_type == "journalArticle"] | order(publishedAt desc) {

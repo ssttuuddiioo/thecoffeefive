@@ -59,6 +59,8 @@ export function toSanity(field: SchemaField, { es, en }: Bundled, photos: Photo[
 export function toObject(fields: SchemaField[], { es, en }: Bundled, photos: Photo[]): Rec {
   const out: Rec = {};
   for (const field of fields) {
+    // Switches aren't copy: they start at their Studio default.
+    if (field.type === 'boolean') continue;
     const value = toSanity(
       field,
       { es: (es as Rec | undefined)?.[field.name], en: (en as Rec | undefined)?.[field.name] },

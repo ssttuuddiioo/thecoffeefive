@@ -428,6 +428,44 @@ export const copyBlog = page('copyBlog', 'Textos del blog', [
   },
 ]);
 
+const copyTostadoPage = page('copyTostado', 'Apertura y textos', [
+  {
+    name: 'tostado',
+    title: 'Textos',
+    fields: [
+      text('eyebrow', 'Etiqueta superior'),
+      text('heading', 'Titular'),
+      para('intro', 'Texto'),
+      text('verMas', 'Tarjeta: ver más'),
+      text('buy', 'Botón de pedido'),
+      text('aboutTitle', 'Título: sobre este café'),
+      para('aboutBody', 'Texto general: sobre este café'),
+      text('prep', 'Título: preparación'),
+      text('ratio', 'Dato: ratio'),
+      text('temperatura', 'Dato: temperatura'),
+      text('metodos', 'Dato: métodos'),
+      text('baristaTip', 'Título: tip de barista'),
+    ],
+  },
+]);
+
+export const copyTostado = defineType({
+  ...copyTostadoPage,
+  groups: [{ name: 'apertura', title: 'Apertura', default: true }, { name: 'tostado', title: 'Textos' }],
+  fields: [
+    defineField({
+      name: 'catalogoActivo',
+      title: 'Abrir la tienda',
+      description:
+        'Apagado: /tostado muestra Próximamente. Encendido: muestra los cafés disponibles. Si no hay ninguno disponible, sigue mostrando Próximamente.',
+      type: 'boolean',
+      group: 'apertura',
+      initialValue: false,
+    }),
+    ...copyTostadoPage.fields,
+  ],
+});
+
 export const copyDocuments = [
   copyGlobal,
   copyHome,
@@ -437,4 +475,5 @@ export const copyDocuments = [
   copyContacto,
   copyCafeVerde,
   copyBlog,
+  copyTostado,
 ];

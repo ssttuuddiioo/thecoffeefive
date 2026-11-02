@@ -72,7 +72,16 @@ export const structure: StructureResolver = (S) =>
               singleton(S, 'copyCafeVerde', 'Textos de café verde'),
             ]),
         ),
-      S.documentTypeListItem('roastedCoffee').title('Café tostado'),
+      S.listItem()
+        .title('Café tostado')
+        .child(
+          S.list()
+            .title('Café tostado')
+            .items([
+              singleton(S, 'copyTostado', 'Apertura y textos'),
+              S.documentTypeListItem('roastedCoffee').title('Cafés'),
+            ]),
+        ),
       S.listItem()
         .title('Blog')
         .child(

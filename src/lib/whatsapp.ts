@@ -43,6 +43,25 @@ export function buildWhatsAppUrl(lot: LotInfo): string {
   return `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(message)}`;
 }
 
+/** Build a WhatsApp URL for ordering a bag of roasted coffee. */
+export function buildRoastedWhatsAppUrl(coffee: {
+  variedad: string;
+  origin?: string;
+  weight?: string;
+  price?: string;
+}): string {
+  const lines = [
+    `Hola, quiero pedir este café tostado:`,
+    ``,
+    `*${coffee.variedad}*`,
+    coffee.origin && `Origen: ${coffee.origin}`,
+    coffee.weight && `Presentación: ${coffee.weight}`,
+    coffee.price && `Precio: ${coffee.price}`,
+  ].filter(Boolean);
+
+  return `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(lines.join('\n'))}`;
+}
+
 /**
  * Build a WhatsApp URL for a multi-lot enquiry list.
  * Used when buyer has added multiple lots to their enquiry list.

@@ -49,6 +49,7 @@ function compareObject(path: string, base: Record<string, unknown>, fields: Fiel
     compare(`${path}.${key}`, base[key], fields.find((f) => f.name === key));
   }
   for (const field of fields) {
+    if (field.type === 'boolean') continue;
     if (!(field.name in base)) extra.push(`${path}.${field.name}: no dictionary text`);
   }
 }

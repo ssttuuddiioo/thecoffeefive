@@ -46,8 +46,11 @@ export interface GreenLot {
 }
 
 export interface RoastedCoffee {
+  slug: string;
   variedad: string;
   img: string;
+  imgBack: string;
+  descripcion?: string;
   origin: string;
   proceso: string;
   tueste: string;
