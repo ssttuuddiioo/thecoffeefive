@@ -32,18 +32,25 @@ export default defineConfig({
     }),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
-  tools: (prev) => [
-    // Bulk lot editing without leaving the Studio: download CSV, edit in a
-    // spreadsheet, upload it back. Same rules as the CLI importer — they share
-    // src/sanity/lib/lot-csv.ts.
-    {
-      name: 'importar-csv',
-      title: 'Importar CSV',
-      icon: UploadIcon,
-      component: CsvImportTool,
-    },
-    ...prev,
-  ],
+  // The Studio opens on the first tool, so the order is: Vista previa, the
+  // document list, CSV import, then the rest.
+  tools: (prev) => {
+    const named = (name: string) => prev.filter((tool) => tool.name === name);
+    return [
+      ...named('presentation'),
+      ...named('structure'),
+      // Bulk lot editing without leaving the Studio: download CSV, edit in a
+      // spreadsheet, upload it back. Same rules as the CLI importer — they share
+      // src/sanity/lib/lot-csv.ts.
+      {
+        name: 'importar-csv',
+        title: 'Importar CSV',
+        icon: UploadIcon,
+        component: CsvImportTool,
+      },
+      ...prev.filter((tool) => tool.name !== 'presentation' && tool.name !== 'structure'),
+    ];
+  },
   document: {
     actions: (prev, { schemaType }) =>
       SINGLETONS.has(schemaType)
