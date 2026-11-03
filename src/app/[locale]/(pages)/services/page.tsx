@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { FaqAccordion } from '@/app/_components/FaqAccordion';
 import { getSiteCopy } from '@/sanity/copy';
 import { photoProps } from '@/lib/photo';
+import { stegaClean } from 'next-sanity';
 import { siteConfig } from '@/config/site';
 
 export default async function ServicesPage({ params }: { params: { locale: string } }) {
@@ -52,7 +53,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                 {c.farm.cta}
               </a>
               <a
-                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.farm.mailSubject)}`}
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(stegaClean(c.farm.mailSubject))}`}
                 className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
               >
                 {c.farm.knowMore}
@@ -80,7 +81,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                 {c.lab.cta}
               </a>
               <a
-                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.lab.mailSubject)}`}
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(stegaClean(c.lab.mailSubject))}`}
                 className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
               >
                 {c.lab.knowMore}
@@ -102,7 +103,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                 {c.training.cta}
               </a>
               <a
-                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.training.mailSubject)}`}
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(stegaClean(c.training.mailSubject))}`}
                 className="inline-flex items-center px-6 py-3 border border-coffee-white/40 text-coffee-white text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white/10 transition-colors min-h-[44px]"
               >
                 {c.training.knowMore}
@@ -140,7 +141,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                 ))}
               </div>
               <a
-                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(c.baristaPro.mailSubject)}`}
+                href={`mailto:hello@thecoffeefive.com?subject=${encodeURIComponent(stegaClean(c.baristaPro.mailSubject))}`}
                 className="inline-flex items-center mt-8 px-8 py-3 bg-coffee-cream text-coffee-black text-[12px] tracking-[0.1em] uppercase rounded-sm hover:bg-coffee-white transition-colors min-h-[44px] font-semibold"
               >
                 {c.baristaPro.cta}

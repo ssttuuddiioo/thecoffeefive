@@ -1,4 +1,5 @@
 import type { Image } from 'sanity';
+import { stegaClean } from '@sanity/client/stega';
 import type { Locale } from '@/config/i18n';
 import type { Photo } from '@/lib/photo';
 import { urlForImage } from './image';
@@ -27,7 +28,8 @@ function listItemValue(field: unknown, locale: Locale): string | undefined {
 function mergePhoto(base: Photo, field: unknown, locale: Locale): Photo {
   if (!isRecord(field)) return base;
   const alt = localeValue(field.alt, locale) ?? base.alt;
-  const image = field.image as (Image & { hotspot?: { x?: number; y?: number } }) | undefined;
+  // Asset references must reach the URL builder without preview markers.
+  const image = stegaClean(field.image) as (Image & { hotspot?: { x?: number; y?: number } }) | undefined;
   const src = isRecord(image) && image.asset ? urlForImage(image) : '';
   if (!src) return { ...base, alt };
   const { x, y } = image?.hotspot ?? {};

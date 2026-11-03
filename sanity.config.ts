@@ -1,10 +1,12 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
+import { presentationTool } from 'sanity/presentation';
 import { UploadIcon } from '@sanity/icons';
 import { CsvImportTool } from './src/sanity/tools/CsvImportTool';
 import { schemaTypes } from './src/sanity/schemas';
 import { COPY_DOC_IDS } from './src/sanity/lib/copy-docs';
+import { presentationResolve } from './src/sanity/presentation';
 import { structure } from './src/sanity/structure';
 import { apiVersion, dataset, projectId, studioBasePath } from './src/sanity/env';
 
@@ -23,6 +25,11 @@ export default defineConfig({
   },
   plugins: [
     structureTool({ structure }),
+    presentationTool({
+      title: 'Vista previa',
+      previewUrl: { initial: '/es', previewMode: { enable: '/api/draft-mode/enable' } },
+      resolve: presentationResolve,
+    }),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
   tools: (prev) => [

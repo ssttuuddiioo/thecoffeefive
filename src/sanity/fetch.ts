@@ -1,5 +1,7 @@
 import type { Image } from 'sanity';
+import { draftMode } from 'next/headers';
 import { client, QUERY_TIMEOUT_MS, REVALIDATE_SECONDS, SANITY_CACHE_TAG } from './lib/client';
+import { readToken } from './lib/token';
 import { urlForImage } from './lib/image';
 import { isSanityConfigured } from './env';
 import {
@@ -43,14 +45,42 @@ function rejectAfter(ms: number): { promise: Promise<never>; clear: () => void }
   return { promise, clear: () => clearTimeout(timer) };
 }
 
-export async function query<T>(q: string, params: Record<string, unknown> = {}): Promise<T | null> {
+/** Draft mode is a request-time cookie, so build steps like generateStaticParams have none. */
+function isPreviewing(): boolean {
+  try {
+    return Boolean(readToken) && draftMode().isEnabled;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * `stega` embeds invisible markers in the returned strings so the Studio's preview can
+ * map text on the page to its field. Only for text that is displayed as-is: a marker
+ * inside a URL, a lookup key or a WhatsApp message would break it.
+ */
+export async function query<T>(
+  q: string,
+  params: Record<string, unknown> = {},
+  { stega = false }: { stega?: boolean } = {},
+): Promise<T | null> {
   if (!client) return null;
   const timeout = rejectAfter(QUERY_TIMEOUT_MS);
+  const preview = isPreviewing();
+  const source = preview
+    ? client.withConfig({
+        token: readToken,
+        perspective: 'drafts',
+        stega: { enabled: stega, studioUrl: '/studio' },
+      })
+    : client;
   try {
     return await Promise.race([
-      client.fetch<T>(q, params, {
-        next: { revalidate: REVALIDATE_SECONDS, tags: [SANITY_CACHE_TAG] },
-      }),
+      source.fetch<T>(
+        q,
+        params,
+        preview ? { cache: 'no-store' } : { next: { revalidate: REVALIDATE_SECONDS, tags: [SANITY_CACHE_TAG] } },
+      ),
       timeout.promise,
     ]);
   } catch (error) {

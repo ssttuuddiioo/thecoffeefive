@@ -16,7 +16,7 @@ const copyDocsQuery = `*[_id in $ids]`;
  */
 export const getSiteCopy = cache(async (locale: Locale): Promise<Dictionary> => {
   const base = getDictionary(locale);
-  const docs = await query<CopyDoc[]>(copyDocsQuery, { ids: COPY_DOC_IDS });
+  const docs = await query<CopyDoc[]>(copyDocsQuery, { ids: COPY_DOC_IDS }, { stega: true });
   if (!Array.isArray(docs) || docs.length === 0) return base;
 
   const merged: Record<string, unknown> = { ...base };

@@ -127,9 +127,10 @@ export function planFill(wanted: Rec, existing: unknown, path = ''): FillReport 
 function strip(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(strip);
   if (!isRecord(value)) return value;
+  // Sorted because Sanity doesn't keep key order, and this result is compared as JSON.
   const out: Rec = {};
-  for (const [k, v] of Object.entries(value)) {
-    if (k !== '_key' && k !== '_type') out[k] = strip(v);
+  for (const k of Object.keys(value).sort()) {
+    if (k !== '_key' && k !== '_type') out[k] = strip(value[k]);
   }
   return out;
 }

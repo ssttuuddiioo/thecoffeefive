@@ -1,4 +1,7 @@
+import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { VisualEditing } from 'next-sanity';
+import { PreviewBanner } from '@/app/_components/PreviewBanner';
 import { locales, isLocale, type Locale } from '@/config/i18n';
 import { toClientDictionary } from '@/config/dictionaries';
 import { getSiteCopy } from '@/sanity/copy';
@@ -35,6 +38,12 @@ export default async function LocaleLayout({
         <div className="flex-1" style={{ backgroundColor: '#ED4035' }} />
       </div>
       <Footer />
+      {draftMode().isEnabled && (
+        <>
+          <VisualEditing />
+          <PreviewBanner />
+        </>
+      )}
     </LanguageProvider>
   );
 }
