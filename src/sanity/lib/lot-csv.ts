@@ -17,18 +17,63 @@ export interface ColumnSpec {
   kind?: ColumnKind;
   required?: boolean;
   enumValues?: readonly string[];
+  /** Other spellings people type for an enum value, keyed by normalised text. */
+  aliases?: Record<string, string>;
   help?: string;
 }
 
 const UBICACION_KEYS = UBICACION_VALUES.map((u) => u.value);
 
+/** Lowercase, strip accents, and treat _ - / and runs of spaces as one space. */
+export function normalizeEnumText(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[\s_\-/]+/g, ' ')
+    .trim();
+}
+
+const PROCESO_ALIASES: Record<string, string> = {
+  washed: 'Lavado',
+  lavado: 'Lavado',
+  natural: 'Natural',
+  honey: 'Honey',
+  miel: 'Honey',
+  anaerobic: 'Anaeróbico',
+  anaerobico: 'Anaeróbico',
+  fermented: 'Fermentado',
+  fermentado: 'Fermentado',
+};
+
+/** Juan writes the warehouse city; the site needs where the coffee is. */
+const UBICACION_ALIASES: Record<string, string> = {
+  colombia: 'colombia',
+  'en colombia': 'colombia',
+  medellin: 'colombia',
+  'en transito': 'en_transito',
+  transito: 'en_transito',
+  'in transit': 'en_transito',
+  transit: 'en_transito',
+  'landed us': 'landed_us',
+  'landed in us': 'landed_us',
+  landed: 'landed_us',
+  us: 'landed_us',
+  usa: 'landed_us',
+  eeuu: 'landed_us',
+  'estados unidos': 'landed_us',
+  miami: 'landed_us',
+  douglas: 'landed_us',
+  'miami douglas': 'landed_us',
+};
+
 export const COLUMNS: ColumnSpec[] = [
   { header: 'ref', path: 'ref', required: true, help: 'Clave única, formato HS-001' },
   { header: 'name', path: 'name', required: true },
-  { header: 'proceso', path: 'proceso', required: true, enumValues: PROCESO_VALUES },
+  { header: 'proceso', path: 'proceso', required: true, enumValues: PROCESO_VALUES, aliases: PROCESO_ALIASES },
   { header: 'price', path: 'price', required: true },
   { header: 'weight', path: 'weight', required: true },
-  { header: 'ubicacion', path: 'ubicacion', required: true, enumValues: UBICACION_KEYS },
+  { header: 'ubicacion', path: 'ubicacion', required: true, enumValues: UBICACION_KEYS, aliases: UBICACION_ALIASES },
   { header: 'disponible', path: 'disponible', kind: 'boolean' },
   { header: 'order', path: 'order', kind: 'number' },
   { header: 'variedad', path: 'variedad' },
@@ -106,7 +151,12 @@ export function fromCell(raw: string, column: ColumnSpec): ParsedCell {
     return { value: n };
   }
 
-  if (column.enumValues && !column.enumValues.includes(trimmed)) {
+  if (column.enumValues) {
+    if (column.enumValues.includes(trimmed)) return { value: trimmed };
+    const key = normalizeEnumText(trimmed);
+    const match =
+      column.enumValues.find((v) => normalizeEnumText(v) === key) ?? column.aliases?.[key];
+    if (match) return { value: match };
     return {
       value: undefined,
       error: `"${column.header}" debe ser uno de: ${column.enumValues.join(', ')} (recibido: ${trimmed})`,
