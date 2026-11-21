@@ -150,7 +150,7 @@ export const greenLot = defineType({
       title: 'Fotos',
       description: 'La primera foto es la que se ve en la tarjeta de la lista. Arrastra para reordenarlas.',
       type: 'array',
-      group: 'contenido',
+      group: ['basics', 'contenido'],
       of: [{ type: 'image', options: { hotspot: true } }],
       options: { layout: 'grid' },
     }),
