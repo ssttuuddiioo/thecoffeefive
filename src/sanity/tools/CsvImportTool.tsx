@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useClient } from 'sanity';
 import {
-  Badge, Box, Button, Card, Container, Flex, Heading, Inline, Spinner, Stack, Text,
+  Box, Button, Card, Container, Flex, Heading, Spinner, Stack, Text,
 } from '@sanity/ui';
 import Papa from 'papaparse';
 import {
@@ -10,6 +10,7 @@ import {
   prepareRows, toCell, type ImportPlan,
 } from '../lib/lot-csv';
 import { apiVersion } from '../env';
+import { ImportPlanPreview } from './ImportPlanPreview';
 
 const ALL_LOTS_QUERY = '*[_type == "greenLot"] | order(order asc, ref asc)';
 
@@ -199,42 +200,8 @@ export function CsvImportTool() {
         )}
 
         {phase.status === 'planned' && (
-          <Stack space={4}>
-            <Card padding={4} radius={2} tone="primary" border>
-              <Stack space={3}>
-                <Text weight="semibold">{phase.fileName} — {phase.rowCount} filas</Text>
-                <Inline space={2}>
-                  <Badge tone="positive">{phase.plan.creates.length} para crear</Badge>
-                  <Badge tone="caution">{phase.plan.updates.length} para actualizar</Badge>
-                  <Badge tone="default">{phase.plan.unchanged} sin cambios</Badge>
-                </Inline>
-              </Stack>
-            </Card>
-
-            {phase.plan.creates.map((row) => (
-              <Card key={row.ref} padding={3} radius={2} tone="positive" border>
-                <Text size={1}>
-                  <strong>CREAR</strong>  {row.ref} · {row.name}
-                </Text>
-              </Card>
-            ))}
-
-            {phase.plan.updates.map(({ row, changes }) => (
-              <Card key={row.ref} padding={3} radius={2} tone="caution" border>
-                <Stack space={3}>
-                  <Text size={1}>
-                    <strong>ACTUALIZAR</strong>  {row.ref} · {row.name}
-                  </Text>
-                  <Stack space={2}>
-                    {changes.map((c) => (
-                      <Text key={c.path} size={1} muted>
-                        {c.path}: {c.from || '—'} → <strong>{c.to}</strong>
-                      </Text>
-                    ))}
-                  </Stack>
-                </Stack>
-              </Card>
-            ))}
+          <Stack space={5}>
+            <ImportPlanPreview plan={phase.plan} fileName={phase.fileName} rowCount={phase.rowCount} />
 
             <Flex gap={3}>
               <Button

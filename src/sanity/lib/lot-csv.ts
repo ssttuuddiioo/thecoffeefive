@@ -14,6 +14,10 @@ export interface ColumnSpec {
   header: string;
   /** Dot path into the Sanity document. */
   path: string;
+  /** Name shown in the import preview. */
+  label: string;
+  /** Paragraph text: the preview shows it apart from the short facts. */
+  long?: boolean;
   kind?: ColumnKind;
   required?: boolean;
   enumValues?: readonly string[];
@@ -75,36 +79,36 @@ const UBICACION_ALIASES: Record<string, string> = {
 };
 
 export const COLUMNS: ColumnSpec[] = [
-  { header: 'ref', path: 'ref', required: true, help: 'Clave única, formato HS-001' },
-  { header: 'name', path: 'name', required: true },
-  { header: 'proceso', path: 'proceso', required: true, enumValues: PROCESO_VALUES, aliases: PROCESO_ALIASES },
-  { header: 'price', path: 'price', required: true },
-  { header: 'weight', path: 'weight', required: true },
-  { header: 'ubicacion', path: 'ubicacion', required: true, enumValues: UBICACION_KEYS, aliases: UBICACION_ALIASES },
-  { header: 'bodega', path: 'bodega', help: 'Ciudad que ve el comprador, ej. Miami/Douglas' },
-  { header: 'disponible', path: 'disponible', kind: 'boolean' },
-  { header: 'order', path: 'order', kind: 'number' },
-  { header: 'variedad', path: 'variedad' },
-  { header: 'finca', path: 'finca' },
-  { header: 'municipio', path: 'municipio' },
-  { header: 'region', path: 'region' },
-  { header: 'altura', path: 'altura' },
-  { header: 'puntaje', path: 'puntaje' },
-  { header: 'humedad', path: 'humedad' },
-  { header: 'actividad_agua', path: 'actividadAgua' },
-  { header: 'densidad', path: 'densidad' },
-  { header: 'criba', path: 'criba' },
-  { header: 'trilla', path: 'trilla' },
-  { header: 'recomendaciones_es', path: 'recomendaciones.es' },
-  { header: 'recomendaciones_en', path: 'recomendaciones.en' },
-  { header: 'nota_finca_es', path: 'notaFinca.es' },
-  { header: 'nota_finca_en', path: 'notaFinca.en' },
-  { header: 'proceso_descripcion_es', path: 'procesoDescripcion.es' },
-  { header: 'proceso_descripcion_en', path: 'procesoDescripcion.en' },
-  { header: 'notas_cata_es', path: 'notasCata.es' },
-  { header: 'notas_cata_en', path: 'notasCata.en' },
-  { header: 'perfil_descripcion_es', path: 'perfilDescripcion.es' },
-  { header: 'perfil_descripcion_en', path: 'perfilDescripcion.en' },
+  { header: 'ref', path: 'ref', label: 'Referencia', required: true, help: 'Clave única, formato HS-001' },
+  { header: 'name', path: 'name', label: 'Nombre', required: true },
+  { header: 'proceso', path: 'proceso', label: 'Proceso', required: true, enumValues: PROCESO_VALUES, aliases: PROCESO_ALIASES },
+  { header: 'price', path: 'price', label: 'Precio', required: true },
+  { header: 'weight', path: 'weight', label: 'Cantidad', required: true },
+  { header: 'ubicacion', path: 'ubicacion', label: 'Ubicación', required: true, enumValues: UBICACION_KEYS, aliases: UBICACION_ALIASES },
+  { header: 'bodega', path: 'bodega', label: 'Bodega', help: 'Ciudad que ve el comprador, ej. Miami/Douglas' },
+  { header: 'disponible', path: 'disponible', label: 'Visible', kind: 'boolean' },
+  { header: 'order', path: 'order', label: 'Orden', kind: 'number' },
+  { header: 'variedad', path: 'variedad', label: 'Variedad' },
+  { header: 'finca', path: 'finca', label: 'Finca' },
+  { header: 'municipio', path: 'municipio', label: 'Municipio' },
+  { header: 'region', path: 'region', label: 'Región' },
+  { header: 'altura', path: 'altura', label: 'Altura' },
+  { header: 'puntaje', path: 'puntaje', label: 'Norma' },
+  { header: 'humedad', path: 'humedad', label: 'Humedad' },
+  { header: 'actividad_agua', path: 'actividadAgua', label: 'Actividad de agua' },
+  { header: 'densidad', path: 'densidad', label: 'Densidad' },
+  { header: 'criba', path: 'criba', label: 'Criba' },
+  { header: 'trilla', path: 'trilla', label: 'Trilla' },
+  { header: 'recomendaciones_es', path: 'recomendaciones.es', label: 'Recomendaciones (ES)', long: true },
+  { header: 'recomendaciones_en', path: 'recomendaciones.en', label: 'Recomendaciones (EN)', long: true },
+  { header: 'nota_finca_es', path: 'notaFinca.es', label: 'Nota de finca (ES)', long: true },
+  { header: 'nota_finca_en', path: 'notaFinca.en', label: 'Nota de finca (EN)', long: true },
+  { header: 'proceso_descripcion_es', path: 'procesoDescripcion.es', label: 'Descripción del proceso (ES)', long: true },
+  { header: 'proceso_descripcion_en', path: 'procesoDescripcion.en', label: 'Descripción del proceso (EN)', long: true },
+  { header: 'notas_cata_es', path: 'notasCata.es', label: 'Notas de cata (ES)', long: true },
+  { header: 'notas_cata_en', path: 'notasCata.en', label: 'Notas de cata (EN)', long: true },
+  { header: 'perfil_descripcion_es', path: 'perfilDescripcion.es', label: 'Descripción del perfil (ES)', long: true },
+  { header: 'perfil_descripcion_en', path: 'perfilDescripcion.en', label: 'Descripción del perfil (EN)', long: true },
 ];
 
 export function getPath(obj: unknown, path: string): unknown {
@@ -193,6 +197,8 @@ export interface PreparedRow {
 
 export interface FieldChange {
   path: string;
+  label: string;
+  long: boolean;
   from: string;
   to: string;
 }
@@ -289,7 +295,13 @@ export function diffFields(
     if (next === undefined) continue;
     const current = getPath(existing, column.path);
     if (toCell(current) !== toCell(next)) {
-      changes.push({ path: column.header, from: toCell(current), to: toCell(next) });
+      changes.push({
+        path: column.header,
+        label: column.label,
+        long: column.long ?? false,
+        from: toCell(current),
+        to: toCell(next),
+      });
     }
   }
   return changes;
