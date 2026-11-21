@@ -6,6 +6,7 @@ import { PortableBody } from '@/app/_components/PortableBody';
 import { getJournalArticleBySlug, getJournalSlugs } from '@/sanity/fetch';
 import { getSiteCopy } from '@/sanity/copy';
 import { withLocale, type Locale } from '@/config/i18n';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 
 type Props = {
   params: { locale: string; slug: string };
@@ -24,6 +25,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!article) {
     notFound();
   }
+  const edit = documentEdit(article.sanityId, 'journalArticle');
 
   return (
     <main className="pt-20 md:pt-24">
@@ -35,10 +37,10 @@ export default async function BlogPostPage({ params }: Props) {
           >
             {c.back}
           </Link>
-          <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-4">
+          <p data-sanity={edit('category')} className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-4">
             {article.category}
           </p>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-coffee-white mb-4 leading-tight">
+          <h1 data-sanity={edit('title')} className="text-2xl md:text-3xl lg:text-4xl font-bold text-coffee-white mb-4 leading-tight">
             {article.title}
           </h1>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-coffee-400">
@@ -56,7 +58,7 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto mb-12">
+        <div data-sanity={edit('coverImage')} className="max-w-3xl mx-auto mb-12">
           {article.cover ? (
             <div className="relative aspect-video rounded-md overflow-hidden">
               <Image src={article.cover} alt={article.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 768px" priority />
@@ -67,7 +69,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <div className="space-y-6 text-sm md:text-base text-coffee-400 leading-relaxed">
+          <div data-sanity={edit(`body.${locale}`)} className="space-y-6 text-sm md:text-base text-coffee-400 leading-relaxed">
             <PortableBody value={article.body as never} />
           </div>
 

@@ -22,7 +22,7 @@ export const getSiteCopy = cache(async (locale: Locale): Promise<Dictionary> => 
   const merged: Record<string, unknown> = { ...base };
   for (const doc of docs) {
     for (const section of COPY_DOCS[doc._id] ?? []) {
-      merged[section] = mergeCopy(base[section], doc[section], locale);
+      merged[section] = mergeCopy(base[section], doc[section], locale, { id: doc._id, path: section });
     }
   }
   return merged as Dictionary;

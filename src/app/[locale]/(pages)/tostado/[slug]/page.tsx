@@ -4,6 +4,7 @@ import { withLocale, type Locale } from '@/config/i18n';
 import { buildRoastedWhatsAppUrl } from '@/lib/whatsapp';
 import { getSiteCopy } from '@/sanity/copy';
 import { getRoastedCoffeeBySlug, isCatalogOpen } from '@/sanity/fetch';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 
 type Props = { params: { locale: string; slug: string } };
 
@@ -18,6 +19,7 @@ export default async function RoastedCoffeePage({ params }: Props) {
   if (!open || !product) redirect(withLocale(locale, '/tostado'));
 
   const c = copy.tostado;
+  const edit = documentEdit(product.sanityId, 'roastedCoffee');
   const tags = [product.origin, product.proceso, product.tueste].filter(Boolean);
   const hasBrew = product.brew.ratio || product.brew.temperatura || product.brew.metodos.length > 0;
 
@@ -27,10 +29,10 @@ export default async function RoastedCoffeePage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Images */}
           <div className="grid grid-cols-1 gap-3">
-            <div className="relative aspect-square rounded-md overflow-hidden">
+            <div data-sanity={edit('image')} className="relative aspect-square rounded-md overflow-hidden">
               <Image src={product.img} alt={product.variedad} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" priority />
             </div>
-            <div className="relative aspect-square rounded-md overflow-hidden">
+            <div data-sanity={edit('imageBack')} className="relative aspect-square rounded-md overflow-hidden">
               <Image src={product.imgBack} alt={product.variedad} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             </div>
           </div>
@@ -38,10 +40,10 @@ export default async function RoastedCoffeePage({ params }: Props) {
           {/* Product info */}
           <div>
             <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-3">{c.eyebrow}</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-coffee-white mb-2">{product.variedad}</h1>
-            {product.fermentacion && <p className="text-base text-coffee-400 italic mb-1">{product.fermentacion}</p>}
-            {product.perfil && <p className="text-base text-coffee-400 italic mb-4">{product.perfil}</p>}
-            <p className="text-xl font-medium text-coffee-white mb-6">
+            <h1 data-sanity={edit('variedad')} className="text-2xl md:text-3xl font-bold text-coffee-white mb-2">{product.variedad}</h1>
+            {product.fermentacion && <p data-sanity={edit('fermentacion')} className="text-base text-coffee-400 italic mb-1">{product.fermentacion}</p>}
+            {product.perfil && <p data-sanity={edit('perfil')} className="text-base text-coffee-400 italic mb-4">{product.perfil}</p>}
+            <p data-sanity={edit('price')} className="text-xl font-medium text-coffee-white mb-6">
               {[product.price, product.weight].filter(Boolean).join(' · ')}
             </p>
 
@@ -64,7 +66,12 @@ export default async function RoastedCoffeePage({ params }: Props) {
 
             <div className="border-t border-coffee-800 pt-6">
               <h2 className="text-sm font-medium text-coffee-white mb-2">{c.aboutTitle}</h2>
-              <p className="text-sm text-coffee-400 leading-relaxed">{product.descripcion || c.aboutBody}</p>
+              <p
+                data-sanity={product.descripcion ? edit('descripcion') : undefined}
+                className="text-sm text-coffee-400 leading-relaxed"
+              >
+                {product.descripcion || c.aboutBody}
+              </p>
             </div>
 
             {hasBrew && (

@@ -15,6 +15,8 @@ export function pickLocale(field: LocaleField, locale: Locale): string {
  * the source is a one-line import change in each page.
  */
 export interface GreenLot {
+  /** Sanity document id, for click-to-edit in the Studio preview. Absent for bundled lots. */
+  sanityId?: string;
   name: string;
   ref: string;
   img: string;
@@ -49,6 +51,8 @@ export interface GreenLot {
 }
 
 export interface RoastedCoffee {
+  /** Sanity document id, for click-to-edit in the Studio preview. */
+  sanityId?: string;
   slug: string;
   variedad: string;
   img: string;

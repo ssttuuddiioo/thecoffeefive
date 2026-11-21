@@ -127,6 +127,7 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
                   weight={lot.weight}
                   price={lot.price}
                   color={lot.color}
+                  sanityId={lot.sanityId}
                   proceso={lot.proceso}
                   productor={lot.finca}
                   img={lot.img}

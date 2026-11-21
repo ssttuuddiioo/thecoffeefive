@@ -2,6 +2,7 @@ import { groq } from 'next-sanity';
 
 /** Fields shared by the offer list and the lot detail page. */
 const GREEN_LOT_FIELDS = groq`
+  _id,
   ref,
   name,
   "slug": slug.current,
@@ -49,7 +50,7 @@ export const greenLotSlugsQuery = groq`
 `;
 
 const ROASTED_FIELDS = groq`
-  variedad, "slug": slug.current, origin, image, imageBack, price, weight,
+  _id, variedad, "slug": slug.current, origin, image, imageBack, price, weight,
   proceso, tueste, fermentacion, perfil, descripcion,
   brewRatio, brewTemperatura, brewMetodos, brewTip
 `;
@@ -66,14 +67,14 @@ export const catalogOpenQuery = groq`*[_id == "copyTostado"][0].catalogoActivo`;
 
 export const journalArticlesQuery = groq`
   *[_type == "journalArticle"] | order(publishedAt desc) {
-    "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage
+    _id, "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage
   }
 `;
 
 export const journalArticleBySlugQuery = groq`
   {
     "article": *[_type == "journalArticle" && slug.current == $slug][0] {
-      "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage, body
+      _id, "slug": slug.current, category, title, description, readMinutes, publishedAt, coverImage, body
     }
   }
 `;

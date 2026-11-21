@@ -3,6 +3,10 @@ import { stegaClean } from '@sanity/client/stega';
 import type { Locale } from '@/config/i18n';
 import type { Photo } from '@/lib/photo';
 import { urlForImage } from './image';
+import { editAttr } from './edit-attr';
+
+/** Where a value lives in the Studio, so photos can be click-to-edit in the preview. */
+export type CopyLocation = { id: string; path: string };
 
 type Rec = Record<string, unknown>;
 
@@ -25,7 +29,14 @@ function listItemValue(field: unknown, locale: Locale): string | undefined {
   return localeValue(field, locale) ?? localeValue(field, 'es');
 }
 
-function mergePhoto(base: Photo, field: unknown, locale: Locale): Photo {
+function mergePhoto(base: Photo, field: unknown, locale: Locale, at?: CopyLocation): Photo {
+  // Tagged even when the Studio has no photo here yet, so clicking it is how you add one.
+  // Copy documents are singletons whose type name is their id.
+  const edit = at ? editAttr(at.id, at.id, at.path) : undefined;
+  return { ...mergePhotoValue(base, field, locale), edit };
+}
+
+function mergePhotoValue(base: Photo, field: unknown, locale: Locale): Photo {
   if (!isRecord(field)) return base;
   const alt = localeValue(field.alt, locale) ?? base.alt;
   // Asset references must reach the URL builder without preview markers.
@@ -63,16 +74,16 @@ function mergeList(base: unknown[], field: unknown, locale: Locale): unknown[] {
  * keys and wrong types are ignored and the result always matches the dictionary type:
  * a blank field or a malformed document can never blank the site.
  */
-export function mergeCopy<T>(base: T, sanity: unknown, locale: Locale): T {
+export function mergeCopy<T>(base: T, sanity: unknown, locale: Locale, at?: CopyLocation): T {
   if (typeof base === 'string') return (localeValue(sanity, locale) ?? base) as T;
   if (Array.isArray(base)) return mergeList(base, sanity, locale) as T;
-  if (isPhotoSlot(base)) return mergePhoto(base, sanity, locale) as T;
+  if (isPhotoSlot(base)) return mergePhoto(base, sanity, locale, at) as T;
   if (!isRecord(base)) return base;
 
   const source = isRecord(sanity) ? sanity : {};
   const merged: Rec = {};
   for (const key of Object.keys(base)) {
-    merged[key] = mergeCopy(base[key], source[key], locale);
+    merged[key] = mergeCopy(base[key], source[key], locale, at && { id: at.id, path: `${at.path}.${key}` });
   }
   return merged as T;
 }

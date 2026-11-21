@@ -97,6 +97,7 @@ function shouldFallback(list: unknown[] | null): boolean {
 }
 
 type SanityGreenLot = {
+  _id?: string;
   ref: string;
   name: string;
   slug?: string;
@@ -137,6 +138,7 @@ function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
   const photos = resolvePhotos(doc);
   const proceso = canonicalProceso(doc.proceso ?? '');
   return {
+    sanityId: doc._id,
     name: doc.name,
     ref: doc.ref,
     img: photos[0],
@@ -188,6 +190,7 @@ export async function getGreenLotSlugs(): Promise<string[]> {
 }
 
 type SanityRoasted = {
+  _id?: string;
   variedad: string;
   slug: string;
   // Plain strings until the migration has made these bilingual.
@@ -213,6 +216,7 @@ function localeOrPlain(field: LocaleField | string, locale: Locale): string {
 
 function toRoasted(doc: SanityRoasted, locale: Locale): RoastedCoffee {
   return {
+    sanityId: doc._id,
     slug: doc.slug,
     variedad: doc.variedad,
     img: urlForImage(doc.image, '/bag-front.jpg'),
@@ -251,6 +255,8 @@ export async function getRoastedCoffeeBySlug(slug: string, locale: Locale): Prom
 }
 
 export type JournalSummary = {
+  /** Sanity document id, for click-to-edit in the Studio preview. Absent for bundled articles. */
+  sanityId?: string;
   slug: string;
   category: string;
   title: string;
@@ -266,6 +272,7 @@ export type JournalArticle = JournalSummary & {
 };
 
 type SanityArticle = {
+  _id?: string;
   slug: string;
   category?: LocaleField;
   title?: LocaleField;
@@ -278,6 +285,7 @@ type SanityArticle = {
 
 function toSummary(doc: SanityArticle, locale: Locale): JournalSummary {
   return {
+    sanityId: doc._id,
     slug: doc.slug,
     category: pickLocale(doc.category, locale),
     title: pickLocale(doc.title, locale),

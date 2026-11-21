@@ -8,8 +8,10 @@ import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { greenLotDetailSlug, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
 import { UBICACION_ICON, procesoColor, type UbicacionKey } from '@/lib/lot-values';
 import { useTranslation } from './LanguageProvider';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 
 type LotData = {
+  sanityId?: string;
   name: string;
   weight: string;
   price: string;
@@ -38,6 +40,7 @@ type LotDrawerProps = {
 
 export function LotDrawer({ lot, onClose }: LotDrawerProps) {
   const { t, locale } = useTranslation();
+  const edit = documentEdit(lot.sanityId, 'greenLot');
   const lotInfo = {
     name: lot.name,
     variedad: lot.variedad,
@@ -76,12 +79,13 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
         <div className="flex items-center justify-between p-6 border-b border-coffee-800">
           <div>
             <span
+              data-sanity={edit('proceso')}
               className="inline-block text-[10px] tracking-[0.1em] uppercase px-2.5 py-0.5 rounded-full text-white font-medium mb-1"
               style={{ backgroundColor: procesoColor(lot.proceso) }}
             >
               {procesoLabel(lot.proceso, locale)}
             </span>
-            <h2 className="text-lg font-bold text-coffee-white">{lot.name}</h2>
+            <h2 data-sanity={edit('name')} className="text-lg font-bold text-coffee-white">{lot.name}</h2>
           </div>
           <button onClick={onClose} className="text-coffee-400 hover:text-coffee-white min-h-[44px] min-w-[44px] flex items-center justify-center">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -95,30 +99,33 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
           {/* Quick specs */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-3">
             {[
-              [t.cafeVerde.specVariedad, lot.variedad],
-              [t.cafeVerde.specProceso, procesoLabel(lot.proceso, locale)],
-              [t.cafeVerde.specFinca, lot.finca],
-              [t.cafeVerde.specRegion, lot.region],
-              [t.cafeVerde.specAltura, `${lot.altura} ${t.cafeVerde.msnm}`],
-              [t.cafeVerde.specNorma, lot.puntaje],
-              [t.cafeVerde.specDisponible, lot.weight],
-              [t.cafeVerde.specPrecio, lot.price],
-            ].map(([label, value]) => (
+              [t.cafeVerde.specVariedad, lot.variedad, 'variedad'],
+              [t.cafeVerde.specProceso, procesoLabel(lot.proceso, locale), 'proceso'],
+              [t.cafeVerde.specFinca, lot.finca, 'finca'],
+              [t.cafeVerde.specRegion, lot.region, 'region'],
+              [t.cafeVerde.specAltura, `${lot.altura} ${t.cafeVerde.msnm}`, 'altura'],
+              [t.cafeVerde.specNorma, lot.puntaje, 'puntaje'],
+              [t.cafeVerde.specDisponible, lot.weight, 'weight'],
+              [t.cafeVerde.specPrecio, lot.price, 'price'],
+            ].map(([label, value, path]) => (
               <div key={label}>
                 <p className="text-[10px] tracking-[0.1em] uppercase text-coffee-400 mb-0.5">{label}</p>
-                <p className="text-sm text-coffee-white">{value}</p>
+                <p data-sanity={edit(path)} className="text-sm text-coffee-white">{value}</p>
               </div>
             ))}
           </div>
 
-          <p className="text-xs text-coffee-400">
+          <p data-sanity={edit(lot.bodega ? 'bodega' : 'ubicacion')} className="text-xs text-coffee-400">
             {lot.bodega
               ? `${UBICACION_ICON[lot.ubicacion as UbicacionKey] ?? '📍'} ${lot.bodega}`
               : (lot.ubicacion && ubicacionLabel[lot.ubicacion]) || ''}
           </p>
 
           {lot.notaFinca && (
-            <p className="text-xs text-coffee-400/80 italic leading-relaxed">
+            <p
+              data-sanity={edit(locale === 'en' && lot.notaFincaEn ? 'notaFinca.en' : 'notaFinca.es')}
+              className="text-xs text-coffee-400/80 italic leading-relaxed"
+            >
               {lotNotaFinca(lot, locale)}
             </p>
           )}
@@ -130,15 +137,15 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
             <p className="text-[10px] tracking-[0.12em] uppercase text-coffee-400 mb-3">{t.cafeVerde.analisisVerde}</p>
             <div className="space-y-0">
               {[
-                [t.cafeVerde.specHumedad, lot.humedad],
-                [t.cafeVerde.specActividadAgua, lot.actividadAgua],
-                [t.cafeVerde.specDensidad, lot.densidad],
-                [t.cafeVerde.specCriba, lot.criba],
-                [t.cafeVerde.specTrilla, lot.trilla],
-              ].map(([label, value]) => (
+                [t.cafeVerde.specHumedad, lot.humedad, 'humedad'],
+                [t.cafeVerde.specActividadAgua, lot.actividadAgua, 'actividadAgua'],
+                [t.cafeVerde.specDensidad, lot.densidad, 'densidad'],
+                [t.cafeVerde.specCriba, lot.criba, 'criba'],
+                [t.cafeVerde.specTrilla, lot.trilla, 'trilla'],
+              ].map(([label, value, path]) => (
                 <div key={label} className="flex items-center justify-between py-2 border-b border-coffee-800/60">
                   <span className="text-[11px] tracking-[0.05em] text-coffee-400">{label}</span>
-                  <span className="text-xs font-medium text-coffee-white">{value}</span>
+                  <span data-sanity={edit(path)} className="text-xs font-medium text-coffee-white">{value}</span>
                 </div>
               ))}
             </div>

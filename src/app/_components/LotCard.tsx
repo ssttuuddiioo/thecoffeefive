@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useHoverLift } from '@/lib/gsap';
 import { useTranslation } from './LanguageProvider';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 
 type LotCardProps = {
   name: string;
@@ -14,6 +15,8 @@ type LotCardProps = {
   img?: string;
   className?: string;
   onOverview?: () => void;
+  /** Sanity id: makes the photo and text click-to-edit in the Studio preview. */
+  sanityId?: string;
 };
 
 export function LotCard({
@@ -26,8 +29,10 @@ export function LotCard({
   img,
   className = '',
   onOverview,
+  sanityId,
 }: LotCardProps) {
   const { t } = useTranslation();
+  const edit = documentEdit(sanityId, 'greenLot');
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLDivElement>({
     childSelector: '.lot-card-hover-reveal',
   });
@@ -43,11 +48,11 @@ export function LotCard({
     >
       {productor && (
         <div className="px-5 pt-5">
-          <p className="text-[10px] tracking-[0.1em] uppercase text-white/70">{productor}</p>
+          <p data-sanity={edit('finca')} className="text-[10px] tracking-[0.1em] uppercase text-white/70">{productor}</p>
         </div>
       )}
 
-      <div className="mx-5 mt-3 aspect-[3/2] bg-black/20 rounded-md overflow-hidden relative">
+      <div data-sanity={edit('images')} className="mx-5 mt-3 aspect-[3/2] bg-black/20 rounded-md overflow-hidden relative">
         {img ? (
           <Image src={img} alt={name} fill className="object-cover" sizes="(max-width: 768px) 65vw, 33vw" />
         ) : (
@@ -58,11 +63,11 @@ export function LotCard({
       </div>
 
       <div className="mt-auto p-5">
-        <h4 className="text-[17px] font-medium text-white mb-3">{name}</h4>
+        <h4 data-sanity={edit('name')} className="text-[17px] font-medium text-white mb-3">{name}</h4>
         <div className="w-8 h-px bg-white/40 mb-3" />
         <div className="flex justify-between text-[11px] tracking-[0.05em] text-white/80">
-          <span>{weight}</span>
-          <span>{price}</span>
+          <span data-sanity={edit('weight')}>{weight}</span>
+          <span data-sanity={edit('price')}>{price}</span>
         </div>
 
         {onOverview && (

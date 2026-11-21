@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { withLocale } from '@/config/i18n';
 import { useHoverLift } from '@/lib/gsap';
 import { useTranslation } from '@/app/_components/LanguageProvider';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 
 type RoastedCardProps = {
+  sanityId?: string;
   slug: string;
   variedad: string;
   img: string;
@@ -21,8 +23,9 @@ type RoastedCardProps = {
   weight: string;
 };
 
-export function RoastedCard({ slug, variedad, img, imgBack, origin, proceso, tueste, fermentacion, perfil, price, weight }: RoastedCardProps) {
+export function RoastedCard({ sanityId, slug, variedad, img, imgBack, origin, proceso, tueste, fermentacion, perfil, price, weight }: RoastedCardProps) {
   const { t, locale } = useTranslation();
+  const edit = documentEdit(sanityId, 'roastedCoffee');
   const [hovered, setHovered] = useState(false);
   const { ref, onMouseEnter, onMouseLeave } = useHoverLift<HTMLAnchorElement>({
     childSelector: '.roasted-card-hover-reveal',
@@ -47,7 +50,7 @@ export function RoastedCard({ slug, variedad, img, imgBack, origin, proceso, tue
       className="block rounded-xl overflow-hidden border border-transparent p-5 will-change-transform cursor-pointer"
       style={{ backgroundColor: '#000000' }}
     >
-      <div className="relative aspect-square rounded-md overflow-hidden">
+      <div data-sanity={edit(hovered ? 'imageBack' : 'image')} className="relative aspect-square rounded-md overflow-hidden">
         <Image
           src={img}
           alt={variedad}
@@ -64,15 +67,15 @@ export function RoastedCard({ slug, variedad, img, imgBack, origin, proceso, tue
         />
       </div>
       <div className="pt-4">
-        <h4 className="text-lg font-medium mb-2 text-white">{variedad}</h4>
+        <h4 data-sanity={edit('variedad')} className="text-lg font-medium mb-2 text-white">{variedad}</h4>
         <div className="flex flex-wrap gap-1.5 mb-3">
           {[origin, proceso, tueste].filter(Boolean).map((tag) => (
             <span key={tag} className="tag-pill">{tag}</span>
           ))}
         </div>
-        <p className="text-[13px] text-white/60 mb-1">{fermentacion}</p>
-        <p className="text-[13px] text-white/60 mb-3 italic">{perfil}</p>
-        <p className="text-sm text-white font-medium tracking-wide">
+        <p data-sanity={edit('fermentacion')} className="text-[13px] text-white/60 mb-1">{fermentacion}</p>
+        <p data-sanity={edit('perfil')} className="text-[13px] text-white/60 mb-3 italic">{perfil}</p>
+        <p data-sanity={edit('price')} className="text-sm text-white font-medium tracking-wide">
           {price} · {weight}
         </p>
         <span className="roasted-card-hover-reveal mt-4 w-full py-2 border border-white/60 text-white text-[10px] tracking-[0.1em] uppercase rounded-sm text-center opacity-0 translate-y-2.5 hover:bg-white/10 transition-colors block">

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
 import { procesoColor as colorForProceso } from '@/lib/lot-values';
+import { documentEdit } from '@/sanity/lib/edit-attr';
 import { getSiteCopy } from '@/sanity/copy';
 import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
@@ -36,6 +37,8 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
   const lot = await getGreenLotBySlug(params.handle, locale);
   if (!lot) notFound();
   const procesoColor = colorForProceso(lot.proceso);
+  const edit = documentEdit(lot.sanityId, 'greenLot');
+  const localized = (field: string) => `${field}.${locale}`;
   const procesoName = procesoLabel(lot.proceso, locale);
   const notaFinca = lotNotaFinca(lot, locale);
 
@@ -56,24 +59,29 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
       <div className="pb-24 -mt-20 md:-mt-24">
         {/* Hero — full-bleed photo with title overlay */}
         <div className="relative w-full h-screen mb-12 md:mb-16">
-          <FincaSlideshow images={lot.photos} alt={lot.name} fullBleed />
+          <div data-sanity={edit('images')} className="absolute inset-0">
+            <FincaSlideshow images={lot.photos} alt={lot.name} fullBleed />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 px-6 md:px-12 lg:px-20 pb-10 md:pb-16">
             {/* Variedad + Proceso */}
             <div className="flex flex-wrap items-end gap-4 mb-4 md:mb-6">
-              <span className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight">
+              <span data-sanity={edit('variedad')} className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight">
                 {lot.variedad}
               </span>
-              <span className="px-5 md:px-8 py-2 md:py-3 text-lg md:text-2xl lg:text-3xl font-bold text-white border-2 border-white rounded-full">
+              <span data-sanity={edit('proceso')} className="px-5 md:px-8 py-2 md:py-3 text-lg md:text-2xl lg:text-3xl font-bold text-white border-2 border-white rounded-full">
                 {procesoName}
               </span>
             </div>
             {/* Description */}
-            <p className="text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed max-w-3xl mb-4">
+            <p
+              data-sanity={edit(locale === 'en' && lot.notaFincaEn ? 'notaFinca.en' : 'notaFinca.es')}
+              className="text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed max-w-3xl mb-4"
+            >
               {notaFinca}
             </p>
             {/* Origin details */}
-            <p className="text-sm md:text-base lg:text-lg text-white/80 tracking-wide mb-5">
+            <p data-sanity={edit('region')} className="text-sm md:text-base lg:text-lg text-white/80 tracking-wide mb-5">
               {lot.region}, {'municipio' in lot ? lot.municipio : lot.finca} · {lot.altura} {c.masl}
             </p>
             <div className="flex items-center gap-2">
@@ -99,7 +107,7 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
 
         {/* Proceso + Perfil — side by side */}
         <div className="max-w-5xl mx-auto px-5 md:px-8 mb-12 md:mb-16">
-          <div className="relative aspect-[16/7] rounded-lg overflow-hidden mb-10">
+          <div data-sanity={edit('images')} className="relative aspect-[16/7] rounded-lg overflow-hidden mb-10">
             <Image src={lot.photos[lot.photos.length > 1 ? 1 : 0]} alt={`${lot.name} — proceso`} fill className="object-cover" sizes="100vw" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
@@ -108,21 +116,30 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
               <SectionHeading>{c.proceso}</SectionHeading>
               <div className="mb-6 min-h-[3rem] flex flex-col justify-end">
                 <p className="text-[10px] tracking-[0.15em] uppercase text-gray-400 mb-1.5">{c.metodo}</p>
-                <p className="text-sm font-semibold text-coffee-black">{procesoName}</p>
+                <p data-sanity={edit('proceso')} className="text-sm font-semibold text-coffee-black">{procesoName}</p>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p
+                data-sanity={lot.procesoDescripcion ? edit(localized('procesoDescripcion')) : undefined}
+                className="text-sm text-gray-600 leading-relaxed"
+              >
                 {lot.procesoDescripcion || c.procesoDescripcion}
               </p>
             </div>
             {/* Perfil */}
             <div>
               <SectionHeading>{c.perfil}</SectionHeading>
-              <div className="flex flex-wrap gap-2 mb-6 min-h-[3rem] items-end">
+              <div
+                data-sanity={lot.notasCata?.length ? edit(localized('notasCata')) : undefined}
+                className="flex flex-wrap gap-2 mb-6 min-h-[3rem] items-end"
+              >
                 {(lot.notasCata?.length ? lot.notasCata : c.notasCata).map((note) => (
                   <span key={note} className="text-xs px-3 py-1 rounded-full border border-gray-300 text-coffee-black">{note}</span>
                 ))}
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p
+                data-sanity={lot.perfilDescripcion ? edit(localized('perfilDescripcion')) : undefined}
+                className="text-sm text-gray-600 leading-relaxed"
+              >
                 {lot.perfilDescripcion || c.perfilDescripcion}
               </p>
             </div>
@@ -130,7 +147,9 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
           {lot.recomendaciones && (
             <div className="mt-10 md:mt-16">
               <SectionHeading>{c.recomendaciones}</SectionHeading>
-              <p className="text-sm text-gray-600 leading-relaxed">{lot.recomendaciones}</p>
+              <p data-sanity={edit(localized('recomendaciones'))} className="text-sm text-gray-600 leading-relaxed">
+                {lot.recomendaciones}
+              </p>
             </div>
           )}
         </div>
@@ -160,18 +179,18 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
               {/* Facts grid */}
               <div className="grid grid-cols-2 gap-px bg-gray-300/50">
                 {[
-                  { label: c.factVarietal, value: lot.variedad },
-                  { label: c.factProceso, value: procesoName },
-                  { label: c.factRegion, value: `${lot.region}, Colombia` },
-                  { label: 'municipio' in lot ? c.factMunicipio : c.factFinca, value: 'municipio' in lot ? lot.municipio : lot.finca },
-                  { label: c.factAltitude, value: `${lot.altura} ${c.masl}` },
-                  { label: c.factNorma, value: lot.puntaje },
-                  { label: c.factAvailable, value: lot.weight },
-                  { label: c.factPrice, value: lot.price, highlight: true },
+                  { label: c.factVarietal, value: lot.variedad, path: 'variedad' },
+                  { label: c.factProceso, value: procesoName, path: 'proceso' },
+                  { label: c.factRegion, value: `${lot.region}, Colombia`, path: 'region' },
+                  { label: 'municipio' in lot ? c.factMunicipio : c.factFinca, value: 'municipio' in lot ? lot.municipio : lot.finca, path: 'municipio' in lot ? 'municipio' : 'finca' },
+                  { label: c.factAltitude, value: `${lot.altura} ${c.masl}`, path: 'altura' },
+                  { label: c.factNorma, value: lot.puntaje, path: 'puntaje' },
+                  { label: c.factAvailable, value: lot.weight, path: 'weight' },
+                  { label: c.factPrice, value: lot.price, path: 'price', highlight: true },
                 ].map((item) => (
                   <div key={item.label} className="bg-white px-5 py-6">
                     <p className="text-[10px] tracking-[0.15em] uppercase text-gray-500 mb-2">{item.label}</p>
-                    <p className={`text-xl md:text-2xl font-bold ${item.highlight ? 'text-[#D4A017]' : 'text-coffee-black'}`}>
+                    <p data-sanity={edit(item.path)} className={`text-xl md:text-2xl font-bold ${item.highlight ? 'text-[#D4A017]' : 'text-coffee-black'}`}>
                       {item.value}
                     </p>
                   </div>
