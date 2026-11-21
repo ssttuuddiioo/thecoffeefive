@@ -1,15 +1,8 @@
 import { defineField, defineType } from 'sanity';
 import { slugifyLot } from '@/lib/slug';
+import { PROCESO_VALUES, UBICACION_VALUES } from '@/lib/lot-values';
 
-/** Process values double as logic keys — they drive the lot card colour. */
-export const PROCESO_VALUES = ['Lavado', 'Natural', 'Honey', 'Anaeróbico', 'Fermentado'] as const;
-
-/** Where the coffee physically is. Buyers filter on this. */
-export const UBICACION_VALUES = [
-  { title: '📍 En Colombia', value: 'colombia' },
-  { title: '🚢 En tránsito', value: 'en_transito' },
-  { title: '📦 Landed in US', value: 'landed_us' },
-] as const;
+export { PROCESO_VALUES, UBICACION_VALUES };
 
 /**
  * A green coffee lot on the offer list (`/cafe-verde`).
@@ -32,13 +25,11 @@ export const greenLot = defineType({
     defineField({
       name: 'ref',
       title: 'Referencia',
-      description: 'Clave única del lote: HS- para especialidad, RG- para comercial (HS-001, RG-002). No la cambies después de publicar — el CSV empareja los lotes por este campo y una URL ya compartida dejaría de funcionar.',
+      description: 'Clave única del lote, por ejemplo HS-001 o RG-002. No la cambies después de publicar: el CSV empareja los lotes por este campo.',
       type: 'string',
       group: 'basics',
       validation: (Rule) =>
         Rule.required()
-          .regex(/^[A-Z]{2}-\d{3}$/, { name: 'formato XX-000' })
-          .error('Usa el formato HS-001 o RG-002 (dos letras en mayúscula, guion, tres números).')
           .custom(async (value, context) => {
             if (!value) return true;
             const id = (context.document?._id ?? '').replace(/^drafts\./, '');
@@ -86,10 +77,9 @@ export const greenLot = defineType({
     defineField({
       name: 'proceso',
       title: 'Proceso',
-      description: 'Define el color de la tarjeta en la lista.',
+      description: `Escribe el proceso. ${PROCESO_VALUES.join(', ')} tienen color propio en la tarjeta; cualquier otro (Thermal Shock, Carbonic…) se muestra tal cual, en gris.`,
       type: 'string',
       group: 'basics',
-      options: { list: PROCESO_VALUES.map((v) => ({ title: v, value: v })), layout: 'radio' },
       validation: (Rule) => Rule.required(),
     }),
 
@@ -114,9 +104,9 @@ export const greenLot = defineType({
       title: 'Ubicación',
       type: 'string',
       group: 'comercial',
+      description: 'Grupo del filtro de ubicación. Si la bodega es una ciudad nueva y no encaja, déjalo vacío: la ciudad sale como opción propia.',
       options: { list: UBICACION_VALUES.map((u) => ({ title: u.title, value: u.value })) },
       initialValue: 'colombia',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'bodega',

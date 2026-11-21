@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { slideRightVariants, springSmooth } from '@/lib/framer';
 import { withLocale } from '@/config/i18n';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
-import { greenLotDetailSlug, procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { greenLotDetailSlug, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { UBICACION_ICON, procesoColor, type UbicacionKey } from '@/lib/lot-values';
 import { useTranslation } from './LanguageProvider';
 
 type LotData = {
@@ -18,7 +19,7 @@ type LotData = {
   altura: string;
   puntaje: string;
   region: string;
-  ubicacion: string;
+  ubicacion?: string;
   bodega?: string;
   color: string;
   humedad: string;
@@ -28,12 +29,6 @@ type LotData = {
   trilla: string;
   notaFinca: string;
   notaFincaEn?: string;
-};
-
-const UBICACION_ICON: Record<string, string> = {
-  colombia: '📍',
-  en_transito: '🚢',
-  landed_us: '📦',
 };
 
 type LotDrawerProps = {
@@ -82,7 +77,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
           <div>
             <span
               className="inline-block text-[10px] tracking-[0.1em] uppercase px-2.5 py-0.5 rounded-full text-white font-medium mb-1"
-              style={{ backgroundColor: procesoColorMap[lot.proceso] || lot.color }}
+              style={{ backgroundColor: procesoColor(lot.proceso) }}
             >
               {procesoLabel(lot.proceso, locale)}
             </span>
@@ -118,8 +113,8 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
 
           <p className="text-xs text-coffee-400">
             {lot.bodega
-              ? `${UBICACION_ICON[lot.ubicacion] ?? '📍'} ${lot.bodega}`
-              : ubicacionLabel[lot.ubicacion] || lot.ubicacion}
+              ? `${UBICACION_ICON[lot.ubicacion as UbicacionKey] ?? '📍'} ${lot.bodega}`
+              : (lot.ubicacion && ubicacionLabel[lot.ubicacion]) || ''}
           </p>
 
           {lot.notaFinca && (

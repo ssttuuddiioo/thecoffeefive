@@ -29,7 +29,8 @@ export interface GreenLot {
   altura: string;
   puntaje: string;
   region: string;
-  ubicacion: 'colombia' | 'en_transito' | 'landed_us';
+  /** Filter group; absent for a warehouse city we do not know the country of. */
+  ubicacion?: 'colombia' | 'en_transito' | 'landed_us';
   /** Warehouse city as Juan writes it ("Miami/Douglas"). Shown instead of the generic place. */
   bodega?: string;
   disponible: boolean;

@@ -20,8 +20,8 @@ import {
   getJournalArticleBySlug as getBundledArticle,
   getJournalArticles as getBundledArticles,
   mockGreenLots,
-  procesoColorMap,
 } from '@/lib/mock-data';
+import { canonicalProceso, procesoColor } from '@/lib/lot-values';
 import { toPortableText } from '@/lib/journal-portable-text';
 import { slugifyLot } from '@/lib/slug';
 import type { Locale } from '@/config/i18n';
@@ -135,7 +135,7 @@ function resolvePhotos(doc: SanityGreenLot): string[] {
 
 function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
   const photos = resolvePhotos(doc);
-  const proceso = doc.proceso ?? 'Lavado';
+  const proceso = canonicalProceso(doc.proceso ?? '');
   return {
     name: doc.name,
     ref: doc.ref,
@@ -144,14 +144,14 @@ function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
     weight: doc.weight ?? '',
     price: doc.price ?? '',
     proceso,
-    color: procesoColorMap[proceso] ?? procesoColorMap.Lavado,
+    color: procesoColor(proceso),
     variedad: doc.variedad ?? '',
     finca: doc.finca ?? '',
     municipio: doc.municipio,
     altura: doc.altura ?? '',
     puntaje: doc.puntaje ?? '',
     region: doc.region ?? '',
-    ubicacion: doc.ubicacion ?? 'colombia',
+    ubicacion: doc.ubicacion ?? undefined,
     bodega: doc.bodega,
     disponible: doc.disponible !== false,
     humedad: doc.humedad ?? '',

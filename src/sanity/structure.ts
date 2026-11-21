@@ -68,6 +68,9 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title('Landed in US')
                 .child(lotList(S, 'Landed in US', 'ubicacion == "landed_us"')),
+              S.listItem()
+                .title('Otra ubicación')
+                .child(lotList(S, 'Otra ubicación', '!defined(ubicacion)')),
               S.divider(),
               singleton(S, 'copyCafeVerde', 'Textos de café verde'),
             ]),

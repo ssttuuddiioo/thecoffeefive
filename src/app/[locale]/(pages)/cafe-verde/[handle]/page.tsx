@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { procesoColorMap, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { procesoColor as colorForProceso } from '@/lib/lot-values';
 import { getSiteCopy } from '@/sanity/copy';
 import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
@@ -34,7 +35,7 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
   const c = (await getSiteCopy(locale)).lotDetail;
   const lot = await getGreenLotBySlug(params.handle, locale);
   if (!lot) notFound();
-  const procesoColor = procesoColorMap[lot.proceso] || lot.color;
+  const procesoColor = colorForProceso(lot.proceso);
   const procesoName = procesoLabel(lot.proceso, locale);
   const notaFinca = lotNotaFinca(lot, locale);
 

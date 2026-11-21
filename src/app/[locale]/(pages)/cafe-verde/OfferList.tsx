@@ -6,37 +6,8 @@ import { LotCard } from '@/app/_components/LotCard';
 import { LotDrawer } from '@/app/_components/LotDrawer';
 import { FilterSidebar } from '@/app/_components/FilterSidebar';
 import { useTranslation } from '@/app/_components/LanguageProvider';
-import { procesoLabel } from '@/lib/mock-data';
+import { emptyFilters, facetOptions, matchesFilters, type OfferFilters } from '@/lib/offer-filters';
 import type { GreenLot } from '@/types/content';
-
-const PUNTAJE_RANGES = ['83–85', '86–88', '89–91', '92+'];
-const ALTURA_RANGES = ['< 1,700', '1,700–1,899', '1,900–2,099', '2,100+'];
-
-function getPuntajeRange(score: string): string {
-  const n = parseInt(score.replace(/[^0-9]/g, ''), 10);
-  if (n >= 92) return '92+';
-  if (n >= 89) return '89–91';
-  if (n >= 86) return '86–88';
-  return '83–85';
-}
-
-function getAlturaRange(altura: string): string {
-  const n = parseInt(altura.replace(/,/g, ''), 10);
-  if (n >= 2100) return '2,100+';
-  if (n >= 1900) return '1,900–2,099';
-  if (n >= 1700) return '1,700–1,899';
-  return '< 1,700';
-}
-
-/** A Colombian export bag is 70 kg. */
-const LBS_PER_BAG = 154;
-
-/** Weight is free text ("132 lbs", "120 Bags"); null when it has no number. */
-function weightInLbs(weight: string): number | null {
-  const n = parseFloat(weight.replace(/,/g, ''));
-  if (Number.isNaN(n)) return null;
-  return /bag|saco/i.test(weight) ? Math.round(n * LBS_PER_BAG) : n;
-}
 
 export function OfferList({ lots }: { lots: GreenLot[] }) {
   const { t, locale } = useTranslation();
@@ -51,66 +22,40 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
   const [drawerLot, setDrawerLot] = useState<GreenLot | null>(null);
 
   // Slider spans the lots on offer and starts fully open, so no lot is hidden by default.
-  const weightBounds = useMemo<[number, number]>(() => {
-    const weights = lots.map((l) => weightInLbs(l.weight)).filter((w): w is number => w !== null);
-    if (weights.length === 0) return [0, 0];
-    return [Math.floor(Math.min(...weights)), Math.ceil(Math.max(...weights))];
-  }, [lots]);
+  const initialFilters = useMemo(() => emptyFilters(lots), [lots]);
+  const weightBounds = initialFilters.weight;
   const [weightRange, setWeightRange] = useState<[number, number]>(weightBounds);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const UBICACION_LABELS = useMemo<Record<string, string>>(
+  const ctx = useMemo(
     () => ({
-      colombia: t.cafeVerde.ubicacionColombia,
-      en_transito: t.cafeVerde.ubicacionTransito,
-      landed_us: t.cafeVerde.ubicacionLandedUs,
+      locale,
+      statusLabels: {
+        colombia: t.cafeVerde.ubicacionColombia,
+        en_transito: t.cafeVerde.ubicacionTransito,
+        landed_us: t.cafeVerde.ubicacionLandedUs,
+      },
     }),
-    [t],
+    [t, locale],
   );
 
-  // Filter lots
-  const filtered = useMemo(() => {
-    return lots.filter(l => {
-      if (keyword && !l.name.toLowerCase().includes(keyword.toLowerCase())) return false;
-      if (selProceso.length && !selProceso.includes(procesoLabel(l.proceso, locale))) return false;
-      if (selVariedad.length && !selVariedad.includes(l.variedad)) return false;
-      if (selRegion.length && !selRegion.includes(l.region)) return false;
-      if (selUbicacion.length && !selUbicacion.includes(UBICACION_LABELS[l.ubicacion])) return false;
-      if (selPuntaje.length && !selPuntaje.includes(getPuntajeRange(l.puntaje))) return false;
-      if (selAltura.length && !selAltura.includes(getAlturaRange(l.altura))) return false;
-      if (selFinca.length && !selFinca.includes(l.finca)) return false;
-      const w = weightInLbs(l.weight);
-      if (w !== null && (w < weightRange[0] || w > weightRange[1])) return false;
-      return true;
-    });
-  }, [lots, keyword, selProceso, selVariedad, selRegion, selUbicacion, selPuntaje, selAltura, selFinca, weightRange, UBICACION_LABELS, locale]);
+  const filters = useMemo<OfferFilters>(
+    () => ({
+      keyword,
+      weight: weightRange,
+      proceso: selProceso,
+      variedad: selVariedad,
+      region: selRegion,
+      ubicacion: selUbicacion,
+      puntaje: selPuntaje,
+      altura: selAltura,
+      finca: selFinca,
+    }),
+    [keyword, weightRange, selProceso, selVariedad, selRegion, selUbicacion, selPuntaje, selAltura, selFinca],
+  );
 
-  // Cross-check: available options per filter (exclude own filter)
-  const availableFor = useMemo(() => {
-    const check = (exclude: string) => {
-      return lots.filter(l => {
-        if (keyword && !l.name.toLowerCase().includes(keyword.toLowerCase())) return false;
-        if (exclude !== 'proceso' && selProceso.length && !selProceso.includes(procesoLabel(l.proceso, locale))) return false;
-        if (exclude !== 'variedad' && selVariedad.length && !selVariedad.includes(l.variedad)) return false;
-        if (exclude !== 'region' && selRegion.length && !selRegion.includes(l.region)) return false;
-        if (exclude !== 'ubicacion' && selUbicacion.length && !selUbicacion.includes(UBICACION_LABELS[l.ubicacion])) return false;
-        if (exclude !== 'puntaje' && selPuntaje.length && !selPuntaje.includes(getPuntajeRange(l.puntaje))) return false;
-        if (exclude !== 'altura' && selAltura.length && !selAltura.includes(getAlturaRange(l.altura))) return false;
-        if (exclude !== 'finca' && selFinca.length && !selFinca.includes(l.finca)) return false;
-        return true;
-      });
-    };
-
-    return {
-      proceso: Array.from(new Set(check('proceso').map(l => procesoLabel(l.proceso, locale)))).sort(),
-      variedad: Array.from(new Set(check('variedad').map(l => l.variedad))).sort(),
-      region: Array.from(new Set(check('region').map(l => l.region))).sort(),
-      ubicacion: Array.from(new Set(check('ubicacion').map(l => UBICACION_LABELS[l.ubicacion]))).sort(),
-      puntaje: PUNTAJE_RANGES.filter(r => check('puntaje').some(l => getPuntajeRange(l.puntaje) === r)),
-      altura: ALTURA_RANGES.filter(r => check('altura').some(l => getAlturaRange(l.altura) === r)),
-      finca: Array.from(new Set(check('finca').map(l => l.finca))).sort(),
-    };
-  }, [lots, keyword, selProceso, selVariedad, selRegion, selUbicacion, selPuntaje, selAltura, selFinca, UBICACION_LABELS, locale]);
+  const filtered = useMemo(() => lots.filter((l) => matchesFilters(l, filters, ctx)), [lots, filters, ctx]);
+  const availableFor = useMemo(() => facetOptions(lots, filters, ctx), [lots, filters, ctx]);
 
   const clearAll = () => {
     setKeyword('');

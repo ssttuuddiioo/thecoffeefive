@@ -272,27 +272,7 @@ export function getAllJournalSlugs(): string[] {
   return journalSources.map((a) => a.slug);
 }
 
-export const procesoColorMap: Record<string, string> = {
-  Lavado: siteConfig.procesoColors.lavado,
-  Natural: siteConfig.procesoColors.natural,
-  Honey: siteConfig.procesoColors.honey,
-  'Anaeróbico': siteConfig.procesoColors.anaerobico,
-  Fermentado: siteConfig.procesoColors.fermentado,
-};
-
-/**
- * Display labels for the process, per locale. The raw Spanish value stays the
- * logic key (filtering, `procesoColorMap`); only the shown label is localized.
- */
-const procesoLabels: Record<Locale, Record<string, string>> = {
-  es: { Lavado: 'Lavado', Natural: 'Natural', Honey: 'Honey', 'Anaeróbico': 'Anaeróbico', Fermentado: 'Fermentado' },
-  en: { Lavado: 'Washed', Natural: 'Natural', Honey: 'Honey', 'Anaeróbico': 'Anaerobic', Fermentado: 'Fermented' },
-};
-
-/** Localized label for a process value (falls back to the raw value). */
-export function procesoLabel(proceso: string, locale: Locale): string {
-  return procesoLabels[locale]?.[proceso] ?? proceso;
-}
+export { procesoColorMap, procesoLabel } from './lot-values';
 
 /** Localized farm note for a lot (falls back to Spanish). */
 export function lotNotaFinca(lot: { notaFinca: string; notaFincaEn?: string }, locale: Locale): string {

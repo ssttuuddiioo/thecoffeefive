@@ -13,7 +13,8 @@
  * - A row with a new `ref` CREATES a lot, deriving the slug from `name`.
  * - An existing lot's slug is never rewritten; that would break live URLs.
  * - Lots absent from the CSV are left alone. This never deletes.
- * - The whole file is validated before anything is written.
+ * - The whole file is read before anything is written. Only a missing ref or name,
+ *   or a repeated ref, stops it; unfamiliar values are imported and listed as warnings.
  */
 import { readFileSync } from 'node:fs';
 import { loadEnv, getWriteClient } from './lib/sanity-client';
@@ -38,7 +39,7 @@ async function main() {
     process.exit(1);
   }
 
-  const { prepared, errors } = prepareRows(parseLotCsvText(readFileSync(file, 'utf8')));
+  const { prepared, errors, warnings } = prepareRows(parseLotCsvText(readFileSync(file, 'utf8')));
 
   if (errors.length > 0) {
     console.error(`\n${errors.length} error${errors.length === 1 ? '' : 'es'} en ${file} — no se importó nada:\n`);
@@ -47,11 +48,16 @@ async function main() {
     process.exit(1);
   }
 
+  if (warnings.length > 0) {
+    console.log(`\n${warnings.length} aviso${warnings.length === 1 ? '' : 's'} (se importa igual):`);
+    for (const warning of warnings) console.log(`  • ${warning}`);
+  }
+
   const client = getWriteClient();
   const existing = await client.fetch<Record<string, unknown>[]>(EXISTING_LOTS_QUERY, {
     refs: prepared.map((row) => row.ref),
   });
-  const { creates, updates, unchanged } = planImport(prepared, existing);
+  const { creates, updates, unchanged, hidden } = planImport(prepared, existing);
 
   console.log(`\n${file} → ${prepared.length} fila${prepared.length === 1 ? '' : 's'}\n`);
   for (const row of creates) console.log(`  CREAR   ${row.ref}  ${row.name}`);
@@ -60,6 +66,7 @@ async function main() {
     for (const c of changes) console.log(`            ${c.path}: ${c.from || '—'} → ${c.to}`);
   }
   if (unchanged > 0) console.log(`  ${unchanged} sin cambios`);
+  if (hidden.length > 0) console.log(`  Ocultos en la página: ${hidden.join(', ')}`);
 
   if (creates.length === 0 && updates.length === 0) {
     console.log('\nNada que hacer.');

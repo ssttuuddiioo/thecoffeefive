@@ -18,7 +18,7 @@ type Phase =
   | { status: 'idle' }
   | { status: 'reading' }
   | { status: 'invalid'; errors: string[]; fileName: string }
-  | { status: 'planned'; plan: ImportPlan; fileName: string; rowCount: number }
+  | { status: 'planned'; plan: ImportPlan; warnings: string[]; fileName: string; rowCount: number }
   | { status: 'applying' }
   | { status: 'done'; created: number; updated: number }
   | { status: 'error'; message: string };
@@ -36,7 +36,7 @@ export function CsvImportTool() {
       setPhase({ status: 'reading' });
       try {
         const text = await file.text();
-        const { prepared, errors } = prepareRows(parseLotCsvText(text));
+        const { prepared, errors, warnings } = prepareRows(parseLotCsvText(text));
 
         if (errors.length > 0) {
           setPhase({ status: 'invalid', errors, fileName: file.name });
@@ -50,6 +50,7 @@ export function CsvImportTool() {
         setPhase({
           status: 'planned',
           plan: planImport(prepared, existing),
+          warnings,
           fileName: file.name,
           rowCount: prepared.length,
         });
@@ -201,7 +202,12 @@ export function CsvImportTool() {
 
         {phase.status === 'planned' && (
           <Stack space={5}>
-            <ImportPlanPreview plan={phase.plan} fileName={phase.fileName} rowCount={phase.rowCount} />
+            <ImportPlanPreview
+              plan={phase.plan}
+              warnings={phase.warnings}
+              fileName={phase.fileName}
+              rowCount={phase.rowCount}
+            />
 
             <Flex gap={3}>
               <Button

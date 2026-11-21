@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm test",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
     "sanity:check-copy": "tsx scripts/check-copy-schema.ts",
     "sanity:migrate": "tsx scripts/migrate-content.ts",
     "lots:import": "tsx scripts/lots-import.ts",

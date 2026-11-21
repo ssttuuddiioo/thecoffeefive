@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Badge, Box, Button, Card, Flex, Inline, Stack, Text } from '@sanity/ui';
 import { ChevronDownIcon, ChevronRightIcon } from '@sanity/icons';
-import { UBICACION_VALUES } from '../schemas/documents/greenLot';
-import { getPath, type FieldChange, type ImportPlan, type PreparedRow } from '../lib/lot-csv';
+import { PROCESO_VALUES, UBICACION_VALUES } from '@/lib/lot-values';
+import { getPath, toCell, type FieldChange, type ImportPlan, type PreparedRow } from '../lib/lot-csv';
 
 /** Changes a buyer would notice first; they get a badge on the collapsed row. */
 const KEY_FIELDS = ['name', 'proceso', 'price', 'weight', 'ubicacion', 'bodega', 'disponible'];
@@ -10,14 +10,15 @@ const KEY_FIELDS = ['name', 'proceso', 'price', 'weight', 'ubicacion', 'bodega',
 function displayValue(path: string, value: string): string {
   if (value === '') return '—';
   if (path === 'ubicacion') return UBICACION_VALUES.find((u) => u.value === value)?.title ?? value;
+  if (path === 'proceso' && !PROCESO_VALUES.includes(value as never)) return `${value} (nuevo)`;
   if (path === 'disponible') return value === 'true' ? 'Sí' : 'No (oculto)';
   return value;
 }
 
 function summarizeNewLot(row: PreparedRow): string {
-  const place = getPath(row.fields, 'bodega') ?? getPath(row.fields, 'ubicacion');
+  const place = getPath(row.fields, 'bodega') ?? displayValue('ubicacion', toCell(getPath(row.fields, 'ubicacion')));
   return [getPath(row.fields, 'proceso'), getPath(row.fields, 'price'), getPath(row.fields, 'weight'), place]
-    .filter(Boolean)
+    .filter((v) => v && v !== '—')
     .join('  ·  ');
 }
 
@@ -138,13 +139,16 @@ function UpdateCard({
 
 export function ImportPlanPreview({
   plan,
+  warnings,
   fileName,
   rowCount,
 }: {
   plan: ImportPlan;
+  warnings: string[];
   fileName: string;
   rowCount: number;
 }) {
+  const visible = rowCount - plan.hidden.length;
   const [openRefs, setOpenRefs] = useState<Set<string>>(new Set());
   const allOpen = plan.updates.length > 0 && openRefs.size === plan.updates.length;
 
@@ -169,9 +173,29 @@ export function ImportPlanPreview({
             <Badge tone="caution">{plan.updates.length} con cambios</Badge>
             <Badge tone="default">{plan.unchanged} sin cambios</Badge>
           </Inline>
+          <Text size={1}>
+            {visible === rowCount
+              ? `Los ${rowCount} lotes del archivo se verán en la página.`
+              : `${visible} de ${rowCount} lotes se verán en la página. Ocultos (Visible = No): ${plan.hidden.join(', ')}.`}
+          </Text>
           <Text size={1} muted>Todavía no se ha guardado nada.</Text>
         </Stack>
       </Card>
+
+      {warnings.length > 0 && (
+        <Card padding={4} radius={2} tone="caution" border>
+          <Stack space={3}>
+            <Text size={1} weight="semibold">
+              {warnings.length} aviso{warnings.length === 1 ? '' : 's'}: se importa igual, solo para que lo sepas
+            </Text>
+            <Stack space={2}>
+              {warnings.map((w, i) => (
+                <Text key={i} size={1}>• {w}</Text>
+              ))}
+            </Stack>
+          </Stack>
+        </Card>
+      )}
 
       {plan.creates.length > 0 && (
         <Stack space={3}>

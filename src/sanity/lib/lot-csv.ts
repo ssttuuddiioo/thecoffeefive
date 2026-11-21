@@ -1,11 +1,16 @@
 import Papa from 'papaparse';
-import { PROCESO_VALUES, UBICACION_VALUES } from '../schemas/documents/greenLot';
+import { canonicalProceso, isKnownProceso, normalizeText, resolveUbicacion } from '@/lib/lot-values';
 import { slugifyLot } from '@/lib/slug';
 
 /**
  * Single source of truth for the lot CSV format. Both the importer and the
  * exporter derive from this list, so a round-trip (export → edit → import)
  * never loses or renames a column.
+ *
+ * The importer fails open: anything Juan types is kept, and an unfamiliar value
+ * becomes a warning in the preview. Only three things stop an import, because
+ * the import cannot work without them: a row with no ref, a row with no name,
+ * and the same ref twice.
  */
 export type ColumnKind = 'string' | 'number' | 'boolean';
 
@@ -19,75 +24,23 @@ export interface ColumnSpec {
   /** Paragraph text: the preview shows it apart from the short facts. */
   long?: boolean;
   kind?: ColumnKind;
+  /** Without it the row cannot be imported at all. */
   required?: boolean;
-  enumValues?: readonly string[];
-  /** Other spellings people type for an enum value, keyed by normalised text. */
-  aliases?: Record<string, string>;
+  /** Other headers people use for this column, normalised. */
+  headerAliases?: string[];
   help?: string;
 }
 
-const UBICACION_KEYS = UBICACION_VALUES.map((u) => u.value);
-
-/** Lowercase, strip accents, and treat _ - / and runs of spaces as one space. */
-export function normalizeEnumText(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[\s_\-/]+/g, ' ')
-    .trim();
-}
-
-const PROCESO_ALIASES: Record<string, string> = {
-  washed: 'Lavado',
-  lavado: 'Lavado',
-  natural: 'Natural',
-  honey: 'Honey',
-  miel: 'Honey',
-  anaerobic: 'Anaeróbico',
-  anaerobico: 'Anaeróbico',
-  fermented: 'Fermentado',
-  fermentado: 'Fermentado',
-};
-
-/**
- * Juan writes the warehouse city in `ubicacion`. The city sets the status (for the
- * filter) and is also kept verbatim in `bodega`, which is what buyers see.
- */
-const UBICACION_CITY_ALIASES: Record<string, string> = {
-  medellin: 'colombia',
-  miami: 'landed_us',
-  douglas: 'landed_us',
-  'miami douglas': 'landed_us',
-};
-
-const UBICACION_ALIASES: Record<string, string> = {
-  ...UBICACION_CITY_ALIASES,
-  colombia: 'colombia',
-  'en colombia': 'colombia',
-  'en transito': 'en_transito',
-  transito: 'en_transito',
-  'in transit': 'en_transito',
-  transit: 'en_transito',
-  'landed us': 'landed_us',
-  'landed in us': 'landed_us',
-  landed: 'landed_us',
-  us: 'landed_us',
-  usa: 'landed_us',
-  eeuu: 'landed_us',
-  'estados unidos': 'landed_us',
-};
-
 export const COLUMNS: ColumnSpec[] = [
-  { header: 'ref', path: 'ref', label: 'Referencia', required: true, help: 'Clave única, formato HS-001' },
-  { header: 'name', path: 'name', label: 'Nombre', required: true },
-  { header: 'proceso', path: 'proceso', label: 'Proceso', required: true, enumValues: PROCESO_VALUES, aliases: PROCESO_ALIASES },
-  { header: 'price', path: 'price', label: 'Precio', required: true },
-  { header: 'weight', path: 'weight', label: 'Cantidad', required: true },
-  { header: 'ubicacion', path: 'ubicacion', label: 'Ubicación', required: true, enumValues: UBICACION_KEYS, aliases: UBICACION_ALIASES },
-  { header: 'bodega', path: 'bodega', label: 'Bodega', help: 'Ciudad que ve el comprador, ej. Miami/Douglas' },
-  { header: 'disponible', path: 'disponible', label: 'Visible', kind: 'boolean' },
-  { header: 'order', path: 'order', label: 'Orden', kind: 'number' },
+  { header: 'ref', path: 'ref', label: 'Referencia', required: true, headerAliases: ['referencia', 'lote'], help: 'Clave única del lote, ej. HS-001' },
+  { header: 'name', path: 'name', label: 'Nombre', required: true, headerAliases: ['nombre'] },
+  { header: 'proceso', path: 'proceso', label: 'Proceso', headerAliases: ['process'] },
+  { header: 'price', path: 'price', label: 'Precio', headerAliases: ['precio'] },
+  { header: 'weight', path: 'weight', label: 'Cantidad', headerAliases: ['cantidad', 'peso', 'quantity'] },
+  { header: 'ubicacion', path: 'ubicacion', label: 'Ubicación', headerAliases: ['location'] },
+  { header: 'bodega', path: 'bodega', label: 'Bodega', headerAliases: ['warehouse'], help: 'Ciudad que ve el comprador, ej. Miami/Douglas' },
+  { header: 'disponible', path: 'disponible', label: 'Visible', kind: 'boolean', headerAliases: ['visible', 'available'] },
+  { header: 'order', path: 'order', label: 'Orden', kind: 'number', headerAliases: ['orden'] },
   { header: 'variedad', path: 'variedad', label: 'Variedad' },
   { header: 'finca', path: 'finca', label: 'Finca' },
   { header: 'municipio', path: 'municipio', label: 'Municipio' },
@@ -137,48 +90,43 @@ export function toCell(value: unknown): string {
 
 export interface ParsedCell {
   value: unknown;
+  /** The row cannot be imported. */
   error?: string;
+  /** Imported anyway; shown in the preview so nobody is surprised. */
+  warning?: string;
 }
 
-/** Parse a CSV cell into a document value, validating enums and types. */
+const TRUTHY = ['true', '1', 'si', 'sí', 'yes', 'y', 'x'];
+const FALSY = ['false', '0', 'no', 'n'];
+
+/** Parse a CSV cell into a document value. Unreadable values are skipped with a warning. */
 export function fromCell(raw: string, column: ColumnSpec): ParsedCell {
   const trimmed = (raw ?? '').trim();
 
   if (trimmed === '') {
-    if (column.required) return { value: undefined, error: `"${column.header}" es obligatorio` };
+    if (column.required) return { value: undefined, error: `"${column.header}" está vacío` };
     return { value: undefined };
   }
 
   if (column.kind === 'boolean') {
-    const truthy = ['true', '1', 'si', 'sí', 'yes', 'y'];
-    const falsy = ['false', '0', 'no', 'n'];
-    if (truthy.includes(trimmed.toLowerCase())) return { value: true };
-    if (falsy.includes(trimmed.toLowerCase())) return { value: false };
-    return { value: undefined, error: `"${column.header}" debe ser true o false (recibido: ${trimmed})` };
+    if (TRUTHY.includes(trimmed.toLowerCase())) return { value: true };
+    if (FALSY.includes(trimmed.toLowerCase())) return { value: false };
+    return {
+      value: undefined,
+      warning: `"${column.header}" no se entiende (${trimmed}); se deja como estaba. Usa true o false.`,
+    };
   }
 
   if (column.kind === 'number') {
-    const n = Number(trimmed);
-    if (Number.isNaN(n)) return { value: undefined, error: `"${column.header}" debe ser un número (recibido: ${trimmed})` };
+    const n = Number(trimmed.replace(',', '.'));
+    if (Number.isNaN(n)) {
+      return { value: undefined, warning: `"${column.header}" no es un número (${trimmed}); se deja como estaba.` };
+    }
     return { value: n };
-  }
-
-  if (column.enumValues) {
-    if (column.enumValues.includes(trimmed)) return { value: trimmed };
-    const key = normalizeEnumText(trimmed);
-    const match =
-      column.enumValues.find((v) => normalizeEnumText(v) === key) ?? column.aliases?.[key];
-    if (match) return { value: match };
-    return {
-      value: undefined,
-      error: `"${column.header}" debe ser uno de: ${column.enumValues.join(', ')} (recibido: ${trimmed})`,
-    };
   }
 
   return { value: trimmed };
 }
-
-export const REF_PATTERN = /^[A-Z]{2}-\d{3}$/;
 
 /* ────────────────────────────────────────────────────────────────────────
  * Parsing and planning
@@ -207,6 +155,8 @@ export interface ImportPlan {
   creates: PreparedRow[];
   updates: { row: PreparedRow; id: string; changes: FieldChange[] }[];
   unchanged: number;
+  /** Lots in the file that will be hidden on the site after the import ("REF · name"). */
+  hidden: string[];
 }
 
 /**
@@ -229,59 +179,96 @@ export function parseLotCsvText(text: string): Record<string, string>[] {
   return result.data;
 }
 
-/** Validate every row up front — one bad row aborts the whole import. */
+/** Map each column to the header the file actually uses (any case, accents, or a known alias). */
+function matchHeaders(headers: string[]): { byColumn: Map<ColumnSpec, string>; unknown: string[] } {
+  const byColumn = new Map<ColumnSpec, string>();
+  const used = new Set<string>();
+  for (const column of COLUMNS) {
+    const names = [column.header, ...(column.headerAliases ?? [])].map(normalizeText);
+    const found = headers.find((h) => !used.has(h) && names.includes(normalizeText(h)));
+    if (found !== undefined) {
+      byColumn.set(column, found);
+      used.add(found);
+    }
+  }
+  return { byColumn, unknown: headers.filter((h) => h !== '' && !used.has(h)) };
+}
+
+/**
+ * Read every row up front. Errors (no ref, no name, a repeated ref) stop the whole
+ * import; warnings are imported anyway and listed in the preview.
+ */
 export function prepareRows(rows: Record<string, string>[]): {
   prepared: PreparedRow[];
   errors: string[];
+  warnings: string[];
 } {
   const errors: string[] = [];
+  const warnings: string[] = [];
   const prepared: PreparedRow[] = [];
   const seen = new Map<string, number>();
+
+  const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
+  const { byColumn, unknown } = matchHeaders(headers);
+
+  for (const column of COLUMNS) {
+    if (column.required && !byColumn.has(column)) errors.push(`Falta la columna "${column.header}"`);
+  }
+  for (const header of unknown) warnings.push(`La columna "${header}" no se reconoce y se ignora.`);
+  if (errors.length > 0) return { prepared, errors, warnings };
 
   rows.forEach((row, index) => {
     const line = index + 2; // +1 header, +1 for 1-based lines
     const fields: Record<string, unknown> = {};
+    const rowWarnings: string[] = [];
     let rowHasError = false;
 
-    for (const column of COLUMNS) {
-      if (!(column.header in row)) {
-        if (column.required) {
-          errors.push(`Falta la columna obligatoria "${column.header}"`);
-          rowHasError = true;
-        }
-        continue;
-      }
-      const { value, error } = fromCell(row[column.header] ?? '', column);
+    for (const [column, header] of Array.from(byColumn)) {
+      const { value, error, warning } = fromCell(row[header] ?? '', column);
       if (error) {
         errors.push(`Fila ${line}: ${error}`);
         rowHasError = true;
         continue;
       }
+      if (warning) rowWarnings.push(warning);
       if (value !== undefined) setPath(fields, column.path, value);
     }
 
-    const typedUbicacion = (row.ubicacion ?? '').trim();
-    if (!fields.bodega && UBICACION_CITY_ALIASES[normalizeEnumText(typedUbicacion)]) {
-      fields.bodega = typedUbicacion;
+    if (typeof fields.proceso === 'string') {
+      const typed = fields.proceso;
+      fields.proceso = canonicalProceso(typed);
+      if (!isKnownProceso(typed)) {
+        rowWarnings.push(`proceso "${typed}" es nuevo: se muestra tal cual, con color gris.`);
+      }
+    }
+
+    if (typeof fields.ubicacion === 'string') {
+      const typed = fields.ubicacion;
+      const place = resolveUbicacion(typed);
+      // null clears an old status, so a new city does not stay filed under the old country.
+      fields.ubicacion = place.status ?? null;
+      if (place.bodega && fields.bodega === undefined) fields.bodega = place.bodega;
+      if (!place.known) {
+        rowWarnings.push(
+          `ubicación "${typed}" es nueva: se muestra tal cual y sale como opción propia en el filtro.`,
+        );
+      }
     }
 
     const ref = String(getPath(fields, 'ref') ?? '').trim();
     const name = String(getPath(fields, 'name') ?? '').trim();
 
-    if (ref && !REF_PATTERN.test(ref)) {
-      errors.push(`Fila ${line}: "ref" debe tener el formato HS-001 (recibido: ${ref})`);
-      rowHasError = true;
-    }
     if (ref && seen.has(ref)) {
-      errors.push(`Fila ${line}: "ref" duplicada ${ref} (ya aparece en la fila ${seen.get(ref)})`);
+      errors.push(`Fila ${line}: la referencia ${ref} se repite (ya está en la fila ${seen.get(ref)})`);
       rowHasError = true;
     }
     if (ref) seen.set(ref, line);
 
+    for (const w of rowWarnings) warnings.push(`Fila ${line}${ref ? ` (${ref})` : ''}: ${w}`);
     if (!rowHasError && ref) prepared.push({ ref, name, fields, line });
   });
 
-  return { prepared, errors };
+  return { prepared, errors, warnings };
 }
 
 /** Fields that differ between a CSV row and the stored document. */
@@ -315,10 +302,13 @@ export function planImport(
   const byRef = new Map(existingDocs.map((doc) => [String(doc.ref), doc]));
   const creates: PreparedRow[] = [];
   const updates: ImportPlan['updates'] = [];
+  const hidden: string[] = [];
   let unchanged = 0;
 
   for (const row of prepared) {
     const existing = byRef.get(row.ref);
+    const disponible = getPath(row.fields, 'disponible') ?? existing?.disponible;
+    if (disponible === false) hidden.push(`${row.ref} · ${row.name}`);
     if (!existing) {
       creates.push(row);
       continue;
@@ -331,7 +321,7 @@ export function planImport(
     updates.push({ row, id: String(existing._id), changes });
   }
 
-  return { creates, updates, unchanged };
+  return { creates, updates, unchanged, hidden };
 }
 
 /**
@@ -340,25 +330,33 @@ export function planImport(
  * English: `set: { notaFinca: { es } }` would replace the whole object. Parents are
  * created in an earlier patch because Sanity ignores a deep set under a missing parent.
  */
-export function buildLotPatches(fields: Record<string, unknown>): Record<string, Record<string, unknown>>[] {
+export function buildLotPatches(fields: Record<string, unknown>): Record<string, unknown>[] {
   const set: Record<string, unknown> = {};
   const setIfMissing: Record<string, unknown> = {};
+  const unset: string[] = [];
   for (const [key, value] of Object.entries(fields)) {
-    if (typeof value === 'object' && value !== null) {
+    if (value === null) {
+      unset.push(key);
+    } else if (typeof value === 'object') {
       setIfMissing[key] = {};
       for (const [child, childValue] of Object.entries(value)) set[`${key}.${child}`] = childValue;
     } else {
       set[key] = value;
     }
   }
-  return [...(Object.keys(setIfMissing).length > 0 ? [{ setIfMissing }] : []), { set }];
+  return [
+    ...(Object.keys(setIfMissing).length > 0 ? [{ setIfMissing }] : []),
+    { set },
+    ...(unset.length > 0 ? [{ unset }] : []),
+  ];
 }
 
 /** The document to create for a new CSV row. */
 export function buildNewLot(row: PreparedRow): { _type: string } & Record<string, unknown> {
+  const fields = Object.fromEntries(Object.entries(row.fields).filter(([, value]) => value !== null));
   return {
     _type: 'greenLot',
-    ...row.fields,
+    ...fields,
     slug: { _type: 'slug', current: slugifyLot(row.name) },
     disponible: getPath(row.fields, 'disponible') ?? true,
   };
