@@ -28,6 +28,16 @@ function getAlturaRange(altura: string): string {
   return '< 1,700';
 }
 
+/** A Colombian export bag is 70 kg. */
+const LBS_PER_BAG = 154;
+
+/** Weight is free text ("132 lbs", "120 Bags"); null when it has no number. */
+function weightInLbs(weight: string): number | null {
+  const n = parseFloat(weight.replace(/,/g, ''));
+  if (Number.isNaN(n)) return null;
+  return /bag|saco/i.test(weight) ? Math.round(n * LBS_PER_BAG) : n;
+}
+
 export function OfferList({ lots }: { lots: GreenLot[] }) {
   const { t, locale } = useTranslation();
   const [keyword, setKeyword] = useState('');
@@ -40,7 +50,13 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
   const [selFinca, setSelFinca] = useState<string[]>([]);
   const [drawerLot, setDrawerLot] = useState<GreenLot | null>(null);
 
-  const [weightRange, setWeightRange] = useState<[number, number]>([200, 1000]);
+  // Slider spans the lots on offer and starts fully open, so no lot is hidden by default.
+  const weightBounds = useMemo<[number, number]>(() => {
+    const weights = lots.map((l) => weightInLbs(l.weight)).filter((w): w is number => w !== null);
+    if (weights.length === 0) return [0, 0];
+    return [Math.floor(Math.min(...weights)), Math.ceil(Math.max(...weights))];
+  }, [lots]);
+  const [weightRange, setWeightRange] = useState<[number, number]>(weightBounds);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const UBICACION_LABELS = useMemo<Record<string, string>>(
@@ -63,8 +79,8 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
       if (selPuntaje.length && !selPuntaje.includes(getPuntajeRange(l.puntaje))) return false;
       if (selAltura.length && !selAltura.includes(getAlturaRange(l.altura))) return false;
       if (selFinca.length && !selFinca.includes(l.finca)) return false;
-      const w = parseInt(l.weight.replace(/,/g, ''), 10);
-      if (w < weightRange[0] || w > weightRange[1]) return false;
+      const w = weightInLbs(l.weight);
+      if (w !== null && (w < weightRange[0] || w > weightRange[1])) return false;
       return true;
     });
   }, [lots, keyword, selProceso, selVariedad, selRegion, selUbicacion, selPuntaje, selAltura, selFinca, weightRange, UBICACION_LABELS, locale]);
@@ -105,7 +121,7 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
     setSelPuntaje([]);
     setSelAltura([]);
     setSelFinca([]);
-    setWeightRange([200, 1000]);
+    setWeightRange(weightBounds);
   };
 
   const filterSections = [
@@ -122,9 +138,11 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
       keyword={keyword}
       onKeywordChange={setKeyword}
       sections={filterSections}
-      sliders={[
-        { label: t.cafeVerde.sliderCantidad, min: 200, max: 1000, value: weightRange, onChange: setWeightRange, unit: ' lbs', defaultOpen: false },
-      ]}
+      sliders={
+        weightBounds[1] > weightBounds[0]
+          ? [{ label: t.cafeVerde.sliderCantidad, min: weightBounds[0], max: weightBounds[1], value: weightRange, onChange: setWeightRange, unit: ' lbs', defaultOpen: false }]
+          : []
+      }
       onClear={clearAll}
     />
   );
