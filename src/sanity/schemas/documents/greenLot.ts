@@ -118,6 +118,13 @@ export const greenLot = defineType({
       initialValue: 'colombia',
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'bodega',
+      title: 'Bodega',
+      description: 'Lo que ve el comprador: "Medellín", "Miami", "Miami/Douglas". Vacío muestra Colombia / EE.UU.',
+      type: 'string',
+      group: 'comercial',
+    }),
 
     defineField({ name: 'variedad', title: 'Variedad', type: 'string', group: 'origen' }),
     defineField({ name: 'finca', title: 'Finca', type: 'string', group: 'origen' }),
@@ -200,11 +207,12 @@ export const greenLot = defineType({
       price: 'price',
       weight: 'weight',
       ubicacion: 'ubicacion',
+      bodega: 'bodega',
       media: 'images.0',
       disponible: 'disponible',
     },
-    prepare: ({ title, ref, proceso, price, weight, ubicacion, media, disponible }) => {
-      const place = UBICACION_VALUES.find((u) => u.value === ubicacion)?.title ?? '';
+    prepare: ({ title, ref, proceso, price, weight, ubicacion, bodega, media, disponible }) => {
+      const place = bodega || (UBICACION_VALUES.find((u) => u.value === ubicacion)?.title ?? '');
       const facts = [proceso, price, weight, place].filter(Boolean).join('  ·  ');
       return {
         title: `${disponible === false ? '⏸ ' : ''}${ref} · ${title}`,

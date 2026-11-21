@@ -30,6 +30,8 @@ export interface GreenLot {
   puntaje: string;
   region: string;
   ubicacion: 'colombia' | 'en_transito' | 'landed_us';
+  /** Warehouse city as Juan writes it ("Miami/Douglas"). Shown instead of the generic place. */
+  bodega?: string;
   disponible: boolean;
   humedad: string;
   actividadAgua: string;

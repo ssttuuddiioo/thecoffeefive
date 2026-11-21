@@ -46,11 +46,21 @@ const PROCESO_ALIASES: Record<string, string> = {
   fermentado: 'Fermentado',
 };
 
-/** Juan writes the warehouse city; the site needs where the coffee is. */
+/**
+ * Juan writes the warehouse city in `ubicacion`. The city sets the status (for the
+ * filter) and is also kept verbatim in `bodega`, which is what buyers see.
+ */
+const UBICACION_CITY_ALIASES: Record<string, string> = {
+  medellin: 'colombia',
+  miami: 'landed_us',
+  douglas: 'landed_us',
+  'miami douglas': 'landed_us',
+};
+
 const UBICACION_ALIASES: Record<string, string> = {
+  ...UBICACION_CITY_ALIASES,
   colombia: 'colombia',
   'en colombia': 'colombia',
-  medellin: 'colombia',
   'en transito': 'en_transito',
   transito: 'en_transito',
   'in transit': 'en_transito',
@@ -62,9 +72,6 @@ const UBICACION_ALIASES: Record<string, string> = {
   usa: 'landed_us',
   eeuu: 'landed_us',
   'estados unidos': 'landed_us',
-  miami: 'landed_us',
-  douglas: 'landed_us',
-  'miami douglas': 'landed_us',
 };
 
 export const COLUMNS: ColumnSpec[] = [
@@ -74,6 +81,7 @@ export const COLUMNS: ColumnSpec[] = [
   { header: 'price', path: 'price', required: true },
   { header: 'weight', path: 'weight', required: true },
   { header: 'ubicacion', path: 'ubicacion', required: true, enumValues: UBICACION_KEYS, aliases: UBICACION_ALIASES },
+  { header: 'bodega', path: 'bodega', help: 'Ciudad que ve el comprador, ej. Miami/Douglas' },
   { header: 'disponible', path: 'disponible', kind: 'boolean' },
   { header: 'order', path: 'order', kind: 'number' },
   { header: 'variedad', path: 'variedad' },
@@ -244,6 +252,11 @@ export function prepareRows(rows: Record<string, string>[]): {
         continue;
       }
       if (value !== undefined) setPath(fields, column.path, value);
+    }
+
+    const typedUbicacion = (row.ubicacion ?? '').trim();
+    if (!fields.bodega && UBICACION_CITY_ALIASES[normalizeEnumText(typedUbicacion)]) {
+      fields.bodega = typedUbicacion;
     }
 
     const ref = String(getPath(fields, 'ref') ?? '').trim();

@@ -104,6 +104,7 @@ type SanityGreenLot = {
   weight?: string;
   proceso?: string;
   ubicacion?: GreenLot['ubicacion'];
+  bodega?: string;
   disponible?: boolean;
   variedad?: string;
   finca?: string;
@@ -151,6 +152,7 @@ function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
     puntaje: doc.puntaje ?? '',
     region: doc.region ?? '',
     ubicacion: doc.ubicacion ?? 'colombia',
+    bodega: doc.bodega,
     disponible: doc.disponible !== false,
     humedad: doc.humedad ?? '',
     actividadAgua: doc.actividadAgua ?? '',

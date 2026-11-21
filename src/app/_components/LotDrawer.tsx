@@ -19,6 +19,7 @@ type LotData = {
   puntaje: string;
   region: string;
   ubicacion: string;
+  bodega?: string;
   color: string;
   humedad: string;
   actividadAgua: string;
@@ -27,6 +28,12 @@ type LotData = {
   trilla: string;
   notaFinca: string;
   notaFincaEn?: string;
+};
+
+const UBICACION_ICON: Record<string, string> = {
+  colombia: '📍',
+  en_transito: '🚢',
+  landed_us: '📦',
 };
 
 type LotDrawerProps = {
@@ -110,7 +117,9 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
           </div>
 
           <p className="text-xs text-coffee-400">
-            {ubicacionLabel[lot.ubicacion] || lot.ubicacion}
+            {lot.bodega
+              ? `${UBICACION_ICON[lot.ubicacion] ?? '📍'} ${lot.bodega}`
+              : ubicacionLabel[lot.ubicacion] || lot.ubicacion}
           </p>
 
           {lot.notaFinca && (

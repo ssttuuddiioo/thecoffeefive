@@ -9,6 +9,7 @@ const GREEN_LOT_FIELDS = groq`
   weight,
   proceso,
   ubicacion,
+  bodega,
   disponible,
   variedad,
   finca,
