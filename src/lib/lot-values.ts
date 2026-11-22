@@ -75,6 +75,25 @@ export function procesoColor(proceso: string): string {
   return procesoColorMap[canonicalProceso(proceso)] ?? NEUTRAL_PROCESO_COLOR;
 }
 
+/**
+ * Card colours Juan can pick per lot in the Studio. Stored by name, not hex, so the
+ * palette can be retuned without touching every lot. 'proceso' (or nothing) means
+ * the colour of the lot's process.
+ */
+export const CARD_COLORS = [
+  { value: 'proceso', title: 'Según el proceso', hex: undefined },
+  { value: 'verde', title: '🟩 Verde', hex: '#0D7C47' },
+  { value: 'azul', title: '🟦 Azul', hex: siteConfig.procesoColors.lavado },
+  { value: 'amarillo', title: '🟨 Amarillo', hex: siteConfig.procesoColors.honey },
+  { value: 'rojo-oscuro', title: '🟥 Rojo oscuro', hex: siteConfig.procesoColors.natural },
+  { value: 'rojo', title: '🟧 Rojo', hex: siteConfig.procesoColors.fermentado },
+] as const;
+
+/** The lot's card colour: Juan's pick, else its process colour. */
+export function lotCardColor(choice: string | undefined, proceso: string): string {
+  return CARD_COLORS.find((c) => c.value === choice)?.hex ?? procesoColor(proceso);
+}
+
 const procesoLabels: Record<Locale, Record<string, string>> = {
   es: { Lavado: 'Lavado', Natural: 'Natural', Honey: 'Honey', 'Anaeróbico': 'Anaeróbico', Fermentado: 'Fermentado' },
   en: { Lavado: 'Washed', Natural: 'Natural', Honey: 'Honey', 'Anaeróbico': 'Anaerobic', Fermentado: 'Fermented' },

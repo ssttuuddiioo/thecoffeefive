@@ -92,3 +92,11 @@ test('a new process gets the neutral colour, known ones keep theirs', () => {
   assert.notEqual(procesoColor('washed'), NEUTRAL_PROCESO_COLOR);
   assert.equal(procesoColor('washed'), procesoColor('Lavado'));
 });
+
+test('a card colour picked in the Studio wins over the process colour', async () => {
+  const { lotCardColor, procesoColor } = await import('../src/lib/lot-values');
+  assert.equal(lotCardColor('verde', 'Lavado'), '#0D7C47');
+  assert.equal(lotCardColor(undefined, 'Lavado'), procesoColor('Lavado'));
+  assert.equal(lotCardColor('proceso', 'Natural'), procesoColor('Natural'));
+  assert.equal(lotCardColor('something-old', 'Honey'), procesoColor('Honey'));
+});

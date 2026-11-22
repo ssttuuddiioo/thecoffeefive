@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation';
 import { withLocale } from '@/config/i18n';
 import Image from 'next/image';
 import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
-import { procesoColor as colorForProceso } from '@/lib/lot-values';
 import { documentEdit } from '@/sanity/lib/edit-attr';
 import { getSiteCopy } from '@/sanity/copy';
 import { getGreenLotByHandle, getGreenLotHandles } from '@/sanity/fetch';
@@ -38,7 +37,6 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
   const lot = await getGreenLotByHandle(decodeURIComponent(params.handle), locale);
   // A sold-out or replaced coffee: send the buyer to what is on offer now.
   if (!lot) redirect(withLocale(locale, '/cafe-verde'));
-  const procesoColor = colorForProceso(lot.proceso);
   const edit = documentEdit(lot.sanityId, 'greenLot');
   const localized = (field: string) => `${field}.${locale}`;
   const procesoName = procesoLabel(lot.proceso, locale);
@@ -173,7 +171,7 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
               <div>
                 <ColombiaMap
                   region={lot.region}
-                  highlightColor={procesoColor}
+                  highlightColor={lot.color}
                   className="w-full h-auto"
                 />
               </div>

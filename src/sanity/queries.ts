@@ -9,6 +9,7 @@ const GREEN_LOT_FIELDS = groq`
   price,
   weight,
   proceso,
+  colorTarjeta,
   ubicacion,
   bodega,
   disponible,

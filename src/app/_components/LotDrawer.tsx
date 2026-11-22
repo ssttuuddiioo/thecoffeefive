@@ -7,7 +7,7 @@ import { withLocale } from '@/config/i18n';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
 import { slugifyLot } from '@/lib/slug';
-import { UBICACION_ICON, procesoColor, type UbicacionKey } from '@/lib/lot-values';
+import { UBICACION_ICON, type UbicacionKey } from '@/lib/lot-values';
 import { useTranslation } from './LanguageProvider';
 import { documentEdit } from '@/sanity/lib/edit-attr';
 
@@ -83,7 +83,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
             <span
               data-sanity={edit('proceso')}
               className="inline-block text-[10px] tracking-[0.1em] uppercase px-2.5 py-0.5 rounded-full text-white font-medium mb-1"
-              style={{ backgroundColor: procesoColor(lot.proceso) }}
+              style={{ backgroundColor: lot.color }}
             >
               {procesoLabel(lot.proceso, locale)}
             </span>

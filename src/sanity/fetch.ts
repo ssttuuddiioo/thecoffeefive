@@ -19,7 +19,7 @@ import {
   getJournalArticles as getBundledArticles,
   mockGreenLots,
 } from '@/lib/mock-data';
-import { canonicalProceso, procesoColor } from '@/lib/lot-values';
+import { canonicalProceso, lotCardColor } from '@/lib/lot-values';
 import { toPortableText } from '@/lib/journal-portable-text';
 import { findLotByHandle, lotHandles } from '@/lib/lot-urls';
 import type { Locale } from '@/config/i18n';
@@ -102,6 +102,7 @@ type SanityGreenLot = {
   price?: string;
   weight?: string;
   proceso?: string;
+  colorTarjeta?: string;
   ubicacion?: GreenLot['ubicacion'];
   bodega?: string;
   disponible?: boolean;
@@ -144,7 +145,7 @@ function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
     weight: doc.weight ?? '',
     price: doc.price ?? '',
     proceso,
-    color: procesoColor(proceso),
+    color: lotCardColor(doc.colorTarjeta, proceso),
     variedad: doc.variedad ?? '',
     finca: doc.finca ?? '',
     municipio: doc.municipio,

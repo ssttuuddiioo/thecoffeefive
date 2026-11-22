@@ -1,6 +1,6 @@
 import { defineField, defineType } from 'sanity';
 import { slugifyLot } from '@/lib/slug';
-import { PROCESO_VALUES, UBICACION_VALUES } from '@/lib/lot-values';
+import { CARD_COLORS, PROCESO_VALUES, UBICACION_VALUES } from '@/lib/lot-values';
 
 export { PROCESO_VALUES, UBICACION_VALUES };
 
@@ -82,6 +82,15 @@ export const greenLot = defineType({
       type: 'string',
       group: 'basics',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'colorTarjeta',
+      title: 'Color de la tarjeta',
+      description: 'Por defecto la tarjeta toma el color del proceso (Lavado azul, Natural rojo oscuro, Honey amarillo). Elige otro para este lote si quieres.',
+      type: 'string',
+      group: 'basics',
+      options: { list: CARD_COLORS.map(({ value, title }) => ({ value, title })), layout: 'radio' },
+      initialValue: 'proceso',
     }),
 
     defineField({
