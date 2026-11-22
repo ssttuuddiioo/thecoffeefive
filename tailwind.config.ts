@@ -18,7 +18,7 @@ const config: Config = {
         // Process colors — lot cards and process badges only
         proceso: {
           lavado: '#4592DB',
-          natural: '#0D7C47',
+          natural: '#91171F',
           honey: '#ECCD3E',
           anaerobico: '#91171F',
           fermentado: '#F63F34',

@@ -46,7 +46,7 @@ export const COLUMNS: ColumnSpec[] = [
   { header: 'municipio', path: 'municipio', label: 'Municipio' },
   { header: 'region', path: 'region', label: 'Región' },
   { header: 'altura', path: 'altura', label: 'Altura' },
-  { header: 'puntaje', path: 'puntaje', label: 'Norma' },
+  { header: 'puntaje', path: 'puntaje', label: 'SCA', headerAliases: ['sca', 'norma', 'score'] },
   { header: 'humedad', path: 'humedad', label: 'Humedad' },
   { header: 'actividad_agua', path: 'actividadAgua', label: 'Actividad de agua' },
   { header: 'densidad', path: 'densidad', label: 'Densidad' },

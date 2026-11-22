@@ -39,7 +39,7 @@ Lot card color is **assigned by processing method**. Each proceso gets a fixed c
 | Proceso | Color | Hex |
 |---------|-------|-----|
 | Lavado (Washed) | Blue | `#4592DB` |
-| Natural | Green | `#0D7C47` |
+| Natural | Dark red | `#91171F` |
 | Honey | Yellow | `#ECCD3E` |
 | Anaeróbico / Experimental | Red | `#91171F` |
 | Fermentado / Extended | Bright Red | `#F63F34` |
@@ -149,7 +149,7 @@ This section should feel like a magazine editorial spread — confident, spaciou
 This is the standout component. Design at the actual card size (~360px wide × 480px tall):
 - Solid color background **assigned by proceso** (see Process Colors table above):
   - Lavado → Blue `#4592DB`
-  - Natural → Green `#0D7C47`
+  - Natural → Dark red `#91171F`
   - Honey → Yellow `#ECCD3E`
   - Anaeróbico → Dark Red `#91171F`
   - Fermentado → Bright Red `#F63F34`

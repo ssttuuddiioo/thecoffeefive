@@ -68,7 +68,7 @@ export const siteConfig = {
   // Process → lot card color mapping
   procesoColors: {
     lavado: '#4592DB',
-    natural: '#0D7C47',
+    natural: '#91171F',
     honey: '#ECCD3E',
     anaerobico: '#91171F',
     fermentado: '#F63F34',

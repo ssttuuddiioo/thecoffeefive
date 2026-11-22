@@ -128,7 +128,7 @@ export const greenLot = defineType({
       type: 'string',
       group: 'origen',
     }),
-    defineField({ name: 'puntaje', title: 'Norma', type: 'string', group: 'origen' }),
+    defineField({ name: 'puntaje', title: 'SCA', type: 'string', group: 'origen' }),
 
     defineField({ name: 'humedad', title: 'Humedad', type: 'string', group: 'analisis' }),
     defineField({ name: 'actividadAgua', title: 'Actividad de agua', type: 'string', group: 'analisis' }),
