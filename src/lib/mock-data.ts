@@ -18,16 +18,6 @@ export const mockGreenLots = [
   { name: 'Geisha Washed', ref: 'HS-008', img: '/lots/hs-008.jpg', photos: ['/lots/hs-008.jpg', '/lots/hs-008-b.jpg'], weight: '120 lbs', price: '$14/lb', proceso: 'Lavado', color: siteConfig.procesoColors.lavado, variedad: 'Geisha', finca: 'Urrao', municipio: 'Urrao', altura: '2,300', puntaje: 'O2-22', region: 'Antioquia', ubicacion: 'colombia' as const, disponible: true, humedad: '10.3%', actividadAgua: '0.52', densidad: '745 g/L', criba: '17/18', trilla: 'EP', recomendaciones: 'Geisha lavado de Antioquia — perfil limpio, floral, té de jazmín. Muy denso, carga alta (205°C). Desarrollo mínimo (10–12%).', notaFinca: 'Geisha de Urrao, Antioquia, a 2,300 msnm. Lote limitado de 120 lbs. EWX Medellín.', notaFincaEn: 'Geisha from Urrao, Antioquia, at 2,300 masl. Limited 120 lb lot. EWX Medellín.' },
 ];
 
-/** Slug for `/cafe-verde/[handle]` — keep in sync with LotCard & LotDrawer links */
-export function greenLotDetailSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 export type JournalContentBlock =
   | { type: 'p'; text: string }
   | { type: 'h2'; text: string }

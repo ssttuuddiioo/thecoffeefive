@@ -1,3 +1,4 @@
+import { nameHandle } from '@/lib/lot-urls';
 import { defineDocuments, defineLocations, type PresentationPluginOptions } from 'sanity/presentation';
 
 /**
@@ -31,7 +32,11 @@ export const presentationResolve: PresentationPluginOptions['resolve'] = {
     singleton('/:locale/cafe-verde', 'copyCafeVerde'),
     singleton('/:locale/blog', 'copyBlog'),
     singleton('/:locale/tostado', 'copyTostado'),
-    { route: '/:locale/cafe-verde/:slug', filter: `_type == "greenLot" && slug.current == $slug` },
+    {
+      route: '/:locale/cafe-verde/:slug',
+      // Best effort: the real URL is slugifyLot(name), which GROQ cannot compute exactly.
+      filter: `_type == "greenLot" && array::join(string::split(lower(name), " "), "-") == $slug`,
+    },
     { route: '/:locale/blog/:slug', filter: `_type == "journalArticle" && slug.current == $slug` },
     { route: '/:locale/tostado/:slug', filter: `_type == "roastedCoffee" && slug.current == $slug` },
   ]),
@@ -39,9 +44,11 @@ export const presentationResolve: PresentationPluginOptions['resolve'] = {
     ...Object.fromEntries(Object.entries(pages).map(([id, { title, href }]) => [id, page(title, href)])),
     copyGlobal: page('Todas las páginas', '/es'),
     greenLot: defineLocations({
-      select: { title: 'name', slug: 'slug.current' },
+      select: { title: 'name', ref: 'ref' },
       resolve: (doc) => ({
-        locations: doc?.slug ? [{ title: doc.title ?? 'Lote', href: `/es/cafe-verde/${doc.slug}` }] : [],
+        locations: doc?.title && doc.ref
+          ? [{ title: doc.title, href: `/es/cafe-verde/${nameHandle(doc.title, doc.ref)}` }]
+          : [],
       }),
     }),
     journalArticle: defineLocations({

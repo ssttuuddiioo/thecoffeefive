@@ -1,10 +1,11 @@
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { withLocale } from '@/config/i18n';
 import Image from 'next/image';
 import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
 import { procesoColor as colorForProceso } from '@/lib/lot-values';
 import { documentEdit } from '@/sanity/lib/edit-attr';
 import { getSiteCopy } from '@/sanity/copy';
-import { getGreenLotBySlug, getGreenLotSlugs } from '@/sanity/fetch';
+import { getGreenLotByHandle, getGreenLotHandles } from '@/sanity/fetch';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
 import { ColombiaMap } from '@/app/_components/ColombiaMap';
 import { FincaSlideshow } from '@/app/_components/FincaSlideshow';
@@ -27,15 +28,16 @@ type Props = { params: { handle: string; locale: string } };
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const slugs = await getGreenLotSlugs();
-  return slugs.map((handle) => ({ handle }));
+  const handles = await getGreenLotHandles();
+  return handles.map((handle) => ({ handle }));
 }
 
 export default async function GreenCoffeeLotPage({ params }: Props) {
   const locale = params.locale as import('@/config/i18n').Locale;
   const c = (await getSiteCopy(locale)).lotDetail;
-  const lot = await getGreenLotBySlug(params.handle, locale);
-  if (!lot) notFound();
+  const lot = await getGreenLotByHandle(decodeURIComponent(params.handle), locale);
+  // A sold-out or replaced coffee: send the buyer to what is on offer now.
+  if (!lot) redirect(withLocale(locale, '/cafe-verde'));
   const procesoColor = colorForProceso(lot.proceso);
   const edit = documentEdit(lot.sanityId, 'greenLot');
   const localized = (field: string) => `${field}.${locale}`;

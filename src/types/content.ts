@@ -19,6 +19,8 @@ export interface GreenLot {
   sanityId?: string;
   name: string;
   ref: string;
+  /** URL handle for `/cafe-verde/[handle]`, from the current name. See src/lib/lot-urls.ts. */
+  slug?: string;
   img: string;
   photos: string[];
   weight: string;

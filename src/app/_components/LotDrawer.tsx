@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { slideRightVariants, springSmooth } from '@/lib/framer';
 import { withLocale } from '@/config/i18n';
 import { buildWhatsAppUrl, buildEnquiryEmailUrl } from '@/lib/whatsapp';
-import { greenLotDetailSlug, procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { procesoLabel, lotNotaFinca } from '@/lib/mock-data';
+import { slugifyLot } from '@/lib/slug';
 import { UBICACION_ICON, procesoColor, type UbicacionKey } from '@/lib/lot-values';
 import { useTranslation } from './LanguageProvider';
 import { documentEdit } from '@/sanity/lib/edit-attr';
@@ -13,6 +14,7 @@ import { documentEdit } from '@/sanity/lib/edit-attr';
 type LotData = {
   sanityId?: string;
   name: string;
+  slug?: string;
   weight: string;
   price: string;
   proceso: string;
@@ -154,7 +156,7 @@ export function LotDrawer({ lot, onClose }: LotDrawerProps) {
 
         <div className="p-6 border-t border-coffee-800 space-y-3">
           <Link
-            href={withLocale(locale, `/cafe-verde/${greenLotDetailSlug(lot.name)}`)}
+            href={withLocale(locale, `/cafe-verde/${lot.slug ?? slugifyLot(lot.name)}`)}
             className="flex items-center justify-center w-full py-3.5 bg-coffee-white text-coffee-black text-[13px] tracking-[0.1em] uppercase font-semibold rounded-sm hover:bg-coffee-cream transition-colors min-h-[48px]"
           >
             {t.cafeVerde.learnMore}

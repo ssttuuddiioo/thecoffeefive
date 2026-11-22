@@ -52,12 +52,13 @@ export const greenLot = defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'URL',
-      description: 'Se genera solo a partir del nombre. Si ya compartiste el enlace del lote con un comprador, no lo cambies.',
+      title: 'URL (sin uso)',
+      // Unused: the page URL is the current name (src/lib/lot-urls.ts). Kept hidden so
+      // existing documents don't show an unknown-field warning.
       type: 'slug',
       group: 'basics',
+      hidden: true,
       options: { source: 'name', slugify: slugifyLot, maxLength: 96 },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'disponible',

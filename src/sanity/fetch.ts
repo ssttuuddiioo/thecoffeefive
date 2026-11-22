@@ -6,8 +6,6 @@ import { urlForImage } from './lib/image';
 import { isSanityConfigured } from './env';
 import {
   greenLotsQuery,
-  greenLotBySlugQuery,
-  greenLotSlugsQuery,
   journalArticleBySlugQuery,
   journalArticlesQuery,
   journalSlugsQuery,
@@ -23,7 +21,7 @@ import {
 } from '@/lib/mock-data';
 import { canonicalProceso, procesoColor } from '@/lib/lot-values';
 import { toPortableText } from '@/lib/journal-portable-text';
-import { slugifyLot } from '@/lib/slug';
+import { findLotByHandle, lotHandles } from '@/lib/lot-urls';
 import type { Locale } from '@/config/i18n';
 import { pickLocale, type GreenLot, type RoastedCoffee, type LocaleField } from '@/types/content';
 
@@ -170,23 +168,27 @@ function toGreenLot(doc: SanityGreenLot, locale: Locale): GreenLot {
   };
 }
 
-export async function getGreenLots(locale: Locale): Promise<GreenLot[]> {
+/** Available lots, each with its current URL handle (see src/lib/lot-urls.ts). */
+async function availableLots(locale: Locale): Promise<GreenLot[]> {
   const docs = await query<SanityGreenLot[]>(greenLotsQuery);
-  if (shouldFallback(docs)) return mockGreenLots as GreenLot[];
-  return (docs ?? []).map((doc) => toGreenLot(doc, locale));
+  const lots = shouldFallback(docs)
+    ? (mockGreenLots as GreenLot[])
+    : (docs ?? []).map((doc) => toGreenLot(doc, locale));
+  const handles = lotHandles(lots);
+  return lots.map((lot) => ({ ...lot, slug: handles.get(lot.ref) }));
 }
 
-export async function getGreenLotBySlug(slug: string, locale: Locale): Promise<GreenLot | undefined> {
-  const doc = await query<SanityGreenLot | null>(greenLotBySlugQuery, { slug });
-  if (doc) return toGreenLot(doc, locale);
-  if (isSanityConfigured && !isDev) return undefined;
-  return (mockGreenLots as GreenLot[]).find((lot) => slugifyLot(lot.name) === slug);
+export async function getGreenLots(locale: Locale): Promise<GreenLot[]> {
+  return availableLots(locale);
 }
 
-export async function getGreenLotSlugs(): Promise<string[]> {
-  const slugs = await query<string[]>(greenLotSlugsQuery);
-  if (shouldFallback(slugs)) return mockGreenLots.map((lot) => slugifyLot(lot.name));
-  return (slugs ?? []).filter(Boolean);
+export async function getGreenLotByHandle(handle: string, locale: Locale): Promise<GreenLot | undefined> {
+  return findLotByHandle(await availableLots(locale), handle);
+}
+
+export async function getGreenLotHandles(): Promise<string[]> {
+  const lots = await availableLots('es');
+  return lots.map((lot) => lot.slug).filter((slug): slug is string => Boolean(slug));
 }
 
 type SanityRoasted = {

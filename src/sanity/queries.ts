@@ -41,14 +41,6 @@ export const allGreenLotsQuery = groq`
   *[_type == "greenLot"] | order(order asc, ref asc) { ${GREEN_LOT_FIELDS}, order }
 `;
 
-export const greenLotBySlugQuery = groq`
-  *[_type == "greenLot" && slug.current == $slug && disponible != false][0] { ${GREEN_LOT_FIELDS} }
-`;
-
-export const greenLotSlugsQuery = groq`
-  *[_type == "greenLot" && disponible != false].slug.current
-`;
-
 const ROASTED_FIELDS = groq`
   _id, variedad, "slug": slug.current, origin, image, imageBack, price, weight,
   proceso, tueste, fermentacion, perfil, descripcion,
