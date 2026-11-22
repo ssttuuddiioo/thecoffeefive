@@ -27,7 +27,7 @@ export function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20 flex items-center justify-end h-16 md:h-20">
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden lg:flex items-center gap-7">
             {siteConfig.nav.main.map((item) => (
               <LocaleLink
                 key={item.key}
@@ -53,7 +53,7 @@ export function Header() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}
+            className={`lg:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center ${isLightBg ? 'text-coffee-black' : 'text-coffee-white'}`}
             aria-label="Toggle menu"
           >
             {menuOpen ? (
@@ -71,26 +71,29 @@ export function Header() {
         </div>
       </header>
 
-      {/* Outside the fixed header so the logo scrolls away with the page while the nav stays. */}
-      <div className="absolute top-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20">
-          <LocaleLink href="/" className="pointer-events-auto inline-flex flex-col items-center pt-3 md:pt-4">
-            <Image
-              src="/logo.svg"
-              alt="Coffee Five"
-              width={120}
-              height={190}
-              className="w-[92px] md:w-[120px] h-auto max-w-none brightness-0 invert"
-            />
-            <span
-              className="text-xl md:text-2xl whitespace-nowrap tracking-tight mt-2 text-white"
-              style={{ fontFamily: "'salted', cursive" }}
-            >
-              The Coffee Five
-            </span>
-          </LocaleLink>
+      {/* Outside the fixed header so the logo scrolls away with the page while the nav stays.
+          Pages leave room for it with .below-logo. Not on the password page, which shows its own. */}
+      {rest !== '/acceso' && (
+        <div className="absolute top-0 left-0 right-0 z-50 pointer-events-none">
+          <div className="max-w-content mx-auto px-5 md:px-8 lg:px-20">
+            <LocaleLink href="/" className="pointer-events-auto inline-flex flex-col items-center pt-3 md:pt-4">
+              <Image
+                src="/logo.svg"
+                alt="Coffee Five"
+                width={120}
+                height={190}
+                className="w-[92px] md:w-[120px] h-auto max-w-none brightness-0 invert"
+              />
+              <span
+                className="text-xl md:text-2xl whitespace-nowrap tracking-tight mt-2 text-white"
+                style={{ fontFamily: "'salted', cursive" }}
+              >
+                The Coffee Five
+              </span>
+            </LocaleLink>
+          </div>
         </div>
-      </div>
+      )}
 
       <AnimatePresence>
         {menuOpen && (

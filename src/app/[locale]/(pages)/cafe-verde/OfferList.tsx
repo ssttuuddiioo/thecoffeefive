@@ -93,9 +93,8 @@ export function OfferList({ lots }: { lots: GreenLot[] }) {
   );
 
   return (
-    <main className="pt-20 md:pt-24">
-      <div className="container-site section-padding">
-        <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">{t.cafeVerde.eyebrow}</p>
+    <main>
+      <div className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         <h1 className="text-3xl md:text-4xl font-bold text-coffee-white mb-4">{t.cafeVerde.title}</h1>
         <p className="text-sm text-coffee-400 mb-8 max-w-lg">
           {t.cafeVerde.intro}

@@ -24,8 +24,8 @@ export default async function RoastedCoffeePage({ params }: Props) {
   const hasBrew = product.brew.ratio || product.brew.temperatura || product.brew.metodos.length > 0;
 
   return (
-    <main className="pt-20 md:pt-24">
-      <div className="container-site section-padding">
+    <main>
+      <div className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Images */}
           <div className="grid grid-cols-1 gap-3">

@@ -10,9 +10,9 @@ export default async function AboutPage({ params }: { params: { locale: string }
   const c = (await getSiteCopy(locale)).about;
 
   return (
-    <main className="pt-20 md:pt-24">
+    <main>
       {/* Hero */}
-      <section className="container-site section-padding">
+      <section className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">{c.heroEyebrow}</p>
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-coffee-white max-w-3xl mb-6 leading-tight">
           {c.heroHeading}

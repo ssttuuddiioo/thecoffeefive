@@ -10,8 +10,16 @@
   src: url('https://cdn.jsdelivr.net/fontsource/fonts/google-sans@latest/latin-700-normal.woff2') format('woff2');
 }
 
+@media (min-width: 768px) {
+  :root {
+    --logo-clearance: 17rem;
+  }
+}
+
 @layer base {
   :root {
+    /* Room the corner logo takes at the top of the page (Header.tsx): its height plus a gap. */
+    --logo-clearance: 13.5rem;
     --color-black: #0A0A0A;
     --color-white: #FAFAF9;
     --color-cream: #EDE7D6;
@@ -79,6 +87,11 @@
   }
   .tab-pill-active {
     @apply bg-coffee-white text-coffee-black;
+  }
+
+  /* First block of a page: starts below the corner logo so the logo never covers it. */
+  .below-logo {
+    padding-top: var(--logo-clearance);
   }
 
   .section-padding {

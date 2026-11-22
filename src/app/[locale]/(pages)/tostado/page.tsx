@@ -29,15 +29,15 @@ export default async function TostadoPage({ params }: { params: { locale: string
 
   if (coffees.length === 0) {
     return (
-      <main className="min-h-screen bg-coffee-black flex flex-col justify-center pt-20 md:pt-24">
+      <main className="min-h-screen bg-coffee-black flex flex-col justify-center below-logo">
         <SignupSection />
       </main>
     );
   }
 
   return (
-    <main className="pt-20 md:pt-24">
-      <div className="container-site section-padding">
+    <main>
+      <div className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">{c.eyebrow}</p>
         <h1 className="text-3xl md:text-4xl font-bold text-coffee-white mb-4">{c.heading}</h1>
         <p className="text-sm text-coffee-400 mb-10 max-w-lg">{c.intro}</p>

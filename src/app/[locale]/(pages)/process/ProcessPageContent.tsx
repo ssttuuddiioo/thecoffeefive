@@ -64,8 +64,8 @@ export function ProcessPageContent({ c }: { c: Copy }) {
   const heroRef = useStaggerReveal();
 
   return (
-    <main className="pt-20 md:pt-24 bg-black text-white">
-      <div className="container-site section-padding">
+    <main className="bg-black text-white">
+      <div className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         {/* Header */}
         <div ref={heroRef}>
           <p data-reveal className="text-[10px] tracking-[0.15em] uppercase text-white/40 mb-4">{c.eyebrow}</p>

@@ -28,8 +28,8 @@ export default async function BlogPostPage({ params }: Props) {
   const edit = documentEdit(article.sanityId, 'journalArticle');
 
   return (
-    <main className="pt-20 md:pt-24">
-      <article className="container-site section-padding">
+    <main>
+      <article className="container-site below-logo pb-16 md:pb-22 lg:pb-30">
         <div className="max-w-2xl mx-auto mb-10">
           <Link
             href={withLocale(locale, '/blog')}

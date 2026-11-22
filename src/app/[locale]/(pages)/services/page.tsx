@@ -12,7 +12,7 @@ export default async function ServicesPage({ params }: { params: { locale: strin
   return (
     <main className="pt-20 md:pt-24">
       {/* Hero with background photo */}
-      <section className="relative h-[60vh] md:h-[70vh] lg:h-[80vh] flex items-end">
+      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-end">
         <Image
           {...photoProps(c.heroPhoto)} alt={c.heroPhoto.alt}
           fill
@@ -21,7 +21,8 @@ export default async function ServicesPage({ params }: { params: { locale: strin
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-coffee-black/80 via-coffee-black/30 to-transparent" />
-        <div className="container-site relative z-10 pb-12 md:pb-16 lg:pb-20">
+        {/* Top padding: the hero starts under the nav (5rem / 6rem), the text under the logo. */}
+        <div className="container-site relative z-10 pt-[calc(var(--logo-clearance)-5rem)] md:pt-[calc(var(--logo-clearance)-6rem)] pb-12 md:pb-16 lg:pb-20">
           <p className="text-[10px] tracking-[0.15em] uppercase text-coffee-400 mb-4">{c.heroEyebrow}</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-coffee-white max-w-3xl mb-6 leading-tight">
             {c.heroTitle}

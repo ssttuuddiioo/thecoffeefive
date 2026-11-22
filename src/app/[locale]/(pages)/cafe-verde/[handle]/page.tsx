@@ -56,14 +56,15 @@ export default async function GreenCoffeeLotPage({ params }: Props) {
 
   return (
     <main className="bg-white min-h-screen">
-      <div className="pb-24 -mt-20 md:-mt-24">
-        {/* Hero — full-bleed photo with title overlay */}
-        <div className="relative w-full h-screen mb-12 md:mb-16">
+      <div className="pb-24">
+        {/* Hero: full-bleed photo with the title at the bottom. It grows on short screens
+            so the title always stays below the corner logo. */}
+        <div className="relative w-full min-h-screen flex flex-col justify-end mb-12 md:mb-16">
           <div data-sanity={edit('images')} className="absolute inset-0">
             <FincaSlideshow images={lot.photos} alt={lot.name} fullBleed />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 px-6 md:px-12 lg:px-20 pb-10 md:pb-16">
+          <div className="relative below-logo px-6 md:px-12 lg:px-20 pb-10 md:pb-16">
             {/* Variedad + Proceso */}
             <div className="flex flex-wrap items-end gap-4 mb-4 md:mb-6">
               <span data-sanity={edit('variedad')} className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight">

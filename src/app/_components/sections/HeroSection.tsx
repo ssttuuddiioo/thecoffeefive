@@ -24,7 +24,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-center bg-coffee-900 overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-center pt-[var(--logo-clearance)] pb-16 md:py-0 bg-coffee-900 overflow-hidden">
       {/* Background image with parallax */}
       <div
         className="absolute inset-0 will-change-transform"
@@ -44,7 +44,8 @@ export function HeroSection() {
         01
       </span>
 
-      <div className="flex flex-col items-center mb-8 relative z-10">
+      {/* Desktop only: on phones the corner logo is the only one. */}
+      <div className="hidden md:flex flex-col items-center mb-8 relative z-10">
         <Image src="/logo.svg" alt="Coffee Five" width={120} height={190} className="brightness-0 invert w-[92px] md:w-[120px] h-auto" />
         <span
           className="text-xl md:text-2xl tracking-tight mt-2 text-white"
