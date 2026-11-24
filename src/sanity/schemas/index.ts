@@ -6,6 +6,7 @@ import { greenLot } from './documents/greenLot';
 import { roastedCoffee } from './documents/roastedCoffee';
 import { journalArticle } from './documents/journalArticle';
 import { copyDocuments } from './documents/copy';
+import { offerAccess } from './documents/offerAccess';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects — registered before the documents that reference them.
@@ -19,4 +20,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   roastedCoffee,
   journalArticle,
   ...copyDocuments,
+  offerAccess,
 ];

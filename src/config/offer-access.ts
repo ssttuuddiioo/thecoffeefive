@@ -1,15 +1,19 @@
 /**
  * Access control for the green-coffee offer list (`/cafe-verde`).
- * The list is "hidden" — reachable only with the password below, either via a
- * shared link (`/cafe-verde?key=<password>`) or the `/acceso` gate page.
+ *
+ * The password is set in the Studio (Café verde → Contraseña). It lives in a
+ * document whose id has a dot (`secrets.cafeVerde`): Sanity keeps those private
+ * even in a public dataset, so only the server, with a token, can read it.
+ * `FALLBACK_OFFER_PASSWORD` is used until that document is published.
+ *
+ * The unlock cookie has no expiry, so the browser forgets it when it closes and
+ * the next visit asks for the password again. Its value is a hash of the
+ * password, so changing the password in the Studio locks everyone out at once.
  */
-export const OFFER_PASSWORD = 'coffeefive2026';
+export const FALLBACK_OFFER_PASSWORD = 'coffeefive2026';
 
 /** Cookie that marks a visitor as unlocked. */
 export const OFFER_ACCESS_COOKIE = 'cf_offer_access';
 
-/** Opaque value stored in the cookie once the password is accepted. */
-export const OFFER_ACCESS_TOKEN = 'cf-offer-2026';
-
-/** Cookie lifetime — 30 days. */
-export const OFFER_ACCESS_MAX_AGE = 60 * 60 * 24 * 30;
+/** Sanity document holding the password. */
+export const OFFER_SECRET_ID = 'secrets.cafeVerde';

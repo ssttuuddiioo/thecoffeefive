@@ -1,11 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import {
-  OFFER_PASSWORD,
-  OFFER_ACCESS_COOKIE,
-  OFFER_ACCESS_TOKEN,
-  OFFER_ACCESS_MAX_AGE,
-} from '@/config/offer-access';
+import { OFFER_ACCESS_COOKIE } from '@/config/offer-access';
+import { isOfferPassword, offerAccessToken, offerCookieOptions } from '@/lib/offer-password';
 
 export async function POST(request: NextRequest) {
   let password = '';
@@ -16,17 +12,11 @@ export async function POST(request: NextRequest) {
     // ignore malformed body
   }
 
-  if (password !== OFFER_PASSWORD) {
+  if (!(await isOfferPassword(password))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(OFFER_ACCESS_COOKIE, OFFER_ACCESS_TOKEN, {
-    httpOnly: true,
-    sameSite: 'lax',
-    path: '/',
-    maxAge: OFFER_ACCESS_MAX_AGE,
-    secure: process.env.NODE_ENV === 'production',
-  });
+  response.cookies.set(OFFER_ACCESS_COOKIE, await offerAccessToken(password.trim()), offerCookieOptions());
   return response;
 }

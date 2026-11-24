@@ -5,6 +5,7 @@ import type { Dictionary } from './dictionary';
 /** English dictionary — typed against the Spanish shape so keys can't drift. */
 export const en: Dictionary = {
   nav: {
+    cafeVerde: 'Green coffee',
     roasted: 'Roasted',
     services: 'Consulting',
     about: 'About',

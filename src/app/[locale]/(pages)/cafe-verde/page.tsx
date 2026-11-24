@@ -3,8 +3,8 @@ import { getGreenLots } from '@/sanity/fetch';
 import { OfferList } from './OfferList';
 
 /**
- * Green coffee offer list. Password-gated in middleware and hidden from the
- * public nav — see `src/config/offer-access.ts`.
+ * Green coffee offer list. Password-gated in middleware (password set in the
+ * Studio), see `src/config/offer-access.ts`.
  *
  * Lots are fetched on the server so the list is indexable and fast; all the
  * filtering UI runs client-side in `OfferList`.

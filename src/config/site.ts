@@ -17,9 +17,9 @@ export const siteConfig = {
   },
   nav: {
     // `key` maps to `dictionary.nav[key]` for the label (see src/config/dictionaries).
-    // 'Verde' (offer list) is intentionally hidden — it lives behind the
-    // password gate at /acceso and is shared via a private link.
+    // Café verde is password protected: the link opens the /acceso gate first.
     main: [
+      { key: 'cafeVerde', href: '/cafe-verde' },
       { key: 'roasted', href: '/tostado' },
       { key: 'services', href: '/services' },
       { key: 'about', href: '/about' },

@@ -61,6 +61,7 @@ export const copyGlobal = page('copyGlobal', 'General', [
     name: 'nav',
     title: 'Menú',
     fields: [
+      text('cafeVerde', 'Café verde'),
       text('roasted', 'Tostado'),
       text('services', 'Consultorio'),
       text('about', 'Nosotros'),

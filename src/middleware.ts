@@ -11,12 +11,8 @@ import {
   LOCALE_COOKIE_MAX_AGE,
   type Locale,
 } from '@/config/i18n';
-import {
-  OFFER_PASSWORD,
-  OFFER_ACCESS_COOKIE,
-  OFFER_ACCESS_TOKEN,
-  OFFER_ACCESS_MAX_AGE,
-} from '@/config/offer-access';
+import { OFFER_ACCESS_COOKIE } from '@/config/offer-access';
+import { hasOfferAccess, isOfferPassword, offerAccessToken, offerCookieOptions } from '@/lib/offer-password';
 
 // Files with an extension (e.g. /logo.svg) skip all locale handling.
 const PUBLIC_FILE = /\.[^/]+$/;
@@ -59,7 +55,7 @@ function passThrough(request: NextRequest, locale: Locale) {
   return setLocaleCookie(NextResponse.next({ request: { headers } }), locale);
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Never touch API routes, the Sanity Studio, Next internals, or static files.
@@ -86,11 +82,9 @@ export function middleware(request: NextRequest) {
 
   const locale = pathLocale;
 
-  // 2. Green-coffee offer list — password protected, hidden from public nav.
+  // 2. Green-coffee offer list: password protected (password set in the Studio).
   if (isOfferPath(rest)) {
-    const hasAccess =
-      request.cookies.get(OFFER_ACCESS_COOKIE)?.value === OFFER_ACCESS_TOKEN;
-    if (hasAccess) {
+    if (await hasOfferAccess(request.cookies.get(OFFER_ACCESS_COOKIE)?.value)) {
       return passThrough(request, locale);
     }
 
@@ -98,18 +92,12 @@ export function middleware(request: NextRequest) {
     const providedKey =
       request.nextUrl.searchParams.get('key') ??
       request.nextUrl.searchParams.get('password');
-    if (providedKey === OFFER_PASSWORD) {
+    if (providedKey && (await isOfferPassword(providedKey))) {
       const cleanUrl = request.nextUrl.clone();
       cleanUrl.searchParams.delete('key');
       cleanUrl.searchParams.delete('password');
       const response = setLocaleCookie(NextResponse.redirect(cleanUrl), locale);
-      response.cookies.set(OFFER_ACCESS_COOKIE, OFFER_ACCESS_TOKEN, {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: OFFER_ACCESS_MAX_AGE,
-        secure: process.env.NODE_ENV === 'production',
-      });
+      response.cookies.set(OFFER_ACCESS_COOKIE, await offerAccessToken(providedKey.trim()), offerCookieOptions());
       return response;
     }
 

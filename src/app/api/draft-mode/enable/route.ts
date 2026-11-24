@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { defineEnableDraftMode } from 'next-sanity/draft-mode';
 import { client } from '@/sanity/lib/client';
 import { readToken } from '@/sanity/lib/token';
-import { OFFER_ACCESS_COOKIE, OFFER_ACCESS_MAX_AGE, OFFER_ACCESS_TOKEN } from '@/config/offer-access';
+import { OFFER_ACCESS_COOKIE } from '@/config/offer-access';
+import { getOfferPassword, offerAccessToken, offerCookieOptions } from '@/lib/offer-password';
 
 /**
  * Called by the Studio's Presentation tool. It verifies a secret the Studio just
@@ -30,16 +31,12 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     if (isRedirect(error)) {
       const dev = process.env.NODE_ENV !== 'production';
-      cookies().set({
-        name: OFFER_ACCESS_COOKIE,
-        value: OFFER_ACCESS_TOKEN,
-        httpOnly: true,
-        path: '/',
-        maxAge: OFFER_ACCESS_MAX_AGE,
-        // Same settings next-sanity uses for the preview cookie, so it works inside the Studio's frame.
-        secure: !dev,
-        sameSite: dev ? 'lax' : 'none',
-      });
+      // Same sameSite next-sanity uses for the preview cookie, so it works inside the Studio's frame.
+      cookies().set(
+        OFFER_ACCESS_COOKIE,
+        await offerAccessToken(await getOfferPassword()),
+        offerCookieOptions(dev ? 'lax' : 'none'),
+      );
     }
     throw error;
   }

@@ -6,6 +6,7 @@ import { photo } from '@/lib/photo';
  */
 export const es = {
   nav: {
+    cafeVerde: 'Café verde',
     roasted: 'Tostado',
     services: 'Consultorio',
     about: 'Nosotros',

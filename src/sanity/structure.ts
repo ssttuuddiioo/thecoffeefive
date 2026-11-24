@@ -1,5 +1,6 @@
 import type { StructureResolver } from 'sanity/structure';
 import type { CopyDocId } from './lib/copy-docs';
+import { OFFER_SECRET_ID } from '../config/offer-access';
 
 /**
  * Studio sidebar, organised around how Juan actually works: find a lot, change
@@ -73,6 +74,10 @@ export const structure: StructureResolver = (S) =>
                 .child(lotList(S, 'Otra ubicación', '!defined(ubicacion)')),
               S.divider(),
               singleton(S, 'copyCafeVerde', 'Textos de café verde'),
+              S.listItem()
+                .title('Contraseña')
+                .id('offerAccess')
+                .child(S.document().schemaType('offerAccess').documentId(OFFER_SECRET_ID).title('Contraseña de café verde')),
             ]),
         ),
       S.listItem()
